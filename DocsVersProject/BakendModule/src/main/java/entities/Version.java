@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Clob;
 import java.util.Date;
 
 /**
@@ -15,14 +16,14 @@ public class Version {
     private Document document;
     private Author author;
     private Date date;
-    private String versionDescription;
+    private Clob versionDescription;
     private String documentPath;
 
     public Version() {
     }
 
     public Version(long id, String name, Document document, Author author, Date date,
-                   String versionDescription, String documentPath) {
+                   Clob versionDescription, String documentPath) {
         this.id = id;
         this.name = name;
         this.document = document;
@@ -73,11 +74,11 @@ public class Version {
         this.author = author;
     }
 
-    public String getVersionDescription() {
+    public Clob getVersionDescription() {
         return versionDescription;
     }
 
-    public void setVersionDescription(String versionDescription) {
+    public void setVersionDescription(Clob versionDescription) {
         this.versionDescription = versionDescription;
     }
 

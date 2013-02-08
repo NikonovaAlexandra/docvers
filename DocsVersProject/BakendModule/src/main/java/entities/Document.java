@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Clob;
 import java.util.Date;
 
 /**
@@ -14,12 +15,12 @@ public class Document {
     private long id;
     private Author author;
     private String name;
-    private String description;
+    private Clob description;
 
     public Document() {
     }
 
-    public Document(long id, Author author, String name, String description) {
+    public Document(long id, Author author, String name, Clob description) {
         this.id = id;
         this.author = author;
         this.name = name;
@@ -50,11 +51,11 @@ public class Document {
         this.name = name;
     }
 
-    public String getDescription() {
+    public Clob getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(Clob description) {
         this.description = description;
     }
 }

@@ -17,15 +17,15 @@ import java.util.List;
 public interface DocumentDAO {
     public void addDocument(Document document) throws SQLException;
     public void deleteDocument(Document document) throws SQLException;
-    public List<Document> getAllDocuments();
-    public Author getAuthorByDocument(Document document);
-    public List<Document> getDocumentsByAuthor(Author author);
-    public List<Version> getVersionsOfDocument(Document document);
+    public List<Document> getAllDocuments() throws SQLException;
+    public Author getAuthorByDocument(Document document) throws SQLException;
+    public List<Document> getDocumentsByAuthor(Author author) throws SQLException;
+    public List<Version> getVersionsOfDocument(Document document) throws SQLException;
 
 //    public void addVersion(Version version);
 //    public void addAuthor(Author author);
 //    public List<Author> getAllAuthors();
-//    public Author getAuthorByID(long id);
+   public Author getAuthorByID(long id) throws SQLException;
 //    public Author getAuthorByLogin(String login);
 //    public Author getAuthorByVersion(Version version);
 //    public List<Version> getVersionsByAuthor(Author author);
