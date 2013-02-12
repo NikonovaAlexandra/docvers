@@ -13,8 +13,8 @@ import java.util.Date;
 public class Version {
     private long id;
     private String name;
-    private Document document;
-    private Author author;
+    private long documentID;
+    private long authorID;
     private Date date;
     private Clob versionDescription;
     private String documentPath;
@@ -22,12 +22,12 @@ public class Version {
     public Version() {
     }
 
-    public Version(long id, String name, Document document, Author author, Date date,
+    public Version(long id, String name, long documentID, long authorID, Date date,
                    Clob versionDescription, String documentPath) {
         this.id = id;
         this.name = name;
-        this.document = document;
-        this.author = author;
+        this.documentID = documentID;
+        this.authorID = authorID;
         this.date = date;
         this.versionDescription = versionDescription;
         this.documentPath = documentPath;
@@ -57,21 +57,21 @@ public class Version {
         this.date = date;
     }
 
-    public Document getDocument() {
+    public long getDocumentID() {
 
-        return document;
+        return documentID;
     }
 
-    public void setDocument(Document document) {
-        this.document = document;
+    public void setDocumentID(long documentID) {
+        this.documentID = documentID;
     }
 
-    public Author getAuthor() {
-        return author;
+    public long getAuthorID() {
+        return authorID;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorID(long authorID) {
+        this.authorID = authorID;
     }
 
     public Clob getVersionDescription() {

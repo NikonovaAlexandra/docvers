@@ -13,16 +13,19 @@ import java.util.Date;
 public class Document {
 
     private long id;
-    private Author author;
+    private long authorID;
     private String name;
-    private Clob description;
+    private String description;
+    private static long count = 0;
 
     public Document() {
+        id = count;
+        ++count;
     }
 
-    public Document(long id, Author author, String name, Clob description) {
+    public Document(long id, long authorID, String name, String description) {
         this.id = id;
-        this.author = author;
+        this.authorID = authorID;
         this.name = name;
         this.description = description;
     }
@@ -35,12 +38,12 @@ public class Document {
         this.id = id;
     }
 
-    public Author getAuthor() {
-        return author;
+    public long getAuthorID() {
+        return authorID;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorID(long authorID) {
+        this.authorID = authorID;
     }
 
     public String getName() {
@@ -51,11 +54,11 @@ public class Document {
         this.name = name;
     }
 
-    public Clob getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Clob description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 }

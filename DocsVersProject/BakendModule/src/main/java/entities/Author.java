@@ -12,8 +12,11 @@ public class Author {
     private long id;
     private String login;
     private String password;
+    private static long count = 0;
 
     public Author() {
+        id = count;
+        ++count;
     }
 
     public Author(long id, String login, String password) {
