@@ -21,11 +21,11 @@ public interface DocumentDAO extends DAO {
     public List<Document> getAllDocuments() throws SQLException;
     public List<Document> getDocumentsByAuthorID(long id) throws SQLException;
 
-//    public void addVersion(Version version);
-//    public void addAuthor(Author author);
+//    public void addVersion(Version VersionDAOTest);
+//    public void addAuthor(Author AuthorDAOTest);
 //    public List<Author> getAllAuthors();
 
 //    public Author getAuthorByLogin(String login);
-//    public Author getAuthorByVersion(Version version);
-//    public List<Version> getVersionsByAuthor(Author author);
+//    public Author getAuthorByVersion(Version VersionDAOTest);
+//    public List<Version> getVersionsByAuthor(Author AuthorDAOTest);
 }

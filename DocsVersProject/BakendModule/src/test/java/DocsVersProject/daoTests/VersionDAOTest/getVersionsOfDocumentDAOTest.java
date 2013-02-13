@@ -41,7 +41,7 @@ public class getVersionsOfDocumentDAOTest {
         VersionDAO dao = new VersionDAOImpl(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();
-        dao.getVersionsOfDocument(doc);
+        dao.getVersionsOfDocument(doc.getId());
         // then
         verify(conn).prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
         verify(ps).setLong(1, doc.getId());
@@ -49,17 +49,6 @@ public class getVersionsOfDocumentDAOTest {
         verify(rs).next();
         verify(ps).close();
         verify(rs).close();
-
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void whenDocumentIsNullExceptionOccurs() throws Exception {
-        Connection conn = Mockito.mock(Connection.class);
-//        // given
-        // there is no documents in database
-        VersionDAO dao = new VersionDAOImpl(conn);
-        // when
-        dao.getVersionsOfDocument(null);
 
     }
 

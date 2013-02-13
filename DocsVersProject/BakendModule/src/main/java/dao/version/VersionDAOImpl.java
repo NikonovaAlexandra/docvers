@@ -28,27 +28,25 @@ public class VersionDAOImpl implements VersionDAO {
         this.conn.setAutoCommit(false);
     }
     @Override
-    public List<Version> getVersionsOfDocument(Document document) throws SQLException {
+    public List<Version> getVersionsOfDocument(long id) throws SQLException {
         List<Version> versions = new ArrayList<Version>();
         PreparedStatement ps = null;
         ResultSet rsVersions = null;
         Version version;
-        if(document == null) {
-            throw new IllegalArgumentException();
-        }
+
         try{
             ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
-            ps.setLong(1,document.getId());
+            ps.setLong(1,id);
             rsVersions = ps.executeQuery();
             conn.commit();
-            long id;
+
             while(rsVersions.next()) {
                 version = new Version();
                 id = rsVersions.getLong("ID");
                 version.setId(id);
                 version.setAuthorID(id);
                 version.setDate(rsVersions.getDate("DATE"));
-                version.setDocumentID(document.getId());
+                version.setDocumentID(id);
                 version.setDocumentPath(rsVersions.getString("DOCUMENT_PATH"));
                 version.setVersionDescription(rsVersions.getClob("VERSION_DESCRIPTION"));
                 versions.add(version);

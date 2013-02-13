@@ -15,5 +15,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface VersionDAO extends DAO {
-    public List<Version> getVersionsOfDocument(Document document) throws SQLException;
+    public List<Version> getVersionsOfDocument(long id) throws SQLException;
 }

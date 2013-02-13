@@ -87,9 +87,13 @@ public class DB {
             DAO dao = DAOFactory.getInstance().getDocumentDAO(connection);
             ((DocumentDAOImpl)dao).addDocument(new Document(0, 3, "doc", "desc"));
             //((DocumentDAOImpl)dao).deleteDocument(2);
+            System.out.println("====================================");
             resultSet = statement.executeQuery("select * from document");
             Outer.documentOut(resultSet);
-            List<Document> l = ((DocumentDAOImpl)dao).getAllDocuments();
+            resultSet = statement.executeQuery("select * from version");
+            Outer.versionOut(resultSet);
+
+            List<Document> l = ((DocumentDAOImpl)dao).getDocumentsByAuthorID(3);
             for(Document v : l) {
               System.out.println(v.getId()+" auth:"+v.getAuthorID()+" "+v.getName());
             }

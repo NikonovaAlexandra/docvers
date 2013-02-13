@@ -91,7 +91,7 @@ public class DocumentDAOImpl implements DocumentDAO {
 
     private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws SQLException {
         List<Document> documents = new ArrayList<Document>();
-        Document document;
+        Document document = null;
         while(rs.next()) {
             document = new Document();
             //document.setId(rs.getLong("ID"));
