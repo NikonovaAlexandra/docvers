@@ -4,4 +4,22 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+    <servlet>
+        <servlet-name>AddDocumentServlet</servlet-name>
+        <servlet-class>documentServlet.AddDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddDocumentServlet</servlet-name>
+        <url-pattern>/Document</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddDocument</servlet-name>
+        <jsp-file>/WEB-INF/jsp/AddDocument.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddDocument</servlet-name>
+        <url-pattern>/AddDocument</url-pattern>
+    </servlet-mapping>
+
 </web-app>
