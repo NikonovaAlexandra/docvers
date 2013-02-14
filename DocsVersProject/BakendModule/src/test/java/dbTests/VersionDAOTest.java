@@ -1,10 +1,6 @@
 package dbTests;
 
 import com.ibatis.common.jdbc.ScriptRunner;
-import dao.document.DocumentDAOImpl;
-import dao.version.VersionDAOImpl;
-import entities.Document;
-import entities.Version;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
@@ -20,7 +16,6 @@ import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import util.Queries;
 
@@ -30,7 +25,6 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,7 +40,7 @@ public class VersionDAOTest {
     private IDatabaseConnection iConnection;
     @Before
     public void instantiate() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().getResourceAsStream("check_set.xml"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().getResourceAsStream("dbTests/111.xml"));
         //Creating databse server instance
         tester = new JdbcDatabaseTester("org.h2.Driver", "jdbc:h2:mem:test", "root", "root");
         iConnection = tester.getConnection();
@@ -55,7 +49,7 @@ public class VersionDAOTest {
         //Setting DATA_FACTORY, so DBUnit will know how to work with specific HSQLDB data types
         iConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory());
         //Getting dataset for database initialization
-        IDataSet dataSet = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().getResourceAsStream("full.xml"));
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().getResourceAsStream("dbTests/full.xml"));
         Connection connection =  iConnection.getConnection();
         // Initialize object for ScripRunner
         ScriptRunner sr = new ScriptRunner(connection, false, false);
@@ -72,7 +66,6 @@ public class VersionDAOTest {
         tester.onSetup();
     }
 
-    @Ignore
     @Test
     public void getVersionsOfDocumentTest() throws SQLException, Exception {
         PreparedStatement ps =  iConnection.getConnection().prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);

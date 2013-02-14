@@ -23,8 +23,7 @@ public class Document {
         ++count;
     }
 
-    public Document(long id, long authorID, String name, String description) {
-        this.id = id;
+    public Document(long authorID, String name, String description) {
         this.authorID = authorID;
         this.name = name;
         this.description = description;

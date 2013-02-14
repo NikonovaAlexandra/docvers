@@ -58,6 +58,11 @@ public class DB {
                 ps.setString(2,"pass"+i);
                 ps.executeUpdate();
             }
+            ps =  connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);
+            ps.setString(1, "login");
+            ps.setString(2,"pass"+21);
+            ps.executeUpdate();
+
             for(int i = 0; i<5;++i) {
                 ps =  connection.prepareStatement(Queries.INSERT_INTO_DOCUMENT);
                 ps.setLong(1,(5/(i+2)+1));
@@ -85,7 +90,7 @@ public class DB {
             resultSet = statement.executeQuery("select * from version");
             Outer.versionOut(resultSet);
             DAO dao = DAOFactory.getInstance().getDocumentDAO(connection);
-            ((DocumentDAOImpl)dao).addDocument(new Document(0, 3, "doc", "desc"));
+            ((DocumentDAOImpl)dao).addDocument(new Document( 3, "doc", "desc"));
             //((DocumentDAOImpl)dao).deleteDocument(2);
             System.out.println("====================================");
             resultSet = statement.executeQuery("select * from document");

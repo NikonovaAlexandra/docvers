@@ -2,6 +2,7 @@ package dbTests;
 
 import com.ibatis.common.jdbc.ScriptRunner;
 import dao.document.DocumentDAOImpl;
+import db.Outer;
 import entities.Document;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
@@ -16,18 +17,9 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.*;
-import util.Queries;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.Reader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.io.*;
+import java.sql.*;
 
 /**
 * Created with IntelliJ IDEA.
@@ -42,23 +34,23 @@ public class DocumentsDAOTest {
     private FlatXmlDataSet flatXMLDataSet;
     private IDatabaseConnection iConnection;
     @Before public void instantiate() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().getResourceAsStream("check_set.xml"));
+        new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResourceAsStream("dbTests/full.xml"));
+        new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResourceAsStream("dbTests/111.xml"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File("dbTests/111.xml"));
         //Creating databse server instance
         tester = new JdbcDatabaseTester("org.h2.Driver", "jdbc:h2:mem:test", "sa", "");
         iConnection = tester.getConnection();
-        String aSQLScriptFilePath = "C:\\Documents and Settings\\alni\\Desktop\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\databasescript_0_1.sql";
-
         //Setting DATA_FACTORY, so DBUnit will know how to work with specific HSQLDB data types
         iConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory());
         //Getting dataset for database initialization
-        IDataSet dataSet = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().getResourceAsStream("full.xml"));
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(new File("dbTests/full.xml"));
         Connection connection =  iConnection.getConnection();
         // Initialize object for ScripRunner
         ScriptRunner sr = new ScriptRunner(connection, false, false);
 
         // Give the input file to Reader
         Reader reader = new BufferedReader(
-                new FileReader(aSQLScriptFilePath));
+                new FileReader(new File("BakendModule\\src\\main\\resources\\databasescript_0_1.sql")));
 
         // Exctute script
         sr.runScript(reader);
@@ -66,6 +58,11 @@ public class DocumentsDAOTest {
         //Initializing database
         tester.setDataSet(dataSet);
         tester.onSetup();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select * from author");
+        Outer.authorOut(resultSet);
+        connection.commit();
+
     }
 
 //    @Test
@@ -79,10 +76,11 @@ public class DocumentsDAOTest {
 //        Assertion.assertEquals(template, actual);
 //    }
 
-    @Ignore @Test
+    @Test
+    @Ignore
     public void addDocumentTest() throws SQLException, Exception {
         DocumentDAOImpl dao = new DocumentDAOImpl( iConnection.getConnection());
-        Document doc = new Document(5,2,"doc25","descr");
+        Document doc = new Document(2,"doc25","descr");
         dao.addDocument(doc);
         ITable template = flatXMLDataSet.getTable("document_add");
         ITable actual = DefaultColumnFilter.includedColumnsTable( iConnection.createDataSet().getTable("document"),
@@ -90,7 +88,8 @@ public class DocumentsDAOTest {
         Assertion.assertEquals(template, actual);
     }
 
-    @Ignore @Test
+    @Test
+//    @Ignore
     public void deleteDocumentTest() throws SQLException, Exception {
         DocumentDAOImpl dao = new DocumentDAOImpl( iConnection.getConnection());
         dao.deleteDocument(3);
@@ -98,8 +97,7 @@ public class DocumentsDAOTest {
         ITable actual = DefaultColumnFilter.includedColumnsTable( iConnection.createDataSet().getTable("document"),
                 template.getTableMetaData().getColumns());
         Assertion.assertEquals(template, actual);
-        template = new FlatXmlDataSetBuilder().build(this.getClass().getClassLoader().
-                getResourceAsStream("check_set.xml")).getTable("document_version_delete");
+        template = new FlatXmlDataSetBuilder().build(new File("dbTests/111.xml")).getTable("document_version_delete");
         actual = DefaultColumnFilter.includedColumnsTable( iConnection.createDataSet().getTable("version"),
                 template.getTableMetaData().getColumns());
         Assertion.assertEquals(template, actual);
