@@ -1,0 +1,5 @@
+<dataset>
+    <DOCUMENT ID="2" AUTHOR_ID="2" DOCUMENT_NAME="doc1" DESCRIPTION="descr"/>
+    <DOCUMENT ID="3" AUTHOR_ID="2" DOCUMENT_NAME="doc2" DESCRIPTION="descr"/>
+    <DOCUMENT ID="4" AUTHOR_ID="2" DOCUMENT_NAME="doc3" DESCRIPTION="descr"/>
+</dataset>
