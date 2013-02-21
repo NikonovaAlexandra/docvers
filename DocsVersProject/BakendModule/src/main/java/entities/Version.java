@@ -1,7 +1,8 @@
 package entities;
 
 import java.sql.Clob;
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,20 +13,18 @@ import java.util.Date;
  */
 public class Version {
     private long id;
-    private String name;
     private long documentID;
     private long authorID;
     private Date date;
-    private Clob versionDescription;
+    private String versionDescription;
     private String documentPath;
 
     public Version() {
     }
 
-    public Version(long id, String name, long documentID, long authorID, Date date,
-                   Clob versionDescription, String documentPath) {
+    public Version(long id, long documentID, long authorID, Date date,
+                   String versionDescription, String documentPath) {
         this.id = id;
-        this.name = name;
         this.documentID = documentID;
         this.authorID = authorID;
         this.date = date;
@@ -39,14 +38,6 @@ public class Version {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Date getDate() {
@@ -74,11 +65,11 @@ public class Version {
         this.authorID = authorID;
     }
 
-    public Clob getVersionDescription() {
+    public String getVersionDescription() {
         return versionDescription;
     }
 
-    public void setVersionDescription(Clob versionDescription) {
+    public void setVersionDescription(String versionDescription) {
         this.versionDescription = versionDescription;
     }
 

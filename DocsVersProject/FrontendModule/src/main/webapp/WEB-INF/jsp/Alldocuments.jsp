@@ -11,10 +11,10 @@
     <title></title>
 </head>
 <body>
-<form action="/allDocuments" method="POST">
+<form action="/Documents" method="POST">
     <select name="documentList" id="Document"/>
     <c:forEach items="${documentList}"  var="item">
-        <option value="${item.}">${item.concertName}</option>
+        <option value="${item.name}">${item.name}</option>
     </c:forEach>
     </select>
     <input type="submit" value="submit">

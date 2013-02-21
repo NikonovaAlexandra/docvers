@@ -8,12 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="resources.Messages" />
+<fmt:setBundle basename="Messages" />
 <html lang="${language}">
 <head>
+    <fmt:message key="adddocument.blankName" var="emptyName"/>
+    <script>
+        function validateForm()
+        {
+            if(document.form.docname.value=="")
+            {
+                alert("${emptyName}");
+                document.form.docname.focus();
+                return false;
+            }
+        }
+    </script>
     <title><fmt:message key="adddocument.tittle"/></title>
 </head>
 <body>
@@ -23,7 +32,7 @@
     </c:if>
 </div>
 <div>
-    <form action="Document" method="post">
+    <form action="Document" method="post" name="form" onSubmit="return validateForm()">
     <table>
         <tr>
             <td><fmt:message key="adddocument.docname"/> </td>

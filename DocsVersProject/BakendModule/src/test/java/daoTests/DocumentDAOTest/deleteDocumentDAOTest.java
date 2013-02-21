@@ -1,8 +1,8 @@
-package DocsVersProject.daoTests.DocumentDAOTest;
+package daoTests.DocumentDAOTest;
 
-import DocsVersProject.daoTests.EntitiesFactory;
+import daoTests.EntitiesFactory;
+import dao.DAOFactory;
 import dao.document.DocumentDAO;
-import dao.document.DocumentDAOImpl;
 import entities.Document;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,7 +31,7 @@ public class deleteDocumentDAOTest {
         PreparedStatement ps = mock(PreparedStatement.class);
         when(conn.prepareStatement(anyString())).thenReturn(ps);
         // there is no documents in database
-        DocumentDAO dao = new DocumentDAOImpl(conn);
+        DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();
         dao.deleteDocument(doc.getId());

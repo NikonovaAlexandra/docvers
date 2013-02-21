@@ -14,12 +14,11 @@ public class NullConnectionException extends Exception {
     public NullConnectionException(Class exceptionClass) {
 
         this.exceptionClass = exceptionClass;
-
     }
 
     public String toString() {
 
-        return "NullConnectionException in class " + exceptionClass ;
+        return "Null Connection Exception";
 
     }
 

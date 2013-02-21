@@ -1,6 +1,7 @@
 package dao.author;
 
 import entities.Author;
+import exception.IntegrityConstraintException;
 import exception.NullConnectionException;
 import util.Queries;
 
@@ -10,20 +11,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: alni
- * Date: 12.02.13
- * Time: 9:09
- * To change this template use File | Settings | File Templates.
- */
+* Created with IntelliJ IDEA.
+* User: alni
+* Date: 12.02.13
+* Time: 9:09
+* To change this template use File | Settings | File Templates.
+*/
 public class AuthorDAOImpl implements AuthorDAO {
 
     private Connection conn;
 
     public AuthorDAOImpl(Connection conn) throws NullConnectionException, SQLException {
         if(conn == null) throw new NullConnectionException(AuthorDAOImpl.class);
-        this.conn = conn;
-        this.conn.setAutoCommit(false);
+           this.conn = conn;
+           this.conn.setAutoCommit(false);
+
     }
 
     @Override
@@ -37,10 +39,10 @@ public class AuthorDAOImpl implements AuthorDAO {
             conn.commit();
             Author author = null;
             if(rs.next()){
-                author = new Author(id, rs.getString("LOGIN"), rs.getString("PASSWORD"));
+                author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));
             }
             return author;
-        } finally {
+        }finally {
             if(ps!=null) ps.close();
             if(rs!=null) rs.close();
         }
@@ -57,7 +59,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             conn.commit();
             Author author = null;
             if(rs.next()) {
-                author = getAuthorByID(rs.getLong("ID"));
+                author = getAuthorByID(rs.getLong("author_id"));
             }
             return author;
         } finally {

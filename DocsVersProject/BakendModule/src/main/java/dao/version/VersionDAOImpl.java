@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: alni
- * Date: 12.02.13
- * Time: 9:11
- * To change this template use File | Settings | File Templates.
- */
+* Created with IntelliJ IDEA.
+* User: alni
+* Date: 12.02.13
+* Time: 9:11
+* To change this template use File | Settings | File Templates.
+*/
 public class VersionDAOImpl implements VersionDAO {
     private Connection conn;
 
@@ -42,13 +42,12 @@ public class VersionDAOImpl implements VersionDAO {
 
             while(rsVersions.next()) {
                 version = new Version();
-                id = rsVersions.getLong("ID");
-                version.setId(id);
-                version.setAuthorID(id);
+                version.setId(rsVersions.getLong("ID"));
+                version.setAuthorID(rsVersions.getLong("AUTHOR_ID"));
                 version.setDate(rsVersions.getDate("DATE"));
-                version.setDocumentID(id);
+                version.setDocumentID(rsVersions.getLong("DOCUMENT_ID"));
                 version.setDocumentPath(rsVersions.getString("DOCUMENT_PATH"));
-                version.setVersionDescription(rsVersions.getClob("VERSION_DESCRIPTION"));
+                version.setVersionDescription(rsVersions.getString("VERSION_DESCRIPTION"));
                 versions.add(version);
             }
             return versions;}

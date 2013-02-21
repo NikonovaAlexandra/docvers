@@ -1,8 +1,7 @@
-package DocsVersProject.daoTests.DocumentDAOTest;
+package daoTests.DocumentDAOTest;
 
-import DocsVersProject.daoTests.EntitiesFactory;
+import dao.DAOFactory;
 import dao.document.DocumentDAO;
-import dao.document.DocumentDAOImpl;
 import entities.Document;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,9 +30,8 @@ public class addNewDocumentDAOTest {
 
         when(conn.prepareStatement(anyString())).thenReturn(ps);
         // there is no documents in database
-        DocumentDAO dao = new DocumentDAOImpl(conn);
-        // when
-        Document doc = EntitiesFactory.createNewDocument();
+        DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
+        Document doc = daoTests.EntitiesFactory.createNewDocument();
         dao.addDocument(doc);
         // then
         verify(conn).prepareStatement(Queries.INSERT_INTO_DOCUMENT_AUTHOR_NAME_DESCRIPTION_VALUES);
@@ -51,7 +49,7 @@ public class addNewDocumentDAOTest {
         Connection conn = Mockito.mock(Connection.class);
         // given
         // there is no documents in database
-        DocumentDAO dao = new DocumentDAOImpl(conn);
+        DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         dao.addDocument(null);
     }
 

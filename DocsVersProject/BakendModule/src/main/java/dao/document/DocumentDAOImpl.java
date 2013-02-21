@@ -10,17 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: alni
- * Date: 07.02.13
- * Time: 11:03
- * To change this template use File | Settings | File Templates.
- */
+* Created with IntelliJ IDEA.
+* User: alni
+* Date: 07.02.13
+* Time: 11:03
+* To change this template use File | Settings | File Templates.
+*/
 public class DocumentDAOImpl implements DocumentDAO {
     private Connection conn;
 
     public DocumentDAOImpl(Connection conn) throws NullConnectionException, SQLException {
-        if(conn == null) throw new NullConnectionException(DocumentDAOImpl.class);
+        if(conn == null)
+            throw new NullConnectionException(DocumentDAOImpl.class);
         this.conn = conn;
         this.conn.setAutoCommit(false);
     }
@@ -94,7 +95,7 @@ public class DocumentDAOImpl implements DocumentDAO {
         Document document = null;
         while(rs.next()) {
             document = new Document();
-            //document.setId(rs.getLong("ID"));
+            document.setId(rs.getLong("ID"));
             document.setAuthorID(rs.getLong("AUTHOR_ID"));
             document.setName(rs.getString("DOCUMENT_NAME"));
             document.setDescription(rs.getString("DESCRIPTION"));

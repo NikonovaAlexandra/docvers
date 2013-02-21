@@ -39,14 +39,14 @@ public class DAOFactory {
         return documentDAO;
     }
 
-    public AuthorDAO getDriverDAO(Connection conn) throws NullConnectionException, SQLException {
+    public AuthorDAO getAuthorDAO(Connection conn) throws NullConnectionException, SQLException {
         if (authorDAO == null){
             authorDAO = new AuthorDAOImpl(conn);
         }
         return authorDAO;
     }
 
-    public VersionDAO getRouteDAO(Connection conn) throws NullConnectionException, SQLException {
+    public VersionDAO getVersionDAO(Connection conn) throws NullConnectionException, SQLException {
         if (versionDAO == null){
             versionDAO = new VersionDAOImpl(conn);
         }

@@ -1,13 +1,10 @@
 package dbTests;
 
-import com.ibatis.common.jdbc.ScriptRunner;
-import dao.DAO;
 import dao.DAOFactory;
 import dao.author.AuthorDAO;
-import dao.author.AuthorDAOImpl;
-import dao.document.DocumentDAOImpl;
-import dao.version.VersionDAOImpl;
-import db.Outer;
+import dao.document.DocumentDAO;
+import dao.version.VersionDAO;
+import db.ScriptRunner;
 import entities.Author;
 import entities.Document;
 import entities.Version;
@@ -42,7 +39,9 @@ public class EntitiesDAOTest {
     private IDatabaseTester tester = null;
     private FlatXmlDataSet flatXMLDataSet;
     private IDatabaseConnection iConnection;
-    private DAO dao;
+    private DocumentDAO documentDAO;
+    private AuthorDAO authorDAO;
+    private VersionDAO versionDAO;
     private ITable template, actual;
     private String path = "BakendModule/src/test/java/dbTests/";
     @Before public void instantiate() throws Exception {
@@ -60,7 +59,7 @@ public class EntitiesDAOTest {
 
         // Give the input file to Reader
         Reader reader = new BufferedReader(
-                new FileReader(new File("BakendModule\\src\\main\\resources\\databasescript_0_1.sql")));
+                new FileReader(new File("BakendModule\\src\\main\\resources\\scripts\\databasescript_0_1.sql")));
 
         // Exctute script
         sr.runScript(reader);
@@ -75,8 +74,8 @@ public class EntitiesDAOTest {
     @Test
     public void getAllDocumentsTest() throws SQLException, Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_before.xml"));
-        dao = new DocumentDAOImpl(iConnection.getConnection());
-        List<Document> l = ((DocumentDAOImpl)dao).getAllDocuments();
+        documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
+        List<Document> l = documentDAO.getAllDocuments();
         template = flatXMLDataSet.getTable("document");
         assertDocuments(l, template);
 
@@ -85,9 +84,9 @@ public class EntitiesDAOTest {
     @Test
     public void addDocumentTest() throws SQLException, Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_after_adding.xml"));
-        dao = new DocumentDAOImpl( iConnection.getConnection());
+        documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
         Document doc = new Document(2,"doc25","descr");
-        ((DocumentDAOImpl)dao).addDocument(doc);
+        documentDAO.addDocument(doc);
         template = flatXMLDataSet.getTable("document");
         actual = DefaultColumnFilter.includedColumnsTable( iConnection.createDataSet().getTable("document"),
                 template.getTableMetaData().getColumns());
@@ -97,8 +96,8 @@ public class EntitiesDAOTest {
     @Test
     public void deleteDocumentTest() throws SQLException, Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_after_deleting_document.xml"));
-        dao = new DocumentDAOImpl( iConnection.getConnection());
-        ((DocumentDAOImpl)dao).deleteDocument(3);
+        documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
+        documentDAO.deleteDocument(3);
         template = flatXMLDataSet.getTable("document");
         actual = DefaultColumnFilter.includedColumnsTable( iConnection.createDataSet().getTable("document"),
                 template.getTableMetaData().getColumns());
@@ -112,8 +111,8 @@ public class EntitiesDAOTest {
     @Test
     public void getDocumentsByAuthorTest() throws SQLException, Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_select_by_author_id"));
-        dao = new DocumentDAOImpl( iConnection.getConnection());
-        List<Document> l = ((DocumentDAOImpl)dao).getDocumentsByAuthorID(2);
+        documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
+        List<Document> l = documentDAO.getDocumentsByAuthorID(2);
         template = flatXMLDataSet.getTable("document");
         int i =0;
         assertDocuments(l, template);
@@ -122,32 +121,32 @@ public class EntitiesDAOTest {
     @Test
     public void getAuthorByIDTest() throws Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_get_author_by_id"));
-        dao = new AuthorDAOImpl( iConnection.getConnection());
-        Author author = ((AuthorDAOImpl)dao).getAuthorByID(2);
+        authorDAO = DAOFactory.getInstance().getAuthorDAO(iConnection.getConnection());
+        Author author = authorDAO .getAuthorByID(2);
         template = flatXMLDataSet.getTable("author");
         assertAuthor(author, template);
     }
     @Test
     public void getAuthorByLoginTest() throws Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_get_author_by_login"));
-        dao = new AuthorDAOImpl( iConnection.getConnection());
-        Author author = ((AuthorDAOImpl)dao).getAuthorByLogin("author2");
+        authorDAO = DAOFactory.getInstance().getAuthorDAO(iConnection.getConnection());
+        Author author = authorDAO .getAuthorByLogin("author1");
         template = flatXMLDataSet.getTable("author");
         assertAuthor(author, template);
     }
     @Test
     public void getAuthorByDocumentIDTest() throws Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_get_author_by_document_id"));
-        dao = new AuthorDAOImpl( iConnection.getConnection());
-        Author author = ((AuthorDAOImpl)dao).getAuthorByDocumentID(2);
+        authorDAO = DAOFactory.getInstance().getAuthorDAO(iConnection.getConnection());
+        Author author = authorDAO .getAuthorByDocumentID(2);
         template = flatXMLDataSet.getTable("author");
         assertAuthor(author, template);
     }
     @Test
     public void getVersionsOfDocumentTest() throws Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path+"dataset_get_versions_by_document"));
-        dao = new VersionDAOImpl( iConnection.getConnection());
-        List<Version> versions = ((VersionDAOImpl)dao).getVersionsOfDocument(3);
+        versionDAO = DAOFactory.getInstance().getVersionDAO( iConnection.getConnection());
+        List<Version> versions = versionDAO.getVersionsOfDocument(3);
         template = flatXMLDataSet.getTable("version");
         assertVersions(versions, template);
     }

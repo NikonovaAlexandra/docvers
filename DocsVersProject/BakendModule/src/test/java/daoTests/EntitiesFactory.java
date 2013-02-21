@@ -1,4 +1,4 @@
-package DocsVersProject.daoTests;
+package daoTests;
 
 import entities.Author;
 import entities.Document;

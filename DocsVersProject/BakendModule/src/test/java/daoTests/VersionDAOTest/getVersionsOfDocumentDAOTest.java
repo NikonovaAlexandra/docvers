@@ -1,10 +1,9 @@
-package DocsVersProject.daoTests.VersionDAOTest;
+package daoTests.VersionDAOTest;
 
-import DocsVersProject.daoTests.EntitiesFactory;
+import daoTests.EntitiesFactory;
+import dao.DAOFactory;
 import dao.document.DocumentDAO;
-import dao.document.DocumentDAOImpl;
 import dao.version.VersionDAO;
-import dao.version.VersionDAOImpl;
 import entities.Document;
 import entities.Version;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class getVersionsOfDocumentDAOTest {
         when(conn.prepareStatement(anyString())).thenReturn(ps);
         when(ps.executeQuery()).thenReturn(rs);
         // there is no documents in database
-        VersionDAO dao = new VersionDAOImpl(conn);
+        VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();
         dao.getVersionsOfDocument(doc.getId());

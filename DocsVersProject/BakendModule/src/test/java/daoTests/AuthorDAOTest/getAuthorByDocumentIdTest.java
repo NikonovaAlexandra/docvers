@@ -1,8 +1,8 @@
-package DocsVersProject.daoTests.AuthorDAOTest;
+package daoTests.AuthorDAOTest;
 
-import DocsVersProject.daoTests.EntitiesFactory;
+import daoTests.EntitiesFactory;
+import dao.DAOFactory;
 import dao.author.AuthorDAO;
-import dao.author.AuthorDAOImpl;
 import entities.Document;
 import org.junit.Test;
 import util.Queries;
@@ -35,7 +35,7 @@ public class getAuthorByDocumentIdTest {
         when(conn.prepareStatement(anyString())).thenReturn(ps);
         when(ps.executeQuery()).thenReturn(rs);
         // there is no documents in database
-        AuthorDAO dao = new AuthorDAOImpl(conn);
+        AuthorDAO dao = DAOFactory.getInstance().getAuthorDAO(conn);
         // when
         dao.getAuthorByDocumentID(id);
         // then

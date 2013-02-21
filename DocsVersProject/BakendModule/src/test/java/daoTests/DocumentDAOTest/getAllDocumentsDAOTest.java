@@ -1,5 +1,6 @@
-package DocsVersProject.daoTests.DocumentDAOTest;
+package daoTests.DocumentDAOTest;
 
+import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import dao.document.DocumentDAOImpl;
 import exception.NullConnectionException;
@@ -31,7 +32,7 @@ public class getAllDocumentsDAOTest {
         when(conn.prepareStatement(anyString())).thenReturn(ps);
         when(ps.executeQuery()).thenReturn(rs);
         // there is no documents in database
-        DocumentDAO dao = new DocumentDAOImpl(conn);
+        DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         dao.getAllDocuments();
         // then
@@ -44,7 +45,8 @@ public class getAllDocumentsDAOTest {
 
     @Test(expected = NullConnectionException.class)
     public void newDocumentDAOTest() throws Exception{
-        DocumentDAO dao = new DocumentDAOImpl(null);
+        DocumentDAO dao = new DocumentDAOImpl(null) {
+        };
     }
 
 }
