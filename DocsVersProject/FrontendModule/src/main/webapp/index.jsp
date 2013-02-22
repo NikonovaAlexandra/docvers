@@ -8,11 +8,11 @@
 </head>
 <body>
 <FORM action="AddDocument" method="get">
-    <fmt:message key="index.add" var="buttonValue" />
+    <fmt:message key="index.add" var="buttonValue"/>
     <input type="submit" name="submit" value="${buttonValue}">
 </FORM>
 <FORM action="GetAllDocuments" method="get">
-    <fmt:message key="index.getAll" var="buttonValue" />
+    <fmt:message key="index.getAll" var="buttonValue"/>
     <input type="submit" name="submit" value="${buttonValue}">
 </FORM>
 </body>

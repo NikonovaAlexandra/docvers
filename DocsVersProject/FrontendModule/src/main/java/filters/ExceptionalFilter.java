@@ -5,7 +5,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,24 +15,30 @@ import java.sql.SQLException;
  */
 public class ExceptionalFilter implements Filter {
     private String errorPage;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-       errorPage = filterConfig.getInitParameter("error-page");
+        errorPage = filterConfig.getInitParameter("error-page");
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletResponse response = (HttpServletResponse)servletResponse;
-        HttpServletRequest request = (HttpServletRequest)servletRequest;
-        try{
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String message;
+        try {
             filterChain.doFilter(servletRequest, servletResponse);
 
-       }catch (Exception e){
-
+        } catch (ServletException e) {
+//            if(e.getCause().equals(new BusinessException())){
+//               message = e.getCause().toString();
+//            }else{
+//               message = "An error has occured! "+e.toString()+" Please contact your administrator!";
+//            }
+//            response.addHeader("error",message);
             response.sendRedirect(errorPage);
-
             return;
-       }
+        }
     }
 
     @Override

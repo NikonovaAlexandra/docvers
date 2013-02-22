@@ -12,8 +12,9 @@ import entities.Document;
  */
 public class Converter {
     public static DocumentBean convertDocumentToDocumentBean(Document doc, Author auth) {
-         return new DocumentBean(convertAuthorToAuthortBean(auth), doc.getName(), doc.getDescription());
+        return new DocumentBean(convertAuthorToAuthortBean(auth), doc.getName(), doc.getDescription());
     }
+
     public static AuthorBean convertAuthorToAuthortBean(Author author) {
         AuthorBean authorBean = new AuthorBean(author.getLogin(), author.getPassword());
         return authorBean;

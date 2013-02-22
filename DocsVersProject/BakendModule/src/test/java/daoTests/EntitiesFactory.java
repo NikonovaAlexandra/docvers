@@ -11,10 +11,11 @@ import entities.Document;
  * To change this template use File | Settings | File Templates.
  */
 public class EntitiesFactory {
-    public static Document createNewDocument(){
+    public static Document createNewDocument() {
         return new Document();
     }
-    public static Author createNewAuthor(){
+
+    public static Author createNewAuthor() {
         return new Author();
     }
 }

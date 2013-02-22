@@ -6,10 +6,10 @@ import dao.document.DocumentDAO;
 import dao.document.DocumentDAOImpl;
 import dao.version.VersionDAO;
 import dao.version.VersionDAOImpl;
-import exception.NullConnectionException;
+import exception.DAOException;
+import exception.SystemException;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,29 +25,29 @@ public class DAOFactory {
     private static VersionDAO versionDAO = null;
     private static DAOFactory instance = null;
 
-    public static synchronized DAOFactory getInstance(){
-        if (instance == null){
+    public static synchronized DAOFactory getInstance() {
+        if (instance == null) {
             instance = new DAOFactory();
         }
         return instance;
     }
 
-    public DocumentDAO getDocumentDAO(Connection conn) throws NullConnectionException, SQLException {
-        if (documentDAO == null){
+    public DocumentDAO getDocumentDAO(Connection conn) throws DAOException, SystemException {
+        if (documentDAO == null) {
             documentDAO = new DocumentDAOImpl(conn);
         }
         return documentDAO;
     }
 
-    public AuthorDAO getAuthorDAO(Connection conn) throws NullConnectionException, SQLException {
-        if (authorDAO == null){
+    public AuthorDAO getAuthorDAO(Connection conn) throws DAOException, SystemException {
+        if (authorDAO == null) {
             authorDAO = new AuthorDAOImpl(conn);
         }
         return authorDAO;
     }
 
-    public VersionDAO getVersionDAO(Connection conn) throws NullConnectionException, SQLException {
-        if (versionDAO == null){
+    public VersionDAO getVersionDAO(Connection conn) throws DAOException, SystemException {
+        if (versionDAO == null) {
             versionDAO = new VersionDAOImpl(conn);
         }
         return versionDAO;

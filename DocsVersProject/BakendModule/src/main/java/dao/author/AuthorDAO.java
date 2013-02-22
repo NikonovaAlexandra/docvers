@@ -2,8 +2,8 @@ package dao.author;
 
 import dao.DAO;
 import entities.Author;
-
-import java.sql.SQLException;
+import exception.DAOException;
+import exception.SystemException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,8 +13,9 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public interface AuthorDAO extends DAO {
-    public Author getAuthorByID(long id) throws SQLException;
-    public Author getAuthorByDocumentID(long id) throws SQLException;
+    public Author getAuthorByID(long id) throws DAOException, SystemException;
 
-    public Author getAuthorByLogin(String login) throws SQLException;
+    public Author getAuthorByDocumentID(long id) throws DAOException, SystemException;
+
+    public Author getAuthorByLogin(String login) throws DAOException, SystemException;
 }

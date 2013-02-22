@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Matcher;
@@ -63,8 +62,7 @@ public class ScriptRunner {
     /**
      * Setter for logWriter property.
      *
-     * @param logWriter
-     *        - the new value of the logWriter property
+     * @param logWriter - the new value of the logWriter property
      */
     public void setLogWriter(PrintWriter logWriter) {
         this.logWriter = logWriter;
@@ -73,8 +71,7 @@ public class ScriptRunner {
     /**
      * Setter for errorLogWriter property.
      *
-     * @param errorLogWriter
-     *        - the new value of the errorLogWriter property
+     * @param errorLogWriter - the new value of the errorLogWriter property
      */
     public void setErrorLogWriter(PrintWriter errorLogWriter) {
         this.errorLogWriter = errorLogWriter;
@@ -83,12 +80,9 @@ public class ScriptRunner {
     /**
      * Runs an SQL script (read in using the Reader parameter).
      *
-     * @param reader
-     *        - the source of the script
-     * @throws SQLException
-     *         if any SQL errors occur
-     * @throws IOException
-     *         if there is an error reading from the Reader
+     * @param reader - the source of the script
+     * @throws SQLException if any SQL errors occur
+     * @throws IOException  if there is an error reading from the Reader
      */
     public void runScript(Reader reader) throws IOException, SQLException {
         try {
@@ -109,14 +103,10 @@ public class ScriptRunner {
     /**
      * Runs an SQL script (read in using the Reader parameter) using the connection passed in.
      *
-     * @param conn
-     *        - the connection to use for the script
-     * @param reader
-     *        - the source of the script
-     * @throws SQLException
-     *         if any SQL errors occur
-     * @throws IOException
-     *         if there is an error reading from the Reader
+     * @param conn   - the connection to use for the script
+     * @param reader - the source of the script
+     * @throws SQLException if any SQL errors occur
+     * @throws IOException  if there is an error reading from the Reader
      */
     private void runScript(Connection conn, Reader reader) throws IOException, SQLException {
         StringBuffer command = null;
@@ -153,7 +143,7 @@ public class ScriptRunner {
                     command.append(" ");
                     Statement statement = conn.createStatement();
 
-                   // println(command);
+                    // println(command);
 
                     boolean hasResults = false;
                     if (stopOnError) {

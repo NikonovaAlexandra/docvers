@@ -2,10 +2,8 @@ package util;
 
 import beans.AuthorBean;
 import beans.DocumentBean;
-import exception.NullConnectionException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +15,8 @@ import java.sql.SQLException;
 public class RequestParser {
     private static RequestParser instance;
 
-    public static synchronized RequestParser getInstance(){
-        if (instance == null){
+    public static synchronized RequestParser getInstance() {
+        if (instance == null) {
             instance = new RequestParser();
         }
         return instance;
@@ -31,7 +29,7 @@ public class RequestParser {
         return a;
     }
 
-    public DocumentBean getDocumentBean(HttpServletRequest request)throws SQLException, NullConnectionException {
+    public DocumentBean getDocumentBean(HttpServletRequest request) {
         AuthorBean author = getAuthorBean();
         String name = request.getParameter("docname");
         String description = request.getParameter("docdescription");

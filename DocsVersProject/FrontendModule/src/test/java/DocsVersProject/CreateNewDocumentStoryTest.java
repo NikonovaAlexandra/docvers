@@ -1,6 +1,7 @@
 package DocsVersProject;
 
 import org.junit.Test;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alni
@@ -38,6 +39,7 @@ public class CreateNewDocumentStoryTest {
         userClickCancelButton();
         assertNewDocumentIsNotCreated();
     }
+
     @Test
     public void unsuccessfulCreateNewDocumentDialogOpening() {
         userClickCreateNewDocumentButton();

@@ -35,68 +35,72 @@ public class AllScriptSInDirectoryRunner {
     private static AllScriptSInDirectoryRunner instance;
     private String path;
     private List<String> runnedScripts = null;
-    private String storageName = "BakendModule/src/main/java/db/launched.xml";
+    private File storage;
     private static Logger logger = LoggerFactory.getLogger(AllScriptSInDirectoryRunner.class);
-    private AllScriptSInDirectoryRunner(String path) {
+
+    private AllScriptSInDirectoryRunner(String path, File storage) {
         this.path = path;
+        this.storage = storage;
     }
-    public static AllScriptSInDirectoryRunner getInstance(String path) {
-        if(null == instance){
-            instance = new AllScriptSInDirectoryRunner(path);
+
+    public static AllScriptSInDirectoryRunner getInstance(String path, File storage) {
+        if (null == instance) {
+            instance = new AllScriptSInDirectoryRunner(path, storage);
         }
         return instance;
     }
-    public static void main(String[] args) {
-        AllScriptSInDirectoryRunner.getInstance("C:\\Documents and Settings\\alni\\Desktop\\project\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\").runScripts();
-    }
-    private List getFilesInDirectory(){
+
+//    public static void main(String[] args) {
+//        AllScriptSInDirectoryRunner.getInstance("C:\\Documents and Settings\\alni\\Desktop\\project\\docvers-master\\docvers\\trunk\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\").runScripts();
+//    }
+
+    private List getFilesInDirectory() {
         String item;
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         List files = new ArrayList();
 
-        for (int i = 0; i < listOfFiles.length; i++)
-        {
+        for (int i = 0; i < listOfFiles.length; i++) {
             item = listOfFiles[i].getName();
-            if (listOfFiles[i].isFile()&item.toLowerCase().endsWith(".sql"))
-            {
-                 files.add(item);
+            if (listOfFiles[i].isFile() & item.toLowerCase().endsWith(".sql")) {
+                files.add(item);
             }
         }
         return files;
     }
-     private void writeLaunchedScriptNamesInXml(String name) throws ParserConfigurationException, TransformerException, IOException, SAXException {
-         File xmlFile = new File(storageName);
-         //Create the documentBuilderFactory
-         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-         //Create the documentBuilder
-         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-         //Create the Document  by parsing the file
-         Document document = documentBuilder.parse(xmlFile);
-         //Get the root element of the xml Document;
-         Element documentElement = document.getDocumentElement();
-         //Get childNodes of the rootElement
-         NodeList l =  documentElement.getChildNodes();
-         //Create a Node element
-         Element node = document.createElement("script");
-         Element nameNode = document.createElement("name");
-         Text value = document.createTextNode(name);
-         nameNode.setTextContent(name);
-         //append Node to rootNode element
-         node.appendChild(nameNode);
-         documentElement.appendChild(node);
-         document.replaceChild(documentElement, documentElement);
-         Transformer tFormer =
-                 TransformerFactory.newInstance().newTransformer();
-         //  Set output file to xml
-         tFormer.setOutputProperty(OutputKeys.METHOD, "xml");
-         //  Write the document back to the file
-         Source source = new DOMSource(document);
-         Result result = new StreamResult(xmlFile);
-         tFormer.transform(source, result);
+
+    private void writeLaunchedScriptNamesInXml(String name) throws ParserConfigurationException, TransformerException, IOException, SAXException {
+        //Create the documentBuilderFactory
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        //Create the documentBuilder
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        //Create the Document  by parsing the file
+        Document document = documentBuilder.parse(storage);
+        //Get the root element of the xml Document;
+        Element documentElement = document.getDocumentElement();
+        //Get childNodes of the rootElement
+        NodeList l = documentElement.getChildNodes();
+        //Create a Node element
+        Element node = document.createElement("script");
+        Element nameNode = document.createElement("name");
+        Text value = document.createTextNode(name);
+        nameNode.setTextContent(name);
+        //append Node to rootNode element
+        node.appendChild(nameNode);
+        documentElement.appendChild(node);
+        document.replaceChild(documentElement, documentElement);
+        Transformer tFormer =
+                TransformerFactory.newInstance().newTransformer();
+        //  Set output file to xml
+        tFormer.setOutputProperty(OutputKeys.METHOD, "xml");
+        //  Write the document back to the file
+        Source source = new DOMSource(document);
+        Result result = new StreamResult(storage);
+        tFormer.transform(source, result);
 
 
-     }
+    }
+
     public void runScripts() {
         List<String> scriptsNames = getFilesInDirectory();
         Connection conn = null;
@@ -105,11 +109,11 @@ public class AllScriptSInDirectoryRunner {
             ScriptRunner sr = new ScriptRunner(conn, false, false);
             Reader reader;
 
-            for(String script: scriptsNames) {
+            for (String script : scriptsNames) {
                 reader = new BufferedReader(
-                        new FileReader(path+script));
+                        new FileReader(path + script));
 
-                if(!isWasAlreadyRunning(script)){
+                if (!isWasAlreadyRunning(script)) {
                     sr.runScript(reader);
                     writeLaunchedScriptNamesInXml(script);
                 }
@@ -134,12 +138,12 @@ public class AllScriptSInDirectoryRunner {
 
 
     private boolean isWasAlreadyRunning(String script) throws SAXException, ParserConfigurationException, XPathExpressionException, IOException {
-           runnedScripts = LaunchedScriptNamesStorage.getInstance(storageName).getLaunchedScripts();
-           if(runnedScripts == null) {
-               return false;
-           } else {
-               return runnedScripts.contains(script);
-           }
+        runnedScripts = LaunchedScriptNamesStorage.getInstance(storage).getLaunchedScripts();
+        if (runnedScripts == null) {
+            return false;
+        } else {
+            return runnedScripts.contains(script);
+        }
     }
 
     private Connection getConnection() throws SQLException {
@@ -160,7 +164,6 @@ public class AllScriptSInDirectoryRunner {
         }
         return DriverManager.getConnection(url, user, pass);
     }
-
 
 
 }

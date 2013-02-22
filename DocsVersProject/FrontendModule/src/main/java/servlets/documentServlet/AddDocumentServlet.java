@@ -1,7 +1,9 @@
 package servlets.documentServlet;
 
 import beans.DocumentBean;
-import exception.NullConnectionException;
+import exception.BusinessException;
+import exception.ObjectAlreadyExistsException;
+import exception.SystemException;
 import util.DBOperations;
 import util.RequestParser;
 
@@ -11,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,26 +25,38 @@ public class AddDocumentServlet extends HttpServlet {
     private RequestParser parser = RequestParser.getInstance();
     private DBOperations operations = DBOperations.getInstance();
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException   {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentBean documentBean = null;
         try {
             documentBean = parser.getDocumentBean(request);
             operations.addDocument(documentBean);
             showSuccessfulAdditionPage(documentBean, request, response);
-        } catch (SQLException e) {
-           e.printStackTrace();
-        } catch (NullConnectionException e) {
-            e.printStackTrace();
+        } catch (BusinessException e) {
+            if (e.getClass() == ObjectAlreadyExistsException.class) {
+                showAlreadyExistsMessage(request, response);
+            } else {
+                throw new ServletException(e);
+            }
+        } catch (SystemException e) {
+            throw new ServletException(e);
         }
 
     }
 
     private void showSuccessfulAdditionPage(DocumentBean doc, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String message = "Document \"" + doc.getName()+"\" was added successfully";
+        String message = "Document \"" + doc.getName() + "\" was added successfully";
+        showMessage(message, request, response);
+    }
+
+    private void showAlreadyExistsMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String message = "You already have document with such name";
+        showMessage(message, request, response);
+    }
+
+    private void showMessage(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("message", message);
         RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AddDocument");
         reqDispatcher.forward(request, response);
-
     }
 
 

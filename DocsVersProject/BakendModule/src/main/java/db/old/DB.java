@@ -1,8 +1,5 @@
 package db.old;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import db.ScriptRunner;
@@ -11,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Queries;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.Reader;
 import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -30,7 +29,8 @@ public class DB {
     private Statement statement = null;
     private PreparedStatement ps = null;
     private static final Logger slf4jLogger = LoggerFactory.getLogger(DB.class);
-    public DB(){
+
+    public DB() {
         String aSQLScriptFilePath = "C:\\Documents and Settings\\alni\\Desktop\\project\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_1.sql";
         // Create MySql Connection
         slf4jLogger.trace("Hello World!");
@@ -53,31 +53,31 @@ public class DB {
 
             // Exctute script
             sr.runScript(reader);
-            for(int i = 0; i<5;++i) {
-                ps =  connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);
-                ps.setString(1, String.valueOf(("author"+i).toCharArray()));
-                ps.setString(2,"pass"+i);
+            for (int i = 0; i < 5; ++i) {
+                ps = connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);
+                ps.setString(1, String.valueOf(("author" + i).toCharArray()));
+                ps.setString(2, "pass" + i);
                 ps.executeUpdate();
             }
-            ps =  connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);
+            ps = connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);
             ps.setString(1, "login");
-            ps.setString(2,"pass"+21);
+            ps.setString(2, "pass" + 21);
             ps.executeUpdate();
 
-            for(int i = 0; i<5;++i) {
-                ps =  connection.prepareStatement(Queries.INSERT_INTO_DOCUMENT);
-                ps.setLong(1,(5/(i+2)+1));
+            for (int i = 0; i < 5; ++i) {
+                ps = connection.prepareStatement(Queries.INSERT_INTO_DOCUMENT);
+                ps.setLong(1, (5 / (i + 2) + 1));
                 ps.setString(2, "doc" + i);
                 ps.setString(3, "descrition");
                 ps.executeUpdate();
             }
-            for(int i = 0; i<5;++i) {
-                ps =  connection.prepareStatement(Queries.INSERT_INTO_VERSION);
-                ps.setLong(1,3);
-                ps.setLong(2,(5/(i+1)));
+            for (int i = 0; i < 5; ++i) {
+                ps = connection.prepareStatement(Queries.INSERT_INTO_VERSION);
+                ps.setLong(1, 3);
+                ps.setLong(2, (5 / (i + 1)));
                 ps.setDate(3, new Date(System.currentTimeMillis()));
-                ps.setString(4,"descrition");
-                ps.setString(5,"path");
+                ps.setString(4, "descrition");
+                ps.setString(5, "path");
                 ps.executeUpdate();
             }
 //            Connection jdbcConnection = DriverManager.getConnection("jdbc:h2:mem", "sa", "");
@@ -91,7 +91,7 @@ public class DB {
             resultSet = statement.executeQuery("select * from version");
             Outer.versionOut(resultSet);
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(connection);
-            dao.addDocument(new Document( 3, "doc", "desc"));
+            dao.addDocument(new Document(3, "doc", "desc"));
             //((DocumentDAOImpl)dao).deleteDocument(2);
             slf4jLogger.trace("====================================");
             resultSet = statement.executeQuery("select * from document");
@@ -100,7 +100,7 @@ public class DB {
             Outer.versionOut(resultSet);
 
             List<Document> l = dao.getDocumentsByAuthorID(3);
-            for(Document v : l) {
+            for (Document v : l) {
                 slf4jLogger.trace(v.getId() + " auth:" + v.getAuthorID() + " " + v.getName());
             }
 
@@ -115,6 +115,7 @@ public class DB {
         }
 
     }
+
     private Connection getConnection() throws SQLException {
         ResourceBundle resource =
                 ResourceBundle.getBundle("database");
@@ -126,13 +127,15 @@ public class DB {
             Class.forName(driver).newInstance();
         } catch (ClassNotFoundException e) {
             throw new SQLException("Driver isn't loaded!");
-        } catch (InstantiationException e) {e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
             slf4jLogger.error(e.getMessage());
         }
         return DriverManager.getConnection(url, user, pass);
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         DB d = new DB();
 
     }

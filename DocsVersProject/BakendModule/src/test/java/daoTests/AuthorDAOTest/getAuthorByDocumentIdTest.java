@@ -1,8 +1,8 @@
 package daoTests.AuthorDAOTest;
 
-import daoTests.EntitiesFactory;
 import dao.DAOFactory;
 import dao.author.AuthorDAO;
+import daoTests.EntitiesFactory;
 import entities.Document;
 import org.junit.Test;
 import util.Queries;
@@ -12,9 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,5 +1,7 @@
 package DocsVersProject;
+
 import org.junit.Test;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alni
@@ -9,21 +11,21 @@ import org.junit.Test;
  */
 public class GetListOfVersionsOfDocumentStoryTest {
     @Test
-    public void successfulGettingListOfVersionsOfDocument(){
+    public void successfulGettingListOfVersionsOfDocument() {
         userChooseDocumentFromListOfDocuments();
         userClickGetVersionsOfCurrentDocumentButton();
         assertListOfVersionsAreDisplayed();
     }
 
     @Test
-    public void unsuccessfulGettingListOfVersionsOfDocument(){
+    public void unsuccessfulGettingListOfVersionsOfDocument() {
         userChooseDocumentFromListOfDocuments();
         userClickGetVersionsOfCurrentDocumentButton();
         assertListOfVersionsAreNotDisplayed();
     }
 
     @Test
-    public void unsuccessfulSelectDocumentFromListOfDocuments(){
+    public void unsuccessfulSelectDocumentFromListOfDocuments() {
         userChooseDocumentFromListOfDocuments();
         assertDocumentIsNotSelected();
     }

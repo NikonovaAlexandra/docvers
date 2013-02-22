@@ -3,23 +3,26 @@ package exception;
 /**
  * Created with IntelliJ IDEA.
  * User: alni
- * Date: 08.02.13
- * Time: 13:01
+ * Date: 21.02.13
+ * Time: 13:21
  * To change this template use File | Settings | File Templates.
  */
-public class NullConnectionException extends Exception {
+public class NullConnectionException extends DAOException {
+    private Exception e;
 
-    private Class exceptionClass;
+    public NullConnectionException(Exception e) {
+        this.e = e;
+    }
 
-    public NullConnectionException(Class exceptionClass) {
-
-        this.exceptionClass = exceptionClass;
+    public NullConnectionException() {
+        this.e = null;
     }
 
     public String toString() {
-
-        return "Null Connection Exception";
-
+        return "Could not connect to the database, or connection was lost." +
+                " Possible reasons are: the database server is not running at the given port, " +
+                "the connection was closed due to a shutdown, or the server was stopped. " +
+                "Other possible causes are: the server is not an H2 server, or the network connection is broken." +
+                (e != null ? e.getMessage() : "");
     }
-
 }

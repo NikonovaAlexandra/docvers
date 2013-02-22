@@ -1,10 +1,10 @@
 package dao.version;
 
 import dao.DAO;
-import entities.Document;
 import entities.Version;
+import exception.DAOException;
+import exception.SystemException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -15,5 +15,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface VersionDAO extends DAO {
-    public List<Version> getVersionsOfDocument(long id) throws SQLException;
+    public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException;
 }

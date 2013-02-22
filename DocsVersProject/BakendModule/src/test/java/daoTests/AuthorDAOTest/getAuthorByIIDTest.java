@@ -1,10 +1,10 @@
 package daoTests.AuthorDAOTest;
 
-import daoTests.EntitiesFactory;
 import dao.DAOFactory;
 import dao.author.AuthorDAO;
-import dao.document.DocumentDAO;
+import daoTests.EntitiesFactory;
 import entities.Author;
+import org.junit.Ignore;
 import org.junit.Test;
 import util.Queries;
 
@@ -13,9 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +24,7 @@ import static org.mockito.Mockito.when;
  */
 public class getAuthorByIIDTest {
     @Test
+    @Ignore
     public void getAuthorByIdtSuccessful() throws Exception {
         Connection conn = mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);

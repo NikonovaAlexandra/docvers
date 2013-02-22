@@ -1,7 +1,8 @@
 package servlets.documentServlet;
 
 import beans.DocumentBean;
-import exception.NullConnectionException;
+import exception.BusinessException;
+import exception.SystemException;
 import util.DBOperations;
 
 import javax.servlet.RequestDispatcher;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -22,13 +22,14 @@ import java.util.List;
  */
 public class GetAllDocumentsServlet extends HttpServlet {
     private DBOperations operations = DBOperations.getInstance();
-    public void service (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<DocumentBean> docs = operations.getAllDocuments();
             showDocuments(docs, request, response);
-        } catch (SQLException e) {
+        } catch (SystemException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (NullConnectionException e) {
+        } catch (BusinessException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

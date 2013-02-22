@@ -1,8 +1,11 @@
 package dao.version;
 
-import entities.Document;
 import entities.Version;
+import exception.DAOException;
+import exception.NotEnoughRightsException;
 import exception.NullConnectionException;
+import exception.SystemException;
+import org.h2.constant.ErrorCode;
 import util.Queries;
 
 import java.sql.Connection;
@@ -13,34 +16,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: alni
-* Date: 12.02.13
-* Time: 9:11
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA.
+ * User: alni
+ * Date: 12.02.13
+ * Time: 9:11
+ * To change this template use File | Settings | File Templates.
+ */
 public class VersionDAOImpl implements VersionDAO {
     private Connection conn;
 
-    public VersionDAOImpl(Connection conn) throws NullConnectionException, SQLException {
-        if(conn == null) throw new NullConnectionException(VersionDAOImpl.class);
-        this.conn = conn;
-        this.conn.setAutoCommit(false);
+    public VersionDAOImpl(Connection conn) throws DAOException, SystemException {
+        if (conn == null)
+            throw new NullConnectionException();
+        try {
+            this.conn = conn;
+            this.conn.setAutoCommit(false);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+        }
     }
+
     @Override
-    public List<Version> getVersionsOfDocument(long id) throws SQLException {
+    public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException {
         List<Version> versions = new ArrayList<Version>();
         PreparedStatement ps = null;
         ResultSet rsVersions = null;
         Version version;
 
-        try{
+        try {
             ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
-            ps.setLong(1,id);
+            ps.setLong(1, id);
             rsVersions = ps.executeQuery();
             conn.commit();
 
-            while(rsVersions.next()) {
+            while (rsVersions.next()) {
                 version = new Version();
                 version.setId(rsVersions.getLong("ID"));
                 version.setAuthorID(rsVersions.getLong("AUTHOR_ID"));
@@ -50,11 +63,21 @@ public class VersionDAOImpl implements VersionDAO {
                 version.setVersionDescription(rsVersions.getString("VERSION_DESCRIPTION"));
                 versions.add(version);
             }
-            return versions;}
-        finally {
+            return versions;
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+        } finally {
 
-            if(ps!= null) ps.close();
-            if(rsVersions!= null) rsVersions.close();
+            try {
+                if (ps != null) ps.close();
+                if (rsVersions != null) rsVersions.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
         }
     }
 

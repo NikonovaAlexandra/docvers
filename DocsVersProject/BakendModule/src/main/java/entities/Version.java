@@ -1,6 +1,5 @@
 package entities;
 
-import java.sql.Clob;
 import java.sql.Date;
 
 

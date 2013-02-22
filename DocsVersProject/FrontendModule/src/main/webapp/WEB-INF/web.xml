@@ -1,5 +1,15 @@
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>
+
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <jsp-file>/WEB-INF/jsp/Login.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>AddDocumentServlet</servlet-name>
         <servlet-class>servlets.documentServlet.AddDocumentServlet</servlet-class>
@@ -48,7 +58,7 @@
     <filter>
         <filter-name>ExceptionalFilter</filter-name>
         <filter-class>
-           filters.ExceptionalFilter
+            filters.ExceptionalFilter
         </filter-class>
         <init-param>
             <param-name>error-page</param-name>

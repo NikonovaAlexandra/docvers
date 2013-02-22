@@ -1,6 +1,7 @@
 package DocsVersProject;
 
 import org.junit.Test;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alni

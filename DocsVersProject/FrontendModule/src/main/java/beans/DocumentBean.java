@@ -11,42 +11,43 @@ import java.io.Serializable;
  */
 public class DocumentBean implements Serializable {
 
-        private AuthorBean author;
-        private String name;
-        private String description;
-        private static long count = 0;
+    private AuthorBean author;
+    private String name;
+    private String description;
+    private static long count = 0;
 
-        public DocumentBean() {
+    public DocumentBean() {
 
-        }
-        public DocumentBean(AuthorBean author, String name, String description) {
-          this.author = author;
-            this.name = name;
-            this.description = description;
-        }
+    }
 
-        public AuthorBean getAuthorBean() {
-            return author;
-        }
+    public DocumentBean(AuthorBean author, String name, String description) {
+        this.author = author;
+        this.name = name;
+        this.description = description;
+    }
 
-        public void setAuthorBean(AuthorBean author) {
-            this.author = author;
-        }
+    public AuthorBean getAuthorBean() {
+        return author;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public void setAuthorBean(AuthorBean author) {
+        this.author = author;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public String getDescription() {
-            return description;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

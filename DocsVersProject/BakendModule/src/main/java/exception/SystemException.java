@@ -8,4 +8,7 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class SystemException extends Exception {
+    public SystemException(String s, Exception e) {
+
+    }
 }

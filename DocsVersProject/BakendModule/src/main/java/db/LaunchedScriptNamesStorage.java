@@ -27,39 +27,39 @@ public class LaunchedScriptNamesStorage {
     private static LaunchedScriptNamesStorage instance;
     private static Document document;
 
-    private LaunchedScriptNamesStorage(String name) throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
+    private LaunchedScriptNamesStorage(File storage) throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
         scripts = new ArrayList();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        File f = new File(name);
-        document = builder.parse(f);
+        document = builder.parse(storage);
         parseScripts();
     }
 
-    public static LaunchedScriptNamesStorage getInstance(String name) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
-        if(null == instance){
-            instance = new LaunchedScriptNamesStorage(name);
+    public static LaunchedScriptNamesStorage getInstance(File storage) throws XPathExpressionException, IOException, SAXException, ParserConfigurationException {
+        if (null == instance) {
+            instance = new LaunchedScriptNamesStorage(storage);
         }
         return instance;
     }
 
-    public List getLaunchedScripts(){
+    public List getLaunchedScripts() {
         return scripts;
     }
-    private  void parseScripts() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
+
+    private void parseScripts() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
         NodeList list = document.getFirstChild().getChildNodes();
         XPath xpath = XPathFactory.newInstance().newXPath();
 
         XPathExpression ex1;
 
         String pattern1;
-        for(int i = 0 ; i < list.getLength() ; i++){
+        for (int i = 0; i < list.getLength(); i++) {
 
             pattern1 = "//scripts//script[" + i + "]//name";
             ex1 = xpath.compile(pattern1);
             String str = String.valueOf(ex1.evaluate(document, XPathConstants.STRING));
-            if(!str.isEmpty()) {
+            if (!str.isEmpty()) {
                 scripts.add(str);
             }
 
@@ -67,6 +67,7 @@ public class LaunchedScriptNamesStorage {
 
 
     }
+
     private static String getValue(String tag, Element element) {
         NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
         Node node = (Node) nodes.item(0);

@@ -1,9 +1,8 @@
 package daoTests.VersionDAOTest;
 
-import daoTests.EntitiesFactory;
 import dao.DAOFactory;
-import dao.document.DocumentDAO;
 import dao.version.VersionDAO;
+import daoTests.EntitiesFactory;
 import entities.Document;
 import entities.Version;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import java.sql.ResultSet;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created with IntelliJ IDEA.

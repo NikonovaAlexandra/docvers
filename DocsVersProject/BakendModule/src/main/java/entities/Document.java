@@ -1,8 +1,5 @@
 package entities;
 
-import java.sql.Clob;
-import java.util.Date;
-
 /**
  * Created with IntelliJ IDEA.
  * User: alni

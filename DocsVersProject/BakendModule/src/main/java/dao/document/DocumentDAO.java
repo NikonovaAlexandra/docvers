@@ -1,11 +1,10 @@
 package dao.document;
 
 import dao.DAO;
-import entities.Author;
 import entities.Document;
-import entities.Version;
+import exception.DAOException;
+import exception.SystemException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,10 +15,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface DocumentDAO extends DAO {
-    public void addDocument(Document document) throws SQLException;
-    public void deleteDocument(long id) throws SQLException;
-    public List<Document> getAllDocuments() throws SQLException;
-    public List<Document> getDocumentsByAuthorID(long id) throws SQLException;
+    public void addDocument(Document document) throws DAOException, SystemException;
+
+    public void deleteDocument(long id) throws DAOException, SystemException;
+
+    public List<Document> getAllDocuments() throws DAOException, SystemException;
+
+    public List<Document> getDocumentsByAuthorID(long id) throws DAOException, SystemException;
 
 //    public void addVersion(Version VersionDAOTest);
 //    public void addAuthor(Author AuthorDAOTest);

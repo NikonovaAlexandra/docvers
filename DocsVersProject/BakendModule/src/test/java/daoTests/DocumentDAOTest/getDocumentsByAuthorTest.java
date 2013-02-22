@@ -1,9 +1,10 @@
 package daoTests.DocumentDAOTest;
 
-import daoTests.EntitiesFactory;
 import dao.DAOFactory;
 import dao.document.DocumentDAO;
+import daoTests.EntitiesFactory;
 import entities.Author;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import util.Queries;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 public class getDocumentsByAuthorTest {
 
     @Test
+    @Ignore
     public void getDocumentsByAuthorSuccessful() throws Exception {
         Connection conn = Mockito.mock(Connection.class);
         PreparedStatement ps = Mockito.mock(PreparedStatement.class);
