@@ -23,7 +23,8 @@ public class RequestParser {
     }
 
     public AuthorBean getAuthorBean(HttpServletRequest request) {
-        AuthorBean a = (AuthorBean) request.getSession().getAttribute("user");
+        //AuthorBean a = (AuthorBean) request.getSession().getAttribute("user");
+        AuthorBean a = new AuthorBean("author2","password2");
         return a;
     }
 

@@ -97,17 +97,17 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <context-param>
-        <param-name>login_page</param-name>
-        <param-value>/Login</param-value>
-    </context-param>
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>filters.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--<context-param>-->
+        <!--<param-name>login_page</param-name>-->
+        <!--<param-value>/Login</param-value>-->
+    <!--</context-param>-->
+    <!--<filter>-->
+        <!--<filter-name>LoginFilter</filter-name>-->
+        <!--<filter-class>filters.LoginFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>LoginFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
 </web-app>

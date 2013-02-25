@@ -2,6 +2,8 @@ package servlets.documentServlet;
 
 import beans.DocumentBean;
 import exception.BusinessException;
+import exception.NoSuchObjectInDB;
+import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
 import util.DBOperations;
 
@@ -28,9 +30,16 @@ public class GetAllDocumentsServlet extends HttpServlet {
             List<DocumentBean> docs = operations.getAllDocuments();
             showDocuments(docs, request, response);
         } catch (SystemException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println(e.getCause()+e.getMessage());
+            throw new ServletException(e);
         } catch (BusinessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            if (e.getClass() == NoSuchObjectInDB.class) {
+                request.setAttribute("noanydocmessage","You have nor any document");
+                RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
+                reqDispatcher.forward(request, response);
+            } else {
+                throw new ServletException(e);
+            }
         }
     }
 

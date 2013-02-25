@@ -53,7 +53,7 @@ public class DB {
 
             // Exctute script
             sr.runScript(reader);
-            reader = new BufferedReader(new FileReader("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_2.sql"));
+            reader = new BufferedReader(new FileReader("C:\\Documents and Settings\\Admin\\Рабочий стол\\Новая папка\\trunk\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_2.sql"));
             sr.runScript(reader);
             for (int i = 0; i < 5; ++i) {
                 ps = connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);

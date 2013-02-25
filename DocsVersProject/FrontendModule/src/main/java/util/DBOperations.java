@@ -44,7 +44,7 @@ public class DBOperations {
             doc.setDescription(documentBean.getDescription());
             doc.setAuthorID(author.getId());
             documentDAO.addDocument(doc);
-
+            conn.commit();
             conn.close();
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -57,15 +57,18 @@ public class DBOperations {
             Connection conn = ConnectionFactory.getInstance().getConnection();
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
             List<Document> docs = dao.getAllDocuments();
-
+            conn.commit();
+            conn.close();
+            conn = ConnectionFactory.getInstance().getConnection();
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
             for (Document doc : docs) {
                 Author author = authorDAO.getAuthorByID(doc.getAuthorID());
                 DocumentBean documentBean = Converter.convertDocumentToDocumentBean(doc, author);
                 documentBeans.add(documentBean);
             }
-
+            conn.commit();
             conn.close();
             return documentBeans;
         } catch (SQLException e) {
@@ -81,6 +84,7 @@ public class DBOperations {
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
             author = authorDAO.getAuthorByLogin(login);
+            conn.commit();
             conn.close();
             return author;
         } catch (SQLException e) {
