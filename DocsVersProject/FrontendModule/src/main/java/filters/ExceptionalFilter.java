@@ -1,6 +1,8 @@
 package filters;
 
 
+import exception.BusinessException;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,12 +32,13 @@ public class ExceptionalFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
 
         } catch (ServletException e) {
-//            if(e.getCause().equals(new BusinessException())){
-//               message = e.getCause().toString();
-//            }else{
-//               message = "An error has occured! "+e.toString()+" Please contact your administrator!";
-//            }
-//            response.addHeader("error",message);
+            if(e.getRootCause() instanceof BusinessException){
+               message = e.getCause().getClass()+"\n "+e.getMessage();
+                System.out.println(message);
+            }else{
+               message = "An error has occured!\n "+e.getCause().getClass()+"\n "+e.getMessage()+"\n Please contact your administrator!";
+            }
+            request.getSession().setAttribute("message", message);
             response.sendRedirect(errorPage);
             return;
         }

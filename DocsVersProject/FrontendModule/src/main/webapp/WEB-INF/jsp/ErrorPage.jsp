@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-<c:if test="${not empty header['error']}">
-    <h1>${header['error']}</h1>
+<c:if test="${message}">
+    <h1>${message}</h1>
 </c:if>
 </body>
 </html>

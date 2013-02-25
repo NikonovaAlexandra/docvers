@@ -5,6 +5,8 @@ import entities.Author;
 import exception.DAOException;
 import exception.SystemException;
 
+import java.sql.SQLException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alni

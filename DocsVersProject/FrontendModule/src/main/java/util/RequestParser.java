@@ -22,15 +22,13 @@ public class RequestParser {
         return instance;
     }
 
-    public AuthorBean getAuthorBean() {
-        AuthorBean a = new AuthorBean();
-        a.setLogin("author1");
-        a.setPassword("pass1");
+    public AuthorBean getAuthorBean(HttpServletRequest request) {
+        AuthorBean a = (AuthorBean) request.getSession().getAttribute("user");
         return a;
     }
 
     public DocumentBean getDocumentBean(HttpServletRequest request) {
-        AuthorBean author = getAuthorBean();
+        AuthorBean author = getAuthorBean(request);
         String name = request.getParameter("docname");
         String description = request.getParameter("docdescription");
         return new DocumentBean(author, name, description);

@@ -43,6 +43,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT);
             rs = ps.executeQuery();
             conn.commit();
+            if(!rs.next()) throw new NoSuchObjectInDB("Any document");
             return createDocumentsListFromResultSet(rs);
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -75,6 +76,11 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps.executeUpdate();
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             if (e.getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
                 throw new ObjectAlreadyExistsException();
             }
@@ -87,11 +93,13 @@ public class DocumentDAOImpl implements DocumentDAO {
             }
             if (e.getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
                 throw new NoDiskSpaceException("", e);
-            } else throw new DAOException(e);
+            }
 
         } finally {
-            if (ps != null) try {
-                ps.close();
+            try {
+
+                if (ps != null)
+                    ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
             }
@@ -105,17 +113,23 @@ public class DocumentDAOImpl implements DocumentDAO {
         try {
             ps = conn.prepareStatement(Queries.DELETE_FROM_DOCUMENT_WHERE_ID);
             ps.setLong(1, id);
-            ps.executeUpdate();
+            int i = ps.executeUpdate();
+            if(i==0) throw new NoSuchObjectInDB("Nothing to delete"); ;
             conn.commit();
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                 throw new NotEnoughRightsException("", e);
-            } else throw new DAOException(e);
+            }  try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
 
         } finally {
             try {
+
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
@@ -132,6 +146,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID);
             ps.setLong(1, id);
             rsDocs = ps.executeQuery();
+            if(!rsDocs.next()) throw new NoSuchObjectInDB("This author hasn't got such document");
             conn.commit();
             return createDocumentsListFromResultSet(rsDocs);
         } catch (SQLException e) {
@@ -143,6 +158,7 @@ public class DocumentDAOImpl implements DocumentDAO {
 
         } finally {
             try {
+
                 if (ps != null) ps.close();
                 if (rsDocs != null) rsDocs.close();
             } catch (SQLException e) {

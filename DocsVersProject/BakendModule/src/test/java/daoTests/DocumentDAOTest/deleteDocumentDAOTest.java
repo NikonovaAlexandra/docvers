@@ -24,7 +24,6 @@ import static org.mockito.Mockito.*;
 public class deleteDocumentDAOTest {
 
     @Test
-    @Ignore
     public void deleteDocumentSuccessful() throws Exception {
         Connection conn = mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);

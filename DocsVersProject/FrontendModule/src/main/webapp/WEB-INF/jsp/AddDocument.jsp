@@ -5,7 +5,7 @@
   Time: 10:53
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=windows-1251" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="Messages"/>
@@ -22,30 +22,32 @@
         }
     </script>
     <title><fmt:message key="adddocument.tittle"/></title>
-</head>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"></head>
 <body>
 <div>
-    <c:if test="${not empty message}">
-        <h1>${message}</h1>
+    <c:if test="${not empty addmessage}">
+        <h1>${addmessage}</h1>
     </c:if>
 </div>
-<div>
+<div><hr>
     <form action="Document" method="post" name="form" onSubmit="return validateForm()">
         <table>
             <tr>
-                <td><fmt:message key="adddocument.docname"/></td>
-                <td><input name="docname" type="text"/></td>
+              <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
+                <td width="161"><input name="docname" type="text"/></td>
             </tr>
             <tr>
                 <td><fmt:message key="adddocument.docdescription"/></td>
-                <td><textarea name="docdescription" rows="3"></textarea></td>
+                <td><textarea name="docdescription"></textarea></td>
             </tr>
             <tr>
                 <td><fmt:message key="addocument.add" var="buttonValue"/>
-                    <input type="submit" name="submit" value="${buttonValue}"></td>
+                    <input name="submit" type="submit" value="${buttonValue}"></td>
             </tr>
         </table>
-    </form>
+    </form><hr>
 </div>
 </body>
 </html>

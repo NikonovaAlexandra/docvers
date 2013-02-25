@@ -1,10 +1,7 @@
 package dao.version;
 
 import entities.Version;
-import exception.DAOException;
-import exception.NotEnoughRightsException;
-import exception.NullConnectionException;
-import exception.SystemException;
+import exception.*;
 import org.h2.constant.ErrorCode;
 import util.Queries;
 
@@ -52,7 +49,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps.setLong(1, id);
             rsVersions = ps.executeQuery();
             conn.commit();
-
+            if(!rsVersions.next()) throw new NoSuchObjectInDB("Versions of this document");
             while (rsVersions.next()) {
                 version = new Version();
                 version.setId(rsVersions.getLong("ID"));

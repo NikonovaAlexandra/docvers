@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
  */
 public class getAllDocumentsDAOTest {
     @Test
-    @Ignore
     public void getAllDocumentsSuccessful() throws Exception {
         Connection conn = Mockito.mock(Connection.class);
         PreparedStatement ps = Mockito.mock(PreparedStatement.class);
@@ -45,7 +44,6 @@ public class getAllDocumentsDAOTest {
         verify(rs).close();
     }
 
-    @Ignore
     @Test(expected = NullConnectionException.class)
     public void newDocumentDAOTest() throws Exception {
         DocumentDAO dao = new DocumentDAOImpl(null) {

@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
 public class getDocumentsByAuthorTest {
 
     @Test
-    @Ignore
     public void getDocumentsByAuthorSuccessful() throws Exception {
         Connection conn = Mockito.mock(Connection.class);
         PreparedStatement ps = Mockito.mock(PreparedStatement.class);

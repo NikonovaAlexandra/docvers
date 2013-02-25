@@ -31,7 +31,7 @@ public class DB {
     private static final Logger slf4jLogger = LoggerFactory.getLogger(DB.class);
 
     public DB() {
-        String aSQLScriptFilePath = "C:\\Documents and Settings\\alni\\Desktop\\project\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_1.sql";
+        String aSQLScriptFilePath = "D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_1.sql";
         // Create MySql Connection
         slf4jLogger.trace("Hello World!");
 
@@ -52,6 +52,8 @@ public class DB {
                     new FileReader(aSQLScriptFilePath));
 
             // Exctute script
+            sr.runScript(reader);
+            reader = new BufferedReader(new FileReader("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_2.sql"));
             sr.runScript(reader);
             for (int i = 0; i < 5; ++i) {
                 ps = connection.prepareStatement(Queries.INSERT_INTO_AUTHOR);

@@ -49,12 +49,12 @@ public class AddDocumentServlet extends HttpServlet {
     }
 
     private void showAlreadyExistsMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String message = "You already have document with such name";
+        String message = "Document with the same name already exists";
         showMessage(message, request, response);
     }
 
     private void showMessage(String message, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("message", message);
+        request.setAttribute("addmessage", message);
         RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AddDocument");
         reqDispatcher.forward(request, response);
     }

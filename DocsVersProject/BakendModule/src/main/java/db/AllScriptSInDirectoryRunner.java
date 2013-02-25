@@ -1,21 +1,17 @@
 package db;
 
+import exception.BusinessException;
+import exception.DAOException;
+import exception.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -33,30 +29,37 @@ import java.util.ResourceBundle;
 public class AllScriptSInDirectoryRunner {
 
     private static AllScriptSInDirectoryRunner instance;
-    private String path;
-    private List<String> runnedScripts = null;
+    private String directoryPath;
+    private List<String> launchedScripts = null;
     private File storage;
     private static Logger logger = LoggerFactory.getLogger(AllScriptSInDirectoryRunner.class);
+    private boolean whetherToScanForLaunchedScripts;
+    private LaunchedScriptNamesStorage launched;
 
-    private AllScriptSInDirectoryRunner(String path, File storage) {
-        this.path = path;
-        this.storage = storage;
+    private AllScriptSInDirectoryRunner( String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
+        this.directoryPath = directoryPath;
+        this.storage = new File("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\launched.xml");
+        storage.createNewFile();
+        //storage.setReadOnly();
+        this.whetherToScanForLaunchedScripts = whetherToScanForLaunchedScripts;
+        this.launched = (whetherToScanForLaunchedScripts ? LaunchedScriptNamesStorage.getInstance(storage): null);
     }
 
-    public static AllScriptSInDirectoryRunner getInstance(String path, File storage) {
-        if (null == instance) {
-            instance = new AllScriptSInDirectoryRunner(path, storage);
-        }
+    public static AllScriptSInDirectoryRunner getInstance(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
+            instance = new AllScriptSInDirectoryRunner(directoryPath, whetherToScanForLaunchedScripts);
         return instance;
     }
 
-//    public static void main(String[] args) {
-//        AllScriptSInDirectoryRunner.getInstance("C:\\Documents and Settings\\alni\\Desktop\\project\\docvers-master\\docvers\\trunk\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\").runScripts();
-//    }
+    public static void main(String[] args) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, BusinessException, SystemException, URISyntaxException, TransformerException {
+        AllScriptSInDirectoryRunner instatnce = getInstance("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\", true);
+        Connection conn = instatnce.getConnection();
+        ScriptRunner sr = new ScriptRunner(conn, true, false);
+        instatnce.runScripts(sr);
+    }
 
-    private List getFilesInDirectory() {
+    private List getFilesInDirectory() throws URISyntaxException {
         String item;
-        File folder = new File(path);
+        File folder = new File(directoryPath);
         File[] listOfFiles = folder.listFiles();
         List files = new ArrayList();
 
@@ -69,56 +72,26 @@ public class AllScriptSInDirectoryRunner {
         return files;
     }
 
-    private void writeLaunchedScriptNamesInXml(String name) throws ParserConfigurationException, TransformerException, IOException, SAXException {
-        //Create the documentBuilderFactory
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        //Create the documentBuilder
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        //Create the Document  by parsing the file
-        Document document = documentBuilder.parse(storage);
-        //Get the root element of the xml Document;
-        Element documentElement = document.getDocumentElement();
-        //Get childNodes of the rootElement
-        NodeList l = documentElement.getChildNodes();
-        //Create a Node element
-        Element node = document.createElement("script");
-        Element nameNode = document.createElement("name");
-        Text value = document.createTextNode(name);
-        nameNode.setTextContent(name);
-        //append Node to rootNode element
-        node.appendChild(nameNode);
-        documentElement.appendChild(node);
-        document.replaceChild(documentElement, documentElement);
-        Transformer tFormer =
-                TransformerFactory.newInstance().newTransformer();
-        //  Set output file to xml
-        tFormer.setOutputProperty(OutputKeys.METHOD, "xml");
-        //  Write the document back to the file
-        Source source = new DOMSource(document);
-        Result result = new StreamResult(storage);
-        tFormer.transform(source, result);
 
 
-    }
-
-    public void runScripts() {
-        List<String> scriptsNames = getFilesInDirectory();
-        Connection conn = null;
+    public void runScripts(ScriptRunner scriptRunner) throws URISyntaxException {
+        storage.setWritable(true);
+        List<String> scriptsNames = null;
+        scriptsNames = getFilesInDirectory();
         try {
-            conn = getConnection();
-            ScriptRunner sr = new ScriptRunner(conn, false, false);
             Reader reader;
 
             for (String script : scriptsNames) {
                 reader = new BufferedReader(
-                        new FileReader(path + script));
+                        new FileReader(directoryPath + script));
 
-                if (!isWasAlreadyRunning(script)) {
-                    sr.runScript(reader);
-                    writeLaunchedScriptNamesInXml(script);
+                if(!whetherToScanForLaunchedScripts){
+                    scriptRunner.runScript(reader);
+                }else if (!isWasAlreadyRunning(script)) {
+                    scriptRunner.runScript(reader);
+                    launched.writeLaunchedScriptNamesInXml(script);
                 }
             }
-            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (FileNotFoundException e) {
@@ -133,20 +106,22 @@ public class AllScriptSInDirectoryRunner {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (XPathExpressionException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } finally {
+            storage.setWritable(false);
         }
     }
 
 
     private boolean isWasAlreadyRunning(String script) throws SAXException, ParserConfigurationException, XPathExpressionException, IOException {
-        runnedScripts = LaunchedScriptNamesStorage.getInstance(storage).getLaunchedScripts();
-        if (runnedScripts == null) {
+        launchedScripts = launched.getLaunchedScripts();
+        if (launchedScripts == null) {
             return false;
         } else {
-            return runnedScripts.contains(script);
+            return launchedScripts.contains(script);
         }
     }
 
-    private Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SystemException, BusinessException {
         ResourceBundle resource =
                 ResourceBundle.getBundle("database");
         String url = resource.getString("url");
@@ -155,14 +130,18 @@ public class AllScriptSInDirectoryRunner {
         String pass = resource.getString("password");
         try {
             Class.forName(driver).newInstance();
+            return DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException e) {
-            throw new SQLException("Driver isn't loaded!");
+            throw new SystemException("Driver was not found!", e);
         } catch (InstantiationException e) {
-            logger.error(e.getMessage());
+            throw new SystemException("Specified class object cannot be instantiated" +
+                    " because it is an interface or is an abstract class", e);
         } catch (IllegalAccessException e) {
-            logger.error(e.getMessage());
+            throw new SystemException("Currently executing method does not have access" +
+                    " to the definition of the specified class, field, method or constructor", e);
+        } catch (SQLException e) {
+            throw new DAOException(e);
         }
-        return DriverManager.getConnection(url, user, pass);
     }
 
 

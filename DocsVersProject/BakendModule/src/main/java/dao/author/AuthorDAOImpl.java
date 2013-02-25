@@ -1,10 +1,7 @@
 package dao.author;
 
 import entities.Author;
-import exception.DAOException;
-import exception.NotEnoughRightsException;
-import exception.NullConnectionException;
-import exception.SystemException;
+import exception.*;
 import org.h2.constant.ErrorCode;
 import util.Queries;
 
@@ -52,7 +49,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             Author author = null;
             if (rs.next()) {
                 author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));
-            }
+            }else throw new NoSuchObjectInDB("Author with id = "+id);
             return author;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -84,7 +81,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             Author author = null;
             if (rs.next()) {
                 author = getAuthorByID(rs.getLong("author_id"));
-            }
+            }else throw new NoSuchObjectInDB("Author with document id = "+id);
             return author;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -115,7 +112,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             Author author = null;
             if (rs.next()) {
                 author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));
-            }
+            } else throw new NoSuchObjectInDB("Author with login = "+ login);
             return author;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)

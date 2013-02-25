@@ -24,7 +24,6 @@ import static org.mockito.Mockito.*;
 public class addNewDocumentDAOTest {
 
     @Test
-    @Ignore
     public void createNewDocumentSuccessful() throws Exception {
         Connection conn = Mockito.mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);
@@ -46,7 +45,6 @@ public class addNewDocumentDAOTest {
 //        assertDocumentIsStored();
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenDocumnetIsNullExceptionOccurs() throws Exception {
         Connection conn = Mockito.mock(Connection.class);

@@ -23,8 +23,8 @@ import static org.mockito.Mockito.*;
  * To change this template use File | Settings | File Templates.
  */
 public class getAuthorByIIDTest {
+
     @Test
-    @Ignore
     public void getAuthorByIdtSuccessful() throws Exception {
         Connection conn = mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);
