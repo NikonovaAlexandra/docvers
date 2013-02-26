@@ -3,7 +3,7 @@ package dao.version;
 import entities.Version;
 import exception.*;
 import org.h2.constant.ErrorCode;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,25 +41,25 @@ public class VersionDAOImpl implements VersionDAO {
     public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException {
         List<Version> versions = new ArrayList<Version>();
         PreparedStatement ps = null;
-        ResultSet rsVersions = null;
+        ResultSet rs = null;
         Version version;
 
         try {
             ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
             ps.setLong(1, id);
-            rsVersions = ps.executeQuery();
-            conn.commit();
-            if(!rsVersions.next()) throw new NoSuchObjectInDB("Versions of this document");
-            while (rsVersions.next()) {
+            rs = ps.executeQuery();
+            if (!rs.next()) throw new NoSuchObjectInDB("Versions of this document");
+            while (rs.next()) {
                 version = new Version();
-                version.setId(rsVersions.getLong("ID"));
-                version.setAuthorID(rsVersions.getLong("AUTHOR_ID"));
-                version.setDate(rsVersions.getDate("DATE"));
-                version.setDocumentID(rsVersions.getLong("DOCUMENT_ID"));
-                version.setDocumentPath(rsVersions.getString("DOCUMENT_PATH"));
-                version.setVersionDescription(rsVersions.getString("VERSION_DESCRIPTION"));
+                version.setId(rs.getLong("ID"));
+                version.setAuthorID(rs.getLong("AUTHOR_ID"));
+                version.setDate(rs.getDate("DATE"));
+                version.setDocumentID(rs.getLong("DOCUMENT_ID"));
+                version.setDocumentPath(rs.getString("DOCUMENT_PATH"));
+                version.setVersionDescription(rs.getString("VERSION_DESCRIPTION"));
                 versions.add(version);
             }
+            conn.commit();
             return versions;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -70,8 +70,8 @@ public class VersionDAOImpl implements VersionDAO {
         } finally {
 
             try {
+                if (rs != null) rs.close();
                 if (ps != null) ps.close();
-                if (rsVersions != null) rsVersions.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
             }

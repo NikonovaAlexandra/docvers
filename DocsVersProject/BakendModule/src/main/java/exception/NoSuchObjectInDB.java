@@ -8,10 +8,11 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class NoSuchObjectInDB extends DAOException {
-    private  String ob;
-     public NoSuchObjectInDB(String ob) {
-         this.ob = ob;
-     }
+    private String ob;
+
+    public NoSuchObjectInDB(String ob) {
+        this.ob = ob;
+    }
 
     public String toString() {
         return "No such object in database : " + ob;

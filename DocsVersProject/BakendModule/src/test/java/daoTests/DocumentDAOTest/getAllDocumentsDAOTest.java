@@ -4,10 +4,9 @@ import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import dao.document.DocumentDAOImpl;
 import exception.NullConnectionException;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

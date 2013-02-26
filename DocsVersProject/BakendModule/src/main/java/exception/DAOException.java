@@ -18,6 +18,6 @@ public class DAOException extends BusinessException {
     }
 
     public String toString() {
-        return "Exception while access database " + (e != null ? e.getMessage() : "");
+        return "Exception while access database: " + (e != null ? e.getMessage() : "");
     }
 }

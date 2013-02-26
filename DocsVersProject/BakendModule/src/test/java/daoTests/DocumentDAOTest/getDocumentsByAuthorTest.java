@@ -4,10 +4,9 @@ import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import daoTests.EntitiesFactory;
 import entities.Author;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

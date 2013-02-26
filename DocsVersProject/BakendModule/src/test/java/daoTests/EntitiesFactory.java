@@ -12,7 +12,7 @@ import entities.Document;
  */
 public class EntitiesFactory {
     public static Document createNewDocument() {
-        return new Document();
+        return new Document(1,"","");
     }
 
     public static Author createNewAuthor() {

@@ -26,7 +26,6 @@ import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -34,12 +33,12 @@ import java.sql.Connection;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: alni
-* Date: 11.02.13
-* Time: 11:24
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA.
+ * User: alni
+ * Date: 11.02.13
+ * Time: 11:24
+ * To change this template use File | Settings | File Templates.
+ */
 public class EntitiesDAOTest {
 
     private IDatabaseTester tester = null;
@@ -86,6 +85,7 @@ public class EntitiesDAOTest {
                 template.getTableMetaData().getColumns());
         Assertion.assertEquals(template, actual);
     }
+
     @Test(expected = ObjectAlreadyExistsException.class)
     public void addNonuniqueDocumentNameTest() throws Exception {
         DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
@@ -93,6 +93,7 @@ public class EntitiesDAOTest {
         documentDAO.addDocument(doc);
         iConnection.getConnection().commit();
     }
+
     @Test(expected = ReferentialIntegrityViolatedException.class)
     public void addDocumentWithNotExistingAuthorTest() throws Exception {
         documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());

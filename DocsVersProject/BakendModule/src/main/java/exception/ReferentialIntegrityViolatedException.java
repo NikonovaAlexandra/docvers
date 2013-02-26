@@ -25,7 +25,7 @@ public class ReferentialIntegrityViolatedException extends DAOException {
 
         return "Referential Integrity Constraint Violated: trying to insert or update a row " +
                 "that would violate a referential constraint, because the referenced row does " +
-                "not exist " + (e != null ? e.getMessage() : "");
+                "not exist: " + (e != null ? e.getMessage() : "");
 
     }
 }

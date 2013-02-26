@@ -6,7 +6,7 @@ import db.ScriptRunner;
 import entities.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.Queries;
+import service.Queries;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,9 +34,6 @@ public class DB {
         String aSQLScriptFilePath = "D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\databasescript_0_1.sql";
         // Create MySql Connection
         slf4jLogger.trace("Hello World!");
-
-        String name = "Abhijit";
-        slf4jLogger.debug("Hi, {}", name);
         slf4jLogger.info("Welcome to the HelloWorld example of Logback.");
         slf4jLogger.warn("Dummy warning message.");
         slf4jLogger.error("Dummy error message.");
@@ -138,7 +135,4 @@ public class DB {
     }
 
     public static void main(String[] args) {
-        DB d = new DB();
-
-    }
-}
+        DB d 

@@ -7,7 +7,7 @@ import entities.Document;
 import entities.Version;
 import org.junit.Test;
 import org.mockito.Mockito;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

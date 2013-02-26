@@ -5,7 +5,7 @@ import dao.author.AuthorDAO;
 import daoTests.EntitiesFactory;
 import entities.Document;
 import org.junit.Test;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

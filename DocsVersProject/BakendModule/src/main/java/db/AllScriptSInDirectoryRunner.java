@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -36,17 +36,17 @@ public class AllScriptSInDirectoryRunner {
     private boolean whetherToScanForLaunchedScripts;
     private LaunchedScriptNamesStorage launched;
 
-    private AllScriptSInDirectoryRunner( String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
+    private AllScriptSInDirectoryRunner(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
         this.directoryPath = directoryPath;
         this.storage = new File("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\launched.xml");
         storage.createNewFile();
         //storage.setReadOnly();
         this.whetherToScanForLaunchedScripts = whetherToScanForLaunchedScripts;
-        this.launched = (whetherToScanForLaunchedScripts ? LaunchedScriptNamesStorage.getInstance(storage): null);
+        this.launched = (whetherToScanForLaunchedScripts ? LaunchedScriptNamesStorage.getInstance(storage) : null);
     }
 
     public static AllScriptSInDirectoryRunner getInstance(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
-            instance = new AllScriptSInDirectoryRunner(directoryPath, whetherToScanForLaunchedScripts);
+        instance = new AllScriptSInDirectoryRunner(directoryPath, whetherToScanForLaunchedScripts);
         return instance;
     }
 
@@ -73,7 +73,6 @@ public class AllScriptSInDirectoryRunner {
     }
 
 
-
     public void runScripts(ScriptRunner scriptRunner) throws URISyntaxException {
         storage.setWritable(true);
         List<String> scriptsNames = null;
@@ -85,9 +84,9 @@ public class AllScriptSInDirectoryRunner {
                 reader = new BufferedReader(
                         new FileReader(directoryPath + script));
 
-                if(!whetherToScanForLaunchedScripts){
+                if (!whetherToScanForLaunchedScripts) {
                     scriptRunner.runScript(reader);
-                }else if (!isWasAlreadyRunning(script)) {
+                } else if (!isWasAlreadyRunning(script)) {
                     scriptRunner.runScript(reader);
                     launched.writeLaunchedScriptNamesInXml(script);
                 }

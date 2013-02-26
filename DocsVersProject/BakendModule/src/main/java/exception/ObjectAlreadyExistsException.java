@@ -20,6 +20,6 @@ public class ObjectAlreadyExistsException extends DAOException {
     }
 
     public String toString() {
-        return "Such object already exist in database" + (e != null ? e.getMessage() : "");
+        return "Such object already exist in database: " + (e != null ? e.getMessage() : "");
     }
 }

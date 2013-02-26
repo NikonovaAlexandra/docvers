@@ -3,7 +3,7 @@ package dao.author;
 import entities.Author;
 import exception.*;
 import org.h2.constant.ErrorCode;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,7 +49,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             Author author = null;
             if (rs.next()) {
                 author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));
-            }else throw new NoSuchObjectInDB("Author with id = "+id);
+            } else throw new NoSuchObjectInDB("Author with id = " + id);
             return author;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -61,8 +61,8 @@ public class AuthorDAOImpl implements AuthorDAO {
         } finally {
 
             try {
-                if (ps != null) ps.close();
                 if (rs != null) rs.close();
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
             }
@@ -77,11 +77,12 @@ public class AuthorDAOImpl implements AuthorDAO {
             ps = conn.prepareStatement(Queries.SELECT_AUTHOR_ID_FROM_DOCUMENT_WHERE_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
-            conn.commit();
+
             Author author = null;
             if (rs.next()) {
                 author = getAuthorByID(rs.getLong("author_id"));
-            }else throw new NoSuchObjectInDB("Author with document id = "+id);
+            } else throw new NoSuchObjectInDB("Author with document id = " + id);
+            conn.commit();
             return author;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -92,8 +93,8 @@ public class AuthorDAOImpl implements AuthorDAO {
         } finally {
 
             try {
-                if (ps != null) ps.close();
                 if (rs != null) rs.close();
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
             }
@@ -112,7 +113,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             Author author = null;
             if (rs.next()) {
                 author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));
-            } else throw new NoSuchObjectInDB("Author with login = "+ login);
+            } else throw new NoSuchObjectInDB("Author with login = " + login);
             return author;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -123,8 +124,8 @@ public class AuthorDAOImpl implements AuthorDAO {
         } finally {
 
             try {
-                if (ps != null) ps.close();
                 if (rs != null) rs.close();
+                if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
             }

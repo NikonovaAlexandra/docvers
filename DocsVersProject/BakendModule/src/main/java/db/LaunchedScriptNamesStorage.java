@@ -1,6 +1,9 @@
 package db;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -32,7 +35,7 @@ public class LaunchedScriptNamesStorage {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        if(storage.length() == 0) {
+        if (storage.length() == 0) {
             document = builder.newDocument();
             Element rootElement = document.createElement("scripts");
             document.appendChild(rootElement);
@@ -48,7 +51,7 @@ public class LaunchedScriptNamesStorage {
             Source source = new DOMSource(document);
             Result result = new StreamResult(storage);
             tFormer.transform(source, result);
-        } else{
+        } else {
             document = builder.parse(storage);
         }
         parseScripts();

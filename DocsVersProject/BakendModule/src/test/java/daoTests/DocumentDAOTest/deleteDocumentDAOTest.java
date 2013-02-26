@@ -4,9 +4,9 @@ import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import daoTests.EntitiesFactory;
 import entities.Document;
-import org.junit.Ignore;
+import exception.NoSuchObjectInDB;
 import org.junit.Test;
-import util.Queries;
+import service.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
  */
 public class deleteDocumentDAOTest {
 
-    @Test
+    @Test (expected = NoSuchObjectInDB.class)
     public void deleteDocumentSuccessful() throws Exception {
         Connection conn = mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);

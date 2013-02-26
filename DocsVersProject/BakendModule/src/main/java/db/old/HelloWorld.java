@@ -8,7 +8,6 @@ package db.old; /**
 
 import dao.DAOFactory;
 import dao.document.DocumentDAO;
-import entities.Document;
 import exception.DAOException;
 import exception.SystemException;
 import org.slf4j.Logger;
@@ -24,14 +23,16 @@ public class HelloWorld {
 
     public static void main(String[] args) throws SQLException, DAOException, SystemException {
         HelloWorld hw = new HelloWorld();
-        Connection conn = hw.getConnection();
-        DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(conn);
+       // Connection conn = hw.getConnection();
+        //DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(conn);
 //        Document doc = new Document(2, "doc1", "descr");
 //        documentDAO.addDocument(doc);
 
 //        documentDAO = DAOFactory.getInstance().getDocumentDAO(conn);
-        Document doc = new Document(35, "doc1258", "descr");
-        documentDAO.addDocument(doc);
+//        Document doc = new Document(35, "doc1258", "descr");
+//        documentDAO.addDocument(doc);
+        hw.logger.trace("poom");
+        hw.logger.error("boom");
     }
 
     private Connection getConnection() throws SQLException {
