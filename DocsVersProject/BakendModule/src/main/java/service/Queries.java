@@ -19,4 +19,5 @@ public class Queries {
     public static final String INSERT_INTO_VERSION = "insert into version (document_id, author_id, date, version_description, document_path) values (?,?,?,?,?)";
     public static final String INSERT_INTO_DOCUMENT = "insert into document (author_id, document_name, description) values (?,?,?)";
     public static final String SELECT_FROM_AUTHOR_WHERE_LOGIN = "select * from author where login = ?";
+    public static final String SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_DOCUMENT_NAME = "select * from document where author_id = ? and document_name=?";
 }

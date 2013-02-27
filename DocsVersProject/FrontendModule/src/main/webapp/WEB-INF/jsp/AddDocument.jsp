@@ -22,20 +22,22 @@
         }
     </script>
     <title><fmt:message key="adddocument.tittle"/></title>
-        <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251"></head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</head>
 <body>
 <div>
     <c:if test="${not empty addmessage}">
         <h1>${addmessage}</h1>
     </c:if>
 </div>
-<div><hr>
+<div>
+    <hr>
     <form action="Document" method="post" name="form" onSubmit="return validateForm()">
         <table>
             <tr>
-              <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
+                <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
                 <td width="161"><input name="docname" type="text"/></td>
             </tr>
             <tr>
@@ -47,7 +49,8 @@
                     <input name="submit" type="submit" value="${buttonValue}"></td>
             </tr>
         </table>
-    </form><hr>
+    </form>
+    <hr>
 </div>
 </body>
 </html>

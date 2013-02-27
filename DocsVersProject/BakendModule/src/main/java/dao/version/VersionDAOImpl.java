@@ -48,7 +48,6 @@ public class VersionDAOImpl implements VersionDAO {
             ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
-            if (!rs.next()) throw new NoSuchObjectInDB("Versions of this document");
             while (rs.next()) {
                 version = new Version();
                 version.setId(rs.getLong("ID"));
@@ -60,6 +59,7 @@ public class VersionDAOImpl implements VersionDAO {
                 versions.add(version);
             }
             conn.commit();
+            if(versions.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)

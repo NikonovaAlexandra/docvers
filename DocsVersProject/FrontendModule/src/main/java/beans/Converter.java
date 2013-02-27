@@ -2,6 +2,7 @@ package beans;
 
 import entities.Author;
 import entities.Document;
+import entities.Version;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +13,16 @@ import entities.Document;
  */
 public class Converter {
     public static DocumentBean convertDocumentToDocumentBean(Document doc, Author auth) {
-        return new DocumentBean(convertAuthorToAuthortBean(auth), doc.getName(), doc.getDescription());
+        return new DocumentBean(convertAuthorToAuthorBean(auth), doc.getName(), doc.getDescription());
     }
 
-    public static AuthorBean convertAuthorToAuthortBean(Author author) {
-        AuthorBean authorBean = new AuthorBean(author.getLogin(), author.getPassword());
-        return authorBean;
+    public static AuthorBean convertAuthorToAuthorBean(Author author) {
+        return new AuthorBean(author.getLogin(), author.getPassword());
+    }
+
+    public static VersionBean convertVersionToVersionBean(Version ver, Document doc, Author authorDoc, Author authorVers) {
+        return new VersionBean(convertAuthorToAuthorBean(authorVers),
+                convertDocumentToDocumentBean(doc, authorDoc),
+                ver.getVersionDescription(), ver.getDate(), ver.getDocumentPath() );
     }
 }

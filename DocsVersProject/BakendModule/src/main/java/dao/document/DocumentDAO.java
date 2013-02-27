@@ -30,4 +30,6 @@ public interface DocumentDAO extends DAO {
 //    public Author getAuthorByLogin(String login);
 //    public Author getAuthorByVersion(Version VersionDAOTest);
 //    public List<Version> getVersionsByAuthor(Author AuthorDAOTest);
+
+    Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException;
 }

@@ -4,8 +4,8 @@ import beans.DocumentBean;
 import exception.BusinessException;
 import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
-import util.DBOperations;
-import util.RequestParser;
+import service.DBOperations;
+import service.RequestParser;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

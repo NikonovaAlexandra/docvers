@@ -20,6 +20,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>servlets.loginServlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+<!--=========================================================================-->
+    <servlet>
         <servlet-name>main</servlet-name>
         <jsp-file>/WEB-INF/jsp/main.jsp</jsp-file>
     </servlet>
@@ -27,7 +36,7 @@
         <servlet-name>main</servlet-name>
         <url-pattern>/Menu</url-pattern>
     </servlet-mapping>
-
+<!--=========================================================================-->
     <servlet>
         <servlet-name>AddDocumentServlet</servlet-name>
         <servlet-class>servlets.documentServlet.AddDocumentServlet</servlet-class>
@@ -56,12 +65,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>servlets.loginServlet.LoginServlet</servlet-class>
+        <servlet-name>DeleteDocument</servlet-name>
+        <servlet-class>servlets.documentServlet.DeleteDocumentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/LoginServlet</url-pattern>
+        <servlet-name>DeleteDocument</servlet-name>
+        <url-pattern>/DeleteDocument</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -72,6 +81,24 @@
         <servlet-name>AllDocuments</servlet-name>
         <url-pattern>/AllDocuments</url-pattern>
     </servlet-mapping>
+<!--=========================================================================-->
+    <servlet>
+        <servlet-name>Versions</servlet-name>
+        <servlet-class>servlets.versionServlet.GetVersionsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Versions</servlet-name>
+        <url-pattern>/Versions</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AllVersions</servlet-name>
+        <jsp-file>/WEB-INF/jsp/VersionsOfDocument.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AllVersions</servlet-name>
+        <url-pattern>/AllVersions</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>ErrorPage</servlet-name>
@@ -81,6 +108,7 @@
         <servlet-name>ErrorPage</servlet-name>
         <url-pattern>/ErrorPage</url-pattern>
     </servlet-mapping>
+<!--=========================================================================-->
 
     <filter>
         <filter-name>ExceptionalFilter</filter-name>
@@ -97,17 +125,17 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--<context-param>-->
-        <!--<param-name>login_page</param-name>-->
-        <!--<param-value>/Login</param-value>-->
-    <!--</context-param>-->
-    <!--<filter>-->
-        <!--<filter-name>LoginFilter</filter-name>-->
-        <!--<filter-class>filters.LoginFilter</filter-class>-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-        <!--<filter-name>LoginFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
+    <context-param>
+        <param-name>login_page</param-name>
+        <param-value>/Login</param-value>
+    </context-param>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

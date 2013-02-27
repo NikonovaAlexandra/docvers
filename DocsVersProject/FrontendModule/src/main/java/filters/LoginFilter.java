@@ -1,6 +1,10 @@
 package filters;
 
 import beans.AuthorBean;
+import exception.BusinessException;
+import exception.SystemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,54 +20,61 @@ import java.io.IOException;
  */
 public class LoginFilter implements Filter {
     private FilterConfig filterConfig;
+    private HttpServletRequest request;
+    private String loginPage;
+    private Logger logger = LoggerFactory.getLogger(LoginFilter.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
+        if (filterConfig != null) {
+            loginPage = filterConfig.getServletContext().getInitParameter("login_page");
+        }
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-            System.out.print("Authentication: Request received ...");
-            try {
-                boolean authorized = false;
-                if (request instanceof HttpServletRequest) {
-                    HttpSession session = ((HttpServletRequest)request).getSession(false);
-                    if (session != null) {
-                        AuthorBean token = (AuthorBean) session.getAttribute("user");
-                        //session.removeAttribute("user");
-                        String qryStr = ((HttpServletRequest)request).getQueryString();
-                        System.out.println(qryStr);
-                        if((token != null) || "cLogin".equalsIgnoreCase(qryStr)){
-                            authorized = true;
-                            ((HttpServletRequest) request).getSession().removeAttribute("logmessage");
-                        }
-
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
+        try {
+            boolean authorized = false;
+            if (request instanceof HttpServletRequest) {
+                HttpSession session = ((HttpServletRequest) request).getSession(false);
+                if (session != null) {
+                    AuthorBean token = (AuthorBean) session.getAttribute("user");
+                    String qryStr = ((HttpServletRequest) request).getQueryString();
+                    if ((token != null) || "cLogin".equalsIgnoreCase(qryStr)) {
+                        authorized = true;
+                        //((HttpServletRequest) request).getSession().removeAttribute("logmessage");
 
                     }
-                }
 
-                if (authorized) {
-                    chain.doFilter(request, response);
-                } else if (filterConfig != null) {
-                    ServletContext context = filterConfig.getServletContext();
-                    String login_page = context.getInitParameter("login_page");
-                    System.out.print("Authentication: Login page = " + login_page);
-                    if (login_page != null && !"".equals(login_page)) {
-                        context.getRequestDispatcher(login_page).forward(request, response);
-                    }
-                } else {
-                    throw new ServletException ("Unauthorized access, unable to forward to login page");
                 }
-            } catch (IOException io) {
-                System.out.println("IOException raised in AuthenticationFilter");
-            } catch (ServletException se) {
-                System.out.println("ServletException raised in AuthenticationFilter");
             }
-            System.out.print(" Authentication: Response dispatched ...");
+
+            if (authorized) {
+                chain.doFilter(request, response);
+            } else if (filterConfig != null) {
+                if (loginPage != null && !"".equals(loginPage)) {
+                    filterConfig.getServletContext().getRequestDispatcher(loginPage).forward(request, response);
+                }
+            } else {
+                throw new ServletException("Unauthorized access, unable to forward to login page");
+            }
+        } catch (ServletException e) {
+            if (e.getRootCause() instanceof BusinessException) {
+                logger.error("Business Exception in Login Filter: "+e.getRootCause().getClass() + " " + e.getMessage());
+            } else if(e.getRootCause() instanceof SystemException){
+                logger.error("System Exception in Login Filter: "+ e.getRootCause().getClass() + " " + e.getMessage());
+            } else {
+                logger.error("Servlet Exception in Login Filter: "+ e.getMessage());
+            }
+        } catch (IOException e) {
+            logger.error("IOException raised in Login Filter. " + e.getMessage());
+        }
+
     }
 
     @Override
     public void destroy() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 }

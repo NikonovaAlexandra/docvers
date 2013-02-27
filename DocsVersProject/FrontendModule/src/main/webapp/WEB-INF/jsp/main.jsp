@@ -11,20 +11,20 @@
 <html>
 <head>
     <title><fmt:message key="index.title"/></title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 
 </head>
 <body>
 <FORM action="AddDocument" method="get">
     <fmt:message key="index.add" var="buttonValue"/>
-    <input type="submit" name="submit" value="${buttonValue}">
+   <input type="submit" name="submit" value="${buttonValue}">
 </FORM>
 <FORM action="GetAllDocuments" method="get">
     <fmt:message key="index.getAll" var="buttonValue"/>
     <input type="submit" name="submit" value="${buttonValue}">
 </FORM>
 <FORM action="Logout" method="get">
-    <input type="submit" name="submit" value="Logout">
+    <input type="submit" name="submit" value="Logout"s>
 </FORM>
 
 </body>

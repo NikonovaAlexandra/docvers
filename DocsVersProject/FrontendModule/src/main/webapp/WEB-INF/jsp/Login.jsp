@@ -11,7 +11,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
     <script>
         function validateForm() {
             if (document.form.login.value == "") {

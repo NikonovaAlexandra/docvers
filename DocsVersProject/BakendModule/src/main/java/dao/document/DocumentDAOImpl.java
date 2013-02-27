@@ -1,5 +1,8 @@
 package dao.document;
 
+import dao.DAOFactory;
+import dao.author.AuthorDAO;
+import entities.Author;
 import entities.Document;
 import exception.*;
 import org.h2.constant.ErrorCode;
@@ -42,9 +45,40 @@ public class DocumentDAOImpl implements DocumentDAO {
         try {
             ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT);
             rs = ps.executeQuery();
-            if (!rs.next()) throw new NoSuchObjectInDB("Any document");
             conn.commit();
             return createDocumentsListFromResultSet(rs);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    @Override
+    public Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Document doc = null;
+        try {
+            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
+            Author author = authorDAO.getAuthorByLogin(login);
+            ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_DOCUMENT_NAME);
+            ps.setLong(1, author.getId());
+            ps.setString(2, docName);
+            rs = ps.executeQuery();
+            conn.commit();
+            doc = createDocumentFromResultSet(rs);
+            if(doc == null ) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
+            return doc;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
@@ -145,7 +179,6 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
-            if (!rs.next()) throw new NoSuchObjectInDB("This author hasn't got such document");
             conn.commit();
             return createDocumentsListFromResultSet(rs);
         } catch (SQLException e) {
@@ -168,16 +201,31 @@ public class DocumentDAOImpl implements DocumentDAO {
     private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws DAOException {
         List<Document> documents = new ArrayList<Document>();
         Document document = null;
+        boolean flag = true;
+            while (flag ) {
+                document = createDocumentFromResultSet(rs);
+                if(document != null){
+                    documents.add(document);
+                } else flag = false;
+
+            }
+            if (documents.isEmpty()) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
+            return documents;
+
+
+    }
+
+    private Document createDocumentFromResultSet(ResultSet rs) throws DAOException {
+        Document document = null;
         try {
-            while (rs.next()) {
+            if (rs.next()) {
                 document = new Document();
                 document.setId(rs.getLong("ID"));
                 document.setAuthorID(rs.getLong("AUTHOR_ID"));
                 document.setName(rs.getString("DOCUMENT_NAME"));
                 document.setDescription(rs.getString("DESCRIPTION"));
-                documents.add(document);
             }
-            return documents;
+            return document;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);

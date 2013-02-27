@@ -12,7 +12,7 @@ import org.junit.Test;
 public class UserLoginStoryTest {
 
     @Test
-    public void successfullLogin() {
+    public void successfulLogin() {
         userPutUsernameIntoUsernameField();
         userPutPasswordIntoPasswordField();
         userClickLoginButton();
@@ -20,7 +20,7 @@ public class UserLoginStoryTest {
     }
 
     @Test
-    public void unsuccessfullLogin() {
+    public void unsuccessfulLogin() {
         userPutUsernameIntoUsernameField();
         userPutPasswordIntoPasswordField();
         userClickLoginButton();

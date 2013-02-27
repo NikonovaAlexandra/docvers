@@ -14,7 +14,6 @@ public class DocumentBean implements Serializable {
     private AuthorBean author;
     private String name;
     private String description;
-    private static long count = 0;
 
     public DocumentBean() {
 
@@ -26,11 +25,11 @@ public class DocumentBean implements Serializable {
         this.description = description;
     }
 
-    public AuthorBean getAuthorBean() {
+    public AuthorBean getAuthor() {
         return author;
     }
 
-    public void setAuthorBean(AuthorBean author) {
+    public void setAuthor(AuthorBean author) {
         this.author = author;
     }
 

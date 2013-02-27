@@ -1,8 +1,10 @@
 package servlets.documentServlet;
 
 import beans.DocumentBean;
+import beans.VersionBean;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
+import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
 import service.DBOperations;
 import service.RequestParser;
@@ -18,23 +20,24 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: alni
- * Date: 20.02.13
- * Time: 11:30
+ * Date: 27.02.13
+ * Time: 13:11
  * To change this template use File | Settings | File Templates.
  */
-public class GetAllDocumentsServlet extends HttpServlet {
+public class DeleteDocumentServlet extends HttpServlet {
     private DBOperations operations = DBOperations.getInstance();
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<DocumentBean> docs = operations.getDocumentsByAuthor(RequestParser.getInstance().getAuthorBean(request).getLogin());
-            showDocuments(docs, request, response);
+            String docName = request.getParameter("docDel");
+            operations.deleteDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
+            showMessage(request, response);
         } catch (SystemException e) {
             System.out.println(e.getCause() + e.getMessage());
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
-                request.setAttribute("docmessage", "You have not any document");
+                request.setAttribute("docmessage", "This document has already been removed.");
                 RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
                 reqDispatcher.forward(request, response);
             } else {
@@ -43,9 +46,8 @@ public class GetAllDocumentsServlet extends HttpServlet {
         }
     }
 
-    private void showDocuments(List<DocumentBean> docs, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("documentList", docs);
-        RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
+    private void showMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/GetAllDocuments");
         reqDispatcher.forward(request, response);
 
     }
