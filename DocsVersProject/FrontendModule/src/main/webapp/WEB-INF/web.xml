@@ -108,6 +108,15 @@
         <servlet-name>ErrorPage</servlet-name>
         <url-pattern>/ErrorPage</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteVersion</servlet-name>
+        <servlet-class>servlets.versionServlet.DeleteVersionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteVersion</servlet-name>
+        <url-pattern>/DeleteVersion</url-pattern>
+    </servlet-mapping>
 <!--=========================================================================-->
 
     <filter>

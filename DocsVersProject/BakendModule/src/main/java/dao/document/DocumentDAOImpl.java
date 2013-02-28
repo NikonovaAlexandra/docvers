@@ -69,11 +69,9 @@ public class DocumentDAOImpl implements DocumentDAO {
         ResultSet rs = null;
         Document doc = null;
         try {
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
-            Author author = authorDAO.getAuthorByLogin(login);
-            ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_DOCUMENT_NAME);
-            ps.setLong(1, author.getId());
-            ps.setString(2, docName);
+            ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_AND_AUTHOR_ID);
+            ps.setString(1, docName);
+            ps.setString(2, login);
             rs = ps.executeQuery();
             conn.commit();
             doc = createDocumentFromResultSet(rs);
@@ -191,6 +189,63 @@ public class DocumentDAOImpl implements DocumentDAO {
         } finally {
             try {
                 if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    @Override
+    public void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException {
+
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(Queries.UPDATE_DOCUMENT_SET_DESCRIPTION_WHERE_DOCUMENT_NAME_AND_LOGIN);
+            ps.setString(1, newDescription);
+            ps.setString(2, docName);
+            ps.setString(3, login);
+            conn.commit();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    @Override
+    public void deleteDocument(String login, String docName) throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(Queries.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_LOGIN);
+            ps.setString(1, login);
+            ps.setString(2, docName);
+            int i = ps.executeUpdate();
+            if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
+            conn.commit();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            }
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+
+        } finally {
+            try {
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);

@@ -2,7 +2,8 @@ package beans;
 
 import java.awt.dnd.DropTargetEvent;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class VersionBean implements Serializable {
-
+    private long id;
     private AuthorBean author;
     private DocumentBean document;
     private String description;
@@ -23,14 +24,23 @@ public class VersionBean implements Serializable {
 
     }
 
-    public VersionBean(AuthorBean author, DocumentBean document,
+    public VersionBean(long id, AuthorBean author, DocumentBean document,
                        String description, Date date, String path) {
+        this.id = id;
         this.author = author;
         this.document = document;
         this.description = description;
         this.date = date;
         this.path = path;
 
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public AuthorBean getAuthor() {

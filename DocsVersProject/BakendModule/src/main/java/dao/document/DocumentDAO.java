@@ -3,6 +3,7 @@ package dao.document;
 import dao.DAO;
 import entities.Document;
 import exception.DAOException;
+import exception.NoSuchObjectInDB;
 import exception.SystemException;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public interface DocumentDAO extends DAO {
 //    public List<Version> getVersionsByAuthor(Author AuthorDAOTest);
 
     Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException;
+
+    void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException;
+
+    void deleteDocument(String login, String docName) throws DAOException, SystemException;
 }

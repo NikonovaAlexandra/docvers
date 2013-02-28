@@ -28,7 +28,7 @@ public class GetVersionsServlet extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String docName = request.getParameter("docVers");
+            String docName = request.getParameter("document");
             List<VersionBean> vers = operations.getVersionsOfDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
             showVersions(vers, request, response);
         } catch (SystemException e) {
@@ -36,7 +36,7 @@ public class GetVersionsServlet extends HttpServlet {
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
-                request.setAttribute("noanyversmessage", "There are no such object: " + e.toString());
+                request.setAttribute("versmessage", e.toString());
                 RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllVersions");
                 reqDispatcher.forward(request, response);
             } else {

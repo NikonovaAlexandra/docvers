@@ -1,15 +1,14 @@
 package dao.version;
 
+import entities.Document;
 import entities.Version;
 import exception.*;
 import org.h2.constant.ErrorCode;
 import service.Queries;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -77,5 +76,83 @@ public class VersionDAOImpl implements VersionDAO {
             }
         }
     }
+
+    @Override
+    public void addVersion(Version version) throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        if (version == null) {
+            throw new IllegalArgumentException();
+        }
+        try {
+            ps = conn.prepareStatement(Queries.INSERT_INTO_VERSION);
+            ps.setLong(1, version.getDocumentID());
+            ps.setLong(2, version.getAuthorID());
+            ps.setDate(3, Date.valueOf(Calendar.getInstance().getTime().toString()));
+            ps.setString(4, version.getVersionDescription());
+            ps.setString(5, version.getDocumentPath());
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            if (e.getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
+                throw new ObjectAlreadyExistsException();
+            }
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
+                throw new ReferentialIntegrityViolatedException();
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            }
+            if (e.getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
+                throw new NoDiskSpaceException("", e);
+            }
+
+        } finally {
+            try {
+
+                if (ps != null)
+                    ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+
+    }
+
+    @Override
+    public void deleteVersion(long id) throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(Queries.DELETE_FROM_VERSION_WHERE_ID);
+            ps.setLong(1, id);
+            int i = ps.executeUpdate();
+            if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
+            conn.commit();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            }
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
 
 }

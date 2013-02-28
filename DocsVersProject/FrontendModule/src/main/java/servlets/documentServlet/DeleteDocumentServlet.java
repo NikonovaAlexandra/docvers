@@ -29,9 +29,9 @@ public class DeleteDocumentServlet extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String docName = request.getParameter("docDel");
+            String docName = request.getParameter("document to delete");
             operations.deleteDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
-            showMessage(request, response);
+            showMessage(response);
         } catch (SystemException e) {
             System.out.println(e.getCause() + e.getMessage());
             throw new ServletException(e);
@@ -46,9 +46,8 @@ public class DeleteDocumentServlet extends HttpServlet {
         }
     }
 
-    private void showMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/GetAllDocuments");
-        reqDispatcher.forward(request, response);
+    private void showMessage( HttpServletResponse response) throws ServletException, IOException {
+       response.sendRedirect("/GetAllDocuments");
 
     }
 }

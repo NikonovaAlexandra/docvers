@@ -30,8 +30,8 @@
     <c:if test="${not empty docmessage}">
         <h1>${docmessage}</h1>
     </c:if>
-
-    <table id="pattern-style-b">
+    <c:if test="${not empty documentList}">
+    <table id="userDocs">
         <thead>
         <tr>
             <th scope="col"><fmt:message key="alldocuments.name"/></th>
@@ -43,16 +43,16 @@
         <c:forEach items="${documentList}" var="item">
             <tr>
                 <td><a href="<c:url value="Versions">
-                <c:param name="docVers" value="${item.name}"/>
+                <c:param name="document" value="${item.name}"/>
                 </c:url>">${item.name}</a></td>
                 <td>${item.description}</td>
                 <td><a onclick="return deleteA()"
                        href="<c:url value="DeleteDocument">
-                    <c:param name="docDel" value="${item.name}"/>
+                    <c:param name="document to delete" value="${item.name}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
             </tr>
         </c:forEach>
     </table>
-
+    </c:if>
 </body>
 </html>

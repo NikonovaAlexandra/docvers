@@ -21,7 +21,7 @@ public class Converter {
     }
 
     public static VersionBean convertVersionToVersionBean(Version ver, Document doc, Author authorDoc, Author authorVers) {
-        return new VersionBean(convertAuthorToAuthorBean(authorVers),
+        return new VersionBean(ver.getId(), convertAuthorToAuthorBean(authorVers),
                 convertDocumentToDocumentBean(doc, authorDoc),
                 ver.getVersionDescription(), ver.getDate(), ver.getDocumentPath() );
     }

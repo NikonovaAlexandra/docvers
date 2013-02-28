@@ -16,4 +16,8 @@ import java.util.List;
  */
 public interface VersionDAO extends DAO {
     public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException;
+
+    public void addVersion(Version version) throws DAOException, SystemException;
+
+    void deleteVersion(long id) throws DAOException, SystemException;
 }

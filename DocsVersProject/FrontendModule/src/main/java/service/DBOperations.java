@@ -187,8 +187,7 @@ public class DBOperations {
             conn = connPool.getConnection();
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(conn);
-            Document doc = docDAO.getDocumentByAuthorAndName(login, docName);
-            docDAO.deleteDocument(doc.getId());
+            docDAO.deleteDocument(login, docName);
             conn.commit();
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -197,5 +196,25 @@ public class DBOperations {
             if (conn != null)
                 connPool.free(conn);
         }
+    }
+
+    public void deleteVersion(long id) throws BusinessException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(conn);
+            verDAO.deleteVersion(id);
+            conn.commit();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+
+        } finally {
+            if (conn != null)
+                connPool.free(conn);
+        }
+
     }
 }
