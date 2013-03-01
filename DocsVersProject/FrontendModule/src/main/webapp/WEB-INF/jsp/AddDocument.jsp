@@ -5,7 +5,7 @@
   Time: 10:53
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=windows-1251" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="Messages"/>
@@ -24,7 +24,7 @@
     <title><fmt:message key="adddocument.tittle"/></title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
 <div>

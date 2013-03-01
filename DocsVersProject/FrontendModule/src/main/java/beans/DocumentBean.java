@@ -10,7 +10,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class DocumentBean implements Serializable {
-
+    private long id;
     private AuthorBean author;
     private String name;
     private String description;
@@ -23,6 +23,21 @@ public class DocumentBean implements Serializable {
         this.author = author;
         this.name = name;
         this.description = description;
+    }
+
+    public DocumentBean(long id, AuthorBean author, String name, String description) {
+        this.id = id;
+        this.author = author;
+        this.name = name;
+        this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public AuthorBean getAuthor() {

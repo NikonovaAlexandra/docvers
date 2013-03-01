@@ -45,10 +45,6 @@ A:hover { font-size: 15px;color: #2f4f4f; text-decoration: none;}
     color: #808080;
     background: #CFCFD7;
 }
-table
-{
-    table-layout:fixed;
-}
 
 /*.button { display: block; position: relative; background-image: url(images/patternb.png); padding: 5px; float: left; color: #808080; text-decoration: none; cursor: pointer; }*/
 /*.button * { font-style: normal; background-image: url(images/patternb.png); background-repeat: no-repeat; display: block; position: relative; }*/

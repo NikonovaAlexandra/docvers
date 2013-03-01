@@ -23,11 +23,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GetAllDocumentsServlet extends HttpServlet {
-    private DBOperations operations = DBOperations.getInstance();
+    private DBOperations service = DBOperations.getInstance();
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<DocumentBean> docs = operations.getDocumentsByAuthor(RequestParser.getInstance().getAuthorBean(request).getLogin());
+            List<DocumentBean> docs = service.getDocumentsByAuthor(RequestParser.getInstance().getAuthorBean(request).getLogin());
             showDocuments(docs, request, response);
         } catch (SystemException e) {
             System.out.println(e.getCause() + e.getMessage());

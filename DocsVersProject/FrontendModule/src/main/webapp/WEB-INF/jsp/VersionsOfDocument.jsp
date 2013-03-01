@@ -44,6 +44,7 @@
         </thead>
 
         <c:forEach items="${versionList}" var="item">
+
             <tr>
                 <td>${item.date}</td>
                 <td>${item.author.login}</td>
@@ -51,15 +52,18 @@
                 <td><a href=""><fmt:message key="versions.download"/></a></td>
                 <td><a onclick="return deleteA()"
                      href="<c:url value="DeleteVersion">
-                    <c:param name="document" value="${item.document.name}"/>
+                    <c:param name="document" value="${document}"/>
                     <c:param name="version to delete" value="${item.id}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
             </tr>
         </c:forEach>
     </table>
     </c:if>
+    <c:set var="document" value="${param.document}"/>
     <input type="submit" value="submit">
 </form>
-
+<a href="<c:url value="Versions/AddVersion">
+                    <c:param name="document" value="${document}"/>
+                </c:url>">Add New Version</a>
 </body>
 </html>

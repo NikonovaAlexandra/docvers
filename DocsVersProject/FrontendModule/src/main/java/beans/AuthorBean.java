@@ -10,15 +10,25 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class AuthorBean implements Serializable {
+    private long id;
     private String login;
     private String password;
 
     public AuthorBean() {
     }
 
-    public AuthorBean(String login, String password) {
+    public AuthorBean(long id, String login, String password) {
+        this.id = id;
         this.login = login;
         this.password = password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getPassword() {

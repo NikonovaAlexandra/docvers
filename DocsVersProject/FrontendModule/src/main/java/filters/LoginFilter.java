@@ -64,11 +64,14 @@ public class LoginFilter implements Filter {
                 logger.error("Business Exception in Login Filter: "+e.getRootCause().getClass() + " " + e.getMessage());
             } else if(e.getRootCause() instanceof SystemException){
                 logger.error("System Exception in Login Filter: "+ e.getRootCause().getClass() + " " + e.getMessage());
+                e.printStackTrace();
             } else {
                 logger.error("Servlet Exception in Login Filter: "+ e.getMessage());
+                e.printStackTrace();
             }
         } catch (IOException e) {
             logger.error("IOException raised in Login Filter. " + e.getMessage());
+
         }
 
     }

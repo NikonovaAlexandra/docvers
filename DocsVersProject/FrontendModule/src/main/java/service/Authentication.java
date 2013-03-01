@@ -21,9 +21,9 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class Authentication {
-    public static AuthorBean authenticate(Author author, String login, String password) throws BusinessException, SystemException {
+    public static AuthorBean authenticate(AuthorBean author, String login, String password) throws BusinessException, SystemException {
         if (author.getLogin().equals(login) && author.getPassword().equals(password)) {
-            return new AuthorBean(login, password);
+            return new AuthorBean(author.getId(), login, password);
         } else return null;
     }
 
@@ -31,7 +31,7 @@ public class Authentication {
                               String password, ServletContext context) throws ServletException, IOException, BusinessException, SystemException {
         DBOperations operations = DBOperations.getInstance();
         if ((login != null) & (password != null)) {
-            Author author = operations.getAuthorByLogin(login);
+            AuthorBean author = operations.getAuthorByLogin(login);
             if (author != null) {
                 AuthorBean tok = authenticate(author, login, password);
                 if (tok != null) {

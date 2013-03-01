@@ -87,7 +87,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps = conn.prepareStatement(Queries.INSERT_INTO_VERSION);
             ps.setLong(1, version.getDocumentID());
             ps.setLong(2, version.getAuthorID());
-            ps.setDate(3, Date.valueOf(Calendar.getInstance().getTime().toString()));
+            ps.setDate(3, version.getDate());
             ps.setString(4, version.getVersionDescription());
             ps.setString(5, version.getDocumentPath());
             ps.executeUpdate();

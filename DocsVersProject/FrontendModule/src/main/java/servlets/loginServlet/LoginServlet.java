@@ -1,14 +1,9 @@
 package servlets.loginServlet;
 
-import beans.AuthorBean;
-import entities.Author;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
-import service.Authentication;
-import service.DBOperations;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static service.Authentication.authenticate;
 import static service.Authentication.performLogin;
 
 /**
@@ -29,9 +23,11 @@ import static service.Authentication.performLogin;
 public class LoginServlet extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         ServletContext context = request.getSession().getServletContext();
+
         try {
             performLogin(request, response, login, password, context);
         } catch (BusinessException e) {

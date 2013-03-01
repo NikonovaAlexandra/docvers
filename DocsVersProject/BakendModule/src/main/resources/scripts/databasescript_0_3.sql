@@ -1,0 +1,1 @@
+alter table version add column IS_RELEASED boolean;

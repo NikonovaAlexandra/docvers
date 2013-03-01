@@ -8,6 +8,7 @@ import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
 import service.DBOperations;
 import service.RequestParser;
+import service.ServerOperations;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,12 +26,22 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DeleteDocumentServlet extends HttpServlet {
-    private DBOperations operations = DBOperations.getInstance();
+    private DBOperations service= DBOperations.getInstance();
+    private ServerOperations serverService = ServerOperations.getInstance();
+    private String filePath;
+
+    public void init( ){
+        // Get the file location where it would be stored.
+        filePath =
+                getServletContext().getInitParameter("file-upload");
+    }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String docName = request.getParameter("document to delete");
-            operations.deleteDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
+            String login = RequestParser.getInstance().getAuthorBean(request).getLogin();
+            service.deleteDocument(login, docName);
+            serverService.deleteUserDocumentFolder(filePath, login, docName );
             showMessage(response);
         } catch (SystemException e) {
             System.out.println(e.getCause() + e.getMessage());

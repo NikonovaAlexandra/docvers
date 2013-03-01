@@ -46,14 +46,27 @@ public class DBOperations {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
             conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
-            Author author = authorDAO.getAuthorByLogin(documentBean.getAuthor().getLogin());
             DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(conn);
-            Document doc = new Document();
-            doc.setName(documentBean.getName());
-            doc.setDescription(documentBean.getDescription());
-            doc.setAuthorID(author.getId());
-            documentDAO.addDocument(doc);
+            documentDAO.addDocument(Converter.convertDocumentBeanToDocument(documentBean));
+            conn.commit();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            if (conn != null)
+                connPool.free(conn);
+
+        }
+    }
+
+    public void addVersion(VersionBean versionBean) throws BusinessException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(conn);
+            versionDAO.addVersion(Converter.convertVersionBeanToVersion(versionBean));
             conn.commit();
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -126,7 +139,31 @@ public class DBOperations {
 
     }
 
-    public Author getAuthorByLogin(String login) throws BusinessException, SystemException {
+    public DocumentBean getDocumentsByAuthorAndName(String login, String docName) throws BusinessException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
+            Document doc = dao.getDocumentByAuthorAndName(login, docName);
+            conn.commit();
+            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
+            Author author = authorDAO.getAuthorByLogin(login);
+            DocumentBean documentBean = Converter.convertDocumentToDocumentBean(doc, author);
+            return documentBean;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            if (conn != null)
+                connPool.free(conn);
+        }
+
+
+    }
+
+    public AuthorBean getAuthorByLogin(String login) throws BusinessException, SystemException {
         Author author;
         Connection conn = null;
         ConnectionPool connPool = null;
@@ -137,7 +174,7 @@ public class DBOperations {
             AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
             author = authorDAO.getAuthorByLogin(login);
             conn.commit();
-            return author;
+            return Converter.convertAuthorToAuthorBean(author);
         } catch (SQLException e) {
             throw new DAOException(e);
         }  finally {

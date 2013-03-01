@@ -16,20 +16,20 @@ import java.io.IOException;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: alni
-* Date: 26.02.13
-* Time: 12:00
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA.
+ * User: alni
+ * Date: 26.02.13
+ * Time: 12:00
+ * To change this template use File | Settings | File Templates.
+ */
 public class GetVersionsServlet extends HttpServlet {
 
-    private DBOperations operations = DBOperations.getInstance();
+    private DBOperations service = DBOperations.getInstance();
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String docName = request.getParameter("document");
-            List<VersionBean> vers = operations.getVersionsOfDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
+            List<VersionBean> vers = service.getVersionsOfDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
             showVersions(vers, request, response);
         } catch (SystemException e) {
             System.out.println(e.getCause() + e.getMessage());

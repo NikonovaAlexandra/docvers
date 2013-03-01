@@ -6,6 +6,7 @@ import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
 import service.DBOperations;
 import service.RequestParser;
+import service.ServerOperations;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,13 +24,22 @@ import java.io.IOException;
  */
 public class AddDocumentServlet extends HttpServlet {
     private RequestParser parser = RequestParser.getInstance();
-    private DBOperations operations = DBOperations.getInstance();
+    private DBOperations service = DBOperations.getInstance();
+    private ServerOperations serverService = ServerOperations.getInstance();
+    private String filePath;
+
+    public void init( ){
+        // Get the file location where it would be stored.
+        filePath =
+                getServletContext().getInitParameter("file-upload");
+    }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentBean documentBean = null;
         try {
             documentBean = parser.getDocumentBean(request);
-            operations.addDocument(documentBean);
+            service.addDocument(documentBean);
+            serverService.createUserDocumentFolder(filePath, documentBean.getAuthor().getLogin(), documentBean.getName());
             showSuccessfulAdditionPage(documentBean, request, response);
         } catch (BusinessException e) {
             if (e.getClass() == ObjectAlreadyExistsException.class) {
@@ -44,7 +54,7 @@ public class AddDocumentServlet extends HttpServlet {
     }
 
     private void showSuccessfulAdditionPage(DocumentBean doc, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String message = "Document \"" + doc.getName() + "\" was added successfully";
+        String message = "Document " + doc.getName() + " was added successfully";
         showMessage(message, request, response);
     }
 
