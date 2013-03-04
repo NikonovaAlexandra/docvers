@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class RequestParser {
     private static RequestParser instance;
+   // todo : why singleton?
 
     public static synchronized RequestParser getInstance() {
         if (instance == null) {

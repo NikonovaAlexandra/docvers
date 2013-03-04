@@ -32,6 +32,7 @@ public class ScriptRunner {
     private final boolean stopOnError;
     private final boolean autoCommit;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    // todo: why not use logger with diff levels ?
     private PrintWriter logWriter = new PrintWriter(System.out);
     private PrintWriter errorLogWriter = new PrintWriter(System.err);
     private String delimiter = DEFAULT_DELIMITER;

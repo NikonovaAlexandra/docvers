@@ -44,10 +44,12 @@ public class DeleteDocumentServlet extends HttpServlet {
             serverService.deleteUserDocumentFolder(filePath, login, docName );
             showMessage(response);
         } catch (SystemException e) {
+            // todo : logger instead of standard out ?
             System.out.println(e.getCause() + e.getMessage());
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
+               // todo : i18n ?
                 request.setAttribute("docmessage", "This document has already been removed.");
                 RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
                 reqDispatcher.forward(request, response);

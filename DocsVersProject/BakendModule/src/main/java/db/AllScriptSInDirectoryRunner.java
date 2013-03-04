@@ -38,6 +38,7 @@ public class AllScriptSInDirectoryRunner {
 
     private AllScriptSInDirectoryRunner(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
         this.directoryPath = directoryPath;
+      // TODO : on other system does not work
         this.storage = new File("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\launched.xml");
         storage.createNewFile();
         //storage.setReadOnly();

@@ -16,6 +16,8 @@ public class Author {
 
     public Author() {
         id = count;
+
+// todo : by restart count = 0, but entities are in db already...
         ++count;
     }
 

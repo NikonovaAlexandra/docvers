@@ -30,10 +30,12 @@ public class GetAllDocumentsServlet extends HttpServlet {
             List<DocumentBean> docs = service.getDocumentsByAuthor(RequestParser.getInstance().getAuthorBean(request).getLogin());
             showDocuments(docs, request, response);
         } catch (SystemException e) {
+            // todo : logger instead of standard out ?
             System.out.println(e.getCause() + e.getMessage());
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
+              // todo : i18n ?
                 request.setAttribute("docmessage", "You have not any document");
                 RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
                 reqDispatcher.forward(request, response);

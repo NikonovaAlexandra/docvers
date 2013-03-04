@@ -29,6 +29,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DBOperations {
+   // todo : why singleton?
     private static DBOperations instance;
     static int i =0;
 

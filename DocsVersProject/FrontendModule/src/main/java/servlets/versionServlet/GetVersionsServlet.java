@@ -32,6 +32,7 @@ public class GetVersionsServlet extends HttpServlet {
             List<VersionBean> vers = service.getVersionsOfDocument(RequestParser.getInstance().getAuthorBean(request).getLogin(), docName);
             showVersions(vers, request, response);
         } catch (SystemException e) {
+            // todo : logger instead of standard out ?
             System.out.println(e.getCause() + e.getMessage());
             throw new ServletException(e);
         } catch (BusinessException e) {

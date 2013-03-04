@@ -59,6 +59,7 @@ public class AddDocumentServlet extends HttpServlet {
     }
 
     private void showAlreadyExistsMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      // todo : i18n
         String message = "Document with the same name already exists";
         showMessage(message, request, response);
     }

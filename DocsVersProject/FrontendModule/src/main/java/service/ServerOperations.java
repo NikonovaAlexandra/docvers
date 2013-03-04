@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
  */
 public class ServerOperations {
 
+   // todo : why singleton?
     private static ServerOperations instance;
 
     public static synchronized ServerOperations getInstance() {
@@ -55,6 +56,7 @@ public class ServerOperations {
     }
 
     public void deleteUserDocumentVersion(String path, String login, String docName, long id) {
+      //TODO : "/" - diff between OS
         File file = new File(path + login + "/" + docName + "/" + id);
         if (file.exists()) {
             file.delete();

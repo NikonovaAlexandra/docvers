@@ -42,10 +42,12 @@ public class DeleteVersionServlet extends HttpServlet {
                 serverService.deleteUserDocumentVersion(filePath, login, documentName, id);
                 showMessage(request, response);
             } catch (SystemException e) {
+            // todo : logger instead of standard out ?
                 System.out.println(e.getCause() + e.getMessage());
                 throw new ServletException(e);
             } catch (BusinessException e) {
                 if (e.getClass() == NoSuchObjectInDB.class) {
+                  // todo : i18n
                     request.setAttribute("versmessage", "This version has already been removed.");
                     RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllVersions");
                     reqDispatcher.forward(request, response);

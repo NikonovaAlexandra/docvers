@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
             performLogin(request, response, login, password, context);
         } catch (BusinessException e) {
             if (e.getClass() == new NoSuchObjectInDB("").getClass()) {
+              // todo : i18n?
                 request.getSession().setAttribute("logmessage", "Incorrect login or password!");
                 String url = context.getInitParameter("login_page");
                 if (url != null && !"".equals(url)) {
