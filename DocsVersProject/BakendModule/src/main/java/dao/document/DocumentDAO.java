@@ -32,9 +32,17 @@ public interface DocumentDAO extends DAO {
 //    public Author getAuthorByVersion(Version VersionDAOTest);
 //    public List<Version> getVersionsByAuthor(Author AuthorDAOTest);
 
-    Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException;
+//    Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException;
 
     void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException;
 
-    void deleteDocument(String login, String docName) throws DAOException, SystemException;
+//    void deleteDocument(String login, String docName) throws DAOException, SystemException;
+
+    long getLastDocumentID() throws DAOException, SystemException;
+
+    void deleteDocument(String login, long docNameCode) throws DAOException, SystemException;
+
+    Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException;
+
+    long getDocumentID(String login, long docName) throws DAOException, SystemException;
 }

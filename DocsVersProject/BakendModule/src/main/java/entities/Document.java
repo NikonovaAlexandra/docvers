@@ -13,18 +13,16 @@ public class Document {
     private long authorID;
     private String name;
     private String description;
-    private static long count = 0;
+    private long codeDocumentName;
 
     public Document() {
-        id = count;
-// todo : by restart count = 0, but entities are in db already...
-        ++count;
     }
 
-    public Document(long authorID, String name, String description) {
+    public Document(long authorID, String name, String description, long codeDocumentName) {
         this.authorID = authorID;
         this.name = name;
         this.description = description;
+        this.codeDocumentName = codeDocumentName;
     }
 
     public long getId() {
@@ -57,5 +55,13 @@ public class Document {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getCodeDocumentName() {
+        return codeDocumentName;
+    }
+
+    public void setCodeDocumentName(long codeDocumentName) {
+        this.codeDocumentName = codeDocumentName;
     }
 }

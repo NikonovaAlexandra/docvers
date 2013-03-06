@@ -78,7 +78,7 @@ public class EntitiesDAOTest {
     public void addDocumentTest() throws Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_after_adding.xml"));
         documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
-        Document doc = new Document(2, "doc25", "descr");
+        Document doc = new Document(2, "doc25", "descr", "doc25".hashCode());
         documentDAO.addDocument(doc);
         template = flatXMLDataSet.getTable("document");
         actual = DefaultColumnFilter.includedColumnsTable(iConnection.createDataSet().getTable("document"),
@@ -89,7 +89,7 @@ public class EntitiesDAOTest {
     @Test(expected = ObjectAlreadyExistsException.class)
     public void addNonuniqueDocumentNameTest() throws Exception {
         DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
-        Document doc = new Document(2, "doc1", "descr");
+        Document doc = new Document(2, "doc1", "descr", "doc1".hashCode());
         documentDAO.addDocument(doc);
         iConnection.getConnection().commit();
     }
@@ -97,7 +97,7 @@ public class EntitiesDAOTest {
     @Test(expected = ReferentialIntegrityViolatedException.class)
     public void addDocumentWithNotExistingAuthorTest() throws Exception {
         documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
-        Document doc = new Document(35, "doc1258", "descr");
+        Document doc = new Document(35, "doc1258", "descr", "doc1258".hashCode());
         documentDAO.addDocument(doc);
         iConnection.getConnection().commit();
     }

@@ -19,7 +19,11 @@
 <fmt:message key="version.upload.select"/>: <br/>
 
 <form action="Upload" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="document" value="${param.document}"/>
+
+    <%--<input type="hidden" name="document" value="${param.document}"/>--%>
+    <c:if test="${not empty uploadmessage}">
+        <h1><fmt:message key="${uploadmessage}"/></h1>
+    </c:if>
     <table>
         <tr>
             <td>

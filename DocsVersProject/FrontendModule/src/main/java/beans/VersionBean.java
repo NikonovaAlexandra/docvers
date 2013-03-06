@@ -1,6 +1,5 @@
 package beans;
 
-import java.awt.dnd.DropTargetEvent;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -19,19 +18,36 @@ public class VersionBean implements Serializable {
     private String description;
     private Date date;
     private String path;
+    private boolean released;
+    private long versionName;
+    private String versionType;
 
     public VersionBean() {
 
     }
 
     public VersionBean(long id, AuthorBean author, DocumentBean document,
-                       String description, Date date, String path) {
+                       String description, Date date, String path, String versionType,
+                       boolean isReleased, long versionName) {
         this.id = id;
         this.author = author;
         this.document = document;
         this.description = description;
         this.date = date;
         this.path = path;
+        this.versionType = versionType;
+        this.released = isReleased;
+        this.versionName = versionName;
+
+    }
+    public VersionBean(AuthorBean author, DocumentBean document,
+                       String description, Date date, String path, String versionType) {
+        this.author = author;
+        this.document = document;
+        this.description = description;
+        this.date = date;
+        this.path = path;
+        this.versionType = versionType;
 
     }
 
@@ -85,4 +101,28 @@ public class VersionBean implements Serializable {
         this.path = path;
     }
 
+    public long getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(long versionName) {
+        this.versionName = versionName;
+    }
+
+    public boolean getReleased() {
+
+        return released;
+    }
+
+    public void setReleased(boolean released) {
+        released = released;
+    }
+
+    public String getVersionType() {
+        return versionType;
+    }
+
+    public void setVersionType(String versionType) {
+        this.versionType = versionType;
+    }
 }

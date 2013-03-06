@@ -64,13 +64,13 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException {
+    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Document doc = null;
         try {
-            ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_AND_AUTHOR_ID);
-            ps.setString(1, docName);
+            ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_CODE_AND_AUTHOR_ID);
+            ps.setLong(1, docNameCode);
             ps.setString(2, login);
             rs = ps.executeQuery();
             conn.commit();
@@ -94,6 +94,73 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
+    public long getDocumentID(String login, long docName) throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(Queries.SELECT_ID_FROM_DOCUMENT);
+            ps.setString(1, login);
+            ps.setLong(2, docName);
+            rs = ps.executeQuery();
+            long id = 0;
+            if (rs.next()) {
+               id = rs.getLong("id");
+            }
+            conn.commit();
+            return id;
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+//    @Override
+//    public Document getDocumentByAuthorAndName(String login, String docName) throws DAOException, SystemException {
+//        PreparedStatement ps = null;
+//        ResultSet rs = null;
+//        Document doc = null;
+//        try {
+//            ps = conn.prepareStatement(Queries.SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_AND_AUTHOR_ID);
+//            ps.setString(1, docName);
+//            ps.setString(2, login);
+//            rs = ps.executeQuery();
+//            conn.commit();
+//            doc = createDocumentFromResultSet(rs);
+//            if(doc == null ) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
+//            return doc;
+//        } catch (SQLException e) {
+//            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+//                throw new NullConnectionException(e);
+//            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+//                throw new NotEnoughRightsException("", e);
+//            } else throw new DAOException(e);
+//
+//        } finally {
+//            try {
+//                if (ps != null) ps.close();
+//            } catch (SQLException e) {
+//                throw new DAOException(e);
+//            }
+//        }
+//    }
+
+    @Override
     public void addDocument(Document document) throws DAOException, SystemException {
         PreparedStatement ps = null;
         if (document == null) {
@@ -104,6 +171,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps.setLong(1, document.getAuthorID());
             ps.setString(2, document.getName());
             ps.setString(3, document.getDescription());
+            ps.setLong(4, document.getCodeDocumentName());
             ps.executeUpdate();
             conn.commit();
         } catch (SQLException e) {
@@ -124,7 +192,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             }
             if (e.getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
                 throw new NoDiskSpaceException("", e);
-            }
+            } else throw new DAOException(e);
 
         } finally {
             try {
@@ -148,16 +216,17 @@ public class DocumentDAOImpl implements DocumentDAO {
             if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
             conn.commit();
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
-            }
             try {
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            }  else throw new DAOException(e);
+
 
         } finally {
             try {
@@ -222,42 +291,74 @@ public class DocumentDAOImpl implements DocumentDAO {
         }
     }
 
-    @Override
-    public void deleteDocument(String login, String docName) throws DAOException, SystemException {
-        PreparedStatement ps = null;
-        try {
-            ps = conn.prepareStatement(Queries.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_LOGIN);
-            ps.setString(1, login);
-            ps.setString(2, docName);
-            int i = ps.executeUpdate();
-            if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
-            conn.commit();
-        } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
-            }
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                throw new DAOException(e);
-            }
+//    @Override
+//    public void deleteDocument(String login, String docName) throws DAOException, SystemException {
+//        PreparedStatement ps = null;
+//        try {
+//            ps = conn.prepareStatement(Queries.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_LOGIN);
+//            ps.setString(1, login);
+//            ps.setString(2, docName);
+//            int i = ps.executeUpdate();
+//            if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
+//            conn.commit();
+//        } catch (SQLException e) {
+//            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+//                throw new NullConnectionException(e);
+//            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+//                throw new NotEnoughRightsException("", e);
+//            }
+//            try {
+//                conn.rollback();
+//            } catch (SQLException e1) {
+//                throw new DAOException(e);
+//            }
+//
+//        } finally {
+//            try {
+//                if (ps != null) ps.close();
+//            } catch (SQLException e) {
+//                throw new DAOException(e);
+//            }
+//        }
+//    }
 
-        } finally {
-            try {
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                throw new DAOException(e);
-            }
+@Override
+public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
+    PreparedStatement ps = null;
+    try {
+        ps = conn.prepareStatement(Queries.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
+        ps.setString(1, login);
+        ps.setLong(2, docNameCode);
+        int i = ps.executeUpdate();
+        if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
+        conn.commit();
+    } catch (SQLException e) {
+        try {
+            conn.rollback();
+        } catch (SQLException e1) {
+            throw new DAOException(e);
+        }
+        if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+            throw new NullConnectionException(e);
+        if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+            throw new NotEnoughRightsException("", e);
+        }  else throw new DAOException(e);
+
+
+    } finally {
+        try {
+            if (ps != null) ps.close();
+        } catch (SQLException e) {
+            throw new DAOException(e);
         }
     }
+}
 
     private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws DAOException {
         List<Document> documents = new ArrayList<Document>();
         Document document = null;
         boolean flag = true;
-            while (flag ) {
+            while (flag) {
                 document = createDocumentFromResultSet(rs);
                 if(document != null){
                     documents.add(document);
@@ -279,6 +380,7 @@ public class DocumentDAOImpl implements DocumentDAO {
                 document.setAuthorID(rs.getLong("AUTHOR_ID"));
                 document.setName(rs.getString("DOCUMENT_NAME"));
                 document.setDescription(rs.getString("DESCRIPTION"));
+                document.setCodeDocumentName(rs.getLong("code_document_name"));
             }
             return document;
         } catch (SQLException e) {
@@ -287,6 +389,41 @@ public class DocumentDAOImpl implements DocumentDAO {
             else throw new DAOException(e);
         }
 
+    }
+
+    @Override
+    public long getLastDocumentID() throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(Queries.SELECT_MAX_ID_FROM_DOCUMENT);
+            rs = ps.executeQuery();
+            long maxID = 0;
+            if (rs.next()) {
+                maxID = rs.getLong("document_max_id");
+            }
+            conn.commit();
+            return maxID;
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
     }
 
 

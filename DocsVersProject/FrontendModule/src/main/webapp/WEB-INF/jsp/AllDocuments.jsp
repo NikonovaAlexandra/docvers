@@ -15,22 +15,22 @@
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <fmt:message key="document.wanttodelete" var="deletion"/>
     <script type="text/javascript">
-      function deleteA(){
-        var retVal = confirm("${deletion}");
-        if( retVal == true ){
-            return true;
-        }else{
-            return false;
+        function deleteA() {
+            var retVal = confirm("${deletion}");
+            if (retVal == true) {
+                return true;
+            } else {
+                return false;
+            }
         }
-      }
     </script>
 </head>
 <body>
 
-    <c:if test="${not empty docmessage}">
-        <h1>${docmessage}</h1>
-    </c:if>
-    <c:if test="${not empty documentList}">
+<c:if test="${not empty docmessage}">
+    <h1><fmt:message key="${docmessage}"/></h1>
+</c:if>
+<c:if test="${not empty documentList}">
     <table id="userDocs">
         <thead>
         <tr>
@@ -43,16 +43,16 @@
         <c:forEach items="${documentList}" var="item">
             <tr>
                 <td><a href="<c:url value="Versions">
-                <c:param name="document" value="${item.name}"/>
+                <c:param name="document" value="${item.codeDocumentName}"/>
                 </c:url>">${item.name}</a></td>
                 <td>${item.description}</td>
                 <td><a onclick="return deleteA()"
                        href="<c:url value="DeleteDocument">
-                    <c:param name="document to delete" value="${item.name}"/>
+                    <c:param name="document to delete" value="${item.codeDocumentName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
             </tr>
         </c:forEach>
     </table>
-    </c:if>
+</c:if>
 </body>
 </html>

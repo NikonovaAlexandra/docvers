@@ -7,8 +7,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -19,31 +17,22 @@ import java.util.ResourceBundle;
  * To change this template use File | Settings | File Templates.
  */
 public class ServerOperations {
+    private char separator = File.separatorChar;
 
-   // todo : why singleton?
-    private static ServerOperations instance;
-
-    public static synchronized ServerOperations getInstance() {
-        if (instance == null) {
-            instance = new ServerOperations();
-        }
-        return instance;
-    }
-
-    public void createUserDocumentFolder(String path, String login, String docName) {
+    public void createUserDocumentFolder(String path, String login, long docName) {
         File dir = new File(path + login);
         if (!dir.exists()) {
             dir.mkdir();
         }
 
-        dir = new File(dir.getAbsolutePath() + "/" + docName);
+        dir = new File(dir.getAbsolutePath() + separator + docName);
         if (!dir.exists()) {
             dir.mkdir();
         }
     }
 
-    public void deleteUserDocumentFolder(String path, String login, String docName) {
-        File dir = new File(path + login + "/" + docName);
+    public void deleteUserDocumentFolder(String path, String login, long docName) {
+        File dir = new File(path + login + separator + docName);
         if (dir.exists()) {
             File[] files = dir.listFiles();
             if (files != null) { //some JVMs return null for empty dirs
@@ -55,9 +44,9 @@ public class ServerOperations {
         }
     }
 
-    public void deleteUserDocumentVersion(String path, String login, String docName, long id) {
-      //TODO : "/" - diff between OS
-        File file = new File(path + login + "/" + docName + "/" + id);
+    public void deleteUserDocumentVersion(String path, String login, long docName, long versName, String type) {
+        String name = FileNameGenerator.generateName(versName);
+        File file = new File(path + login + separator + docName + separator + name + "." + type);
         if (file.exists()) {
             file.delete();
         }
@@ -74,6 +63,7 @@ public class ServerOperations {
         // maximum size that will be stored in memory
         factory.setSizeThreshold(maxMemSize);
         // Location to save data that is larger than maxMemSize.
+        //todo: abs path
         factory.setRepository(new File("C:\\temp"));
 
         // Create a new file upload handler
@@ -81,6 +71,24 @@ public class ServerOperations {
         // maximum file size to be uploaded.
         upload.setSizeMax(maxFileSize);
         return upload;
+    }
+
+    public File storeFile(FileItem fi, String path, String newFileName) throws Exception {
+        File file;
+        // Get the uploaded file parameters
+        String fileName = fi.getName();
+        long sizeInBytes = fi.getSize();
+
+        if (fileName.isEmpty() && sizeInBytes == 0 || newFileName.isEmpty()) {
+            throw new NullFileException("No file to upload.");
+        } else {
+
+            // Write the file
+            String pathToFile = path + newFileName;
+            file = new File(pathToFile);
+            fi.write(file);
+            return file;
+        }
     }
 
 }

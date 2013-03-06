@@ -5,7 +5,6 @@ import exception.BusinessException;
 import exception.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import service.ConnectionPool;
 import service.ConnectionPoolFactory;
 
 import javax.servlet.*;
@@ -41,14 +40,14 @@ public class ExceptionalFilter implements Filter {
             if (e.getRootCause() instanceof BusinessException) {
 
                 message = e.getCause().getClass() + "\n " + e.getMessage();
-                logger.error("Business Exception in application: "+message);
-            } else if(e.getRootCause() instanceof SystemException){
+                logger.error("Business Exception in application: " + message);
+            } else if (e.getRootCause() instanceof SystemException) {
                 message = "An error has occured!\n " + e.getCause().getClass() + "\n " +
                         e.getMessage() + "\n Please contact your administrator!";
-                logger.error("System Exception in application: "+message);
+                logger.error("System Exception in application: " + message);
             } else {
-                message = "Servlet Exception in application: "+ e.getMessage();
-                logger.error("Servlet Exception in application: "+ e.getMessage());
+                message = "Servlet Exception in application: " + e.getMessage();
+                logger.error("Servlet Exception in application: " + e.getMessage());
             }
             request.getSession().setAttribute("message", message);
 
@@ -66,10 +65,11 @@ public class ExceptionalFilter implements Filter {
 
     @Override
     public void destroy() {
+        // todo: close connections somewhere else
         try {
             ConnectionPoolFactory.getInstance().getConnectionPool().closeAllConnections();
         } catch (SystemException e) {
-           logger.error("System Exception while destroying Exceptional Filter.");
+            logger.error("System Exception while destroying Exceptional Filter.");
         } catch (BusinessException e) {
             logger.error("Business Exception while destroying Exceptional Filter.");
         }

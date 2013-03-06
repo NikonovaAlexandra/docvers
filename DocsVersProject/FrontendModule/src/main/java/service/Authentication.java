@@ -1,7 +1,6 @@
 package service;
 
 import beans.AuthorBean;
-import entities.Author;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
@@ -28,8 +27,8 @@ public class Authentication {
     }
 
     public static void performLogin(HttpServletRequest request, HttpServletResponse response, String login,
-                              String password, ServletContext context) throws ServletException, IOException, BusinessException, SystemException {
-        DBOperations operations = DBOperations.getInstance();
+                                    String password, ServletContext context) throws ServletException, IOException, BusinessException, SystemException {
+        DBOperations operations = new DBOperations();
         if ((login != null) & (password != null)) {
             AuthorBean author = operations.getAuthorByLogin(login);
             if (author != null) {

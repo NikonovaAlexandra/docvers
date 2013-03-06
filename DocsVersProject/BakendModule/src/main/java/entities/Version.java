@@ -17,18 +17,25 @@ public class Version {
     private Date date;
     private String versionDescription;
     private String documentPath;
+    private boolean isReleased;
+    private long versionName;
+    private String versionType;
+
 
     public Version() {
     }
 
     public Version(long id, long documentID, long authorID, Date date,
-                   String versionDescription, String documentPath) {
+                   String versionDescription, String documentPath, String versionType, long versionName) {
         this.id = id;
         this.documentID = documentID;
         this.authorID = authorID;
         this.date = date;
         this.versionDescription = versionDescription;
         this.documentPath = documentPath;
+        this.versionType = versionType;
+        this.versionName = versionName;
+
     }
 
     public long getId() {
@@ -78,5 +85,30 @@ public class Version {
 
     public void setDocumentPath(String documentPath) {
         this.documentPath = documentPath;
+    }
+
+    public long getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(long versionName) {
+        this.versionName = versionName;
+    }
+
+    public boolean isReleased() {
+
+        return isReleased;
+    }
+
+    public void setReleased(boolean released) {
+        isReleased = released;
+    }
+
+    public String getVersionType() {
+        return versionType;
+    }
+
+    public void setVersionType(String versionType) {
+        this.versionType = versionType;
     }
 }

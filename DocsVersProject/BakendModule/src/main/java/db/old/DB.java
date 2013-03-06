@@ -90,7 +90,7 @@ public class DB {
             resultSet = statement.executeQuery("select * from version");
             Outer.versionOut(resultSet);
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(connection);
-            dao.addDocument(new Document(3, "doc", "desc"));
+            dao.addDocument(new Document(3, "doc", "desc", "doc".hashCode()));
             //((DocumentDAOImpl)dao).deleteDocument(2);
             slf4jLogger.trace("====================================");
             resultSet = statement.executeQuery("select * from document");

@@ -1,22 +1,15 @@
 package servlets.documentServlet;
 
-import beans.DocumentBean;
-import beans.VersionBean;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
-import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
-import service.DBOperations;
-import service.RequestParser;
-import service.ServerOperations;
+import servlets.ParentServlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,32 +18,20 @@ import java.util.List;
  * Time: 13:11
  * To change this template use File | Settings | File Templates.
  */
-public class DeleteDocumentServlet extends HttpServlet {
-    private DBOperations service= DBOperations.getInstance();
-    private ServerOperations serverService = ServerOperations.getInstance();
-    private String filePath;
-
-    public void init( ){
-        // Get the file location where it would be stored.
-        filePath =
-                getServletContext().getInitParameter("file-upload");
-    }
+public class DeleteDocumentServlet extends ParentServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String docName = request.getParameter("document to delete");
-            String login = RequestParser.getInstance().getAuthorBean(request).getLogin();
-            service.deleteDocument(login, docName);
-            serverService.deleteUserDocumentFolder(filePath, login, docName );
+            long docNameCode = Long.parseLong(request.getParameter("document to delete"));
+            String login = requestParser.getAuthorBean(request).getLogin();
+            service.deleteDocument(login, docNameCode);
+            serverService.deleteUserDocumentFolder(filePath, login, docNameCode);
             showMessage(response);
         } catch (SystemException e) {
-            // todo : logger instead of standard out ?
-            System.out.println(e.getCause() + e.getMessage());
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
-               // todo : i18n ?
-                request.setAttribute("docmessage", "This document has already been removed.");
+                request.setAttribute("docmessage", "message.documentBeenRemoved");
                 RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
                 reqDispatcher.forward(request, response);
             } else {
@@ -59,8 +40,8 @@ public class DeleteDocumentServlet extends HttpServlet {
         }
     }
 
-    private void showMessage( HttpServletResponse response) throws ServletException, IOException {
-       response.sendRedirect("/GetAllDocuments");
+    private void showMessage(HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect("/GetAllDocuments");
 
     }
 }

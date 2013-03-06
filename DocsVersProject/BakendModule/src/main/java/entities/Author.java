@@ -12,13 +12,8 @@ public class Author {
     private long id;
     private String login;
     private String password;
-    private static long count = 0;
 
     public Author() {
-        id = count;
-
-// todo : by restart count = 0, but entities are in db already...
-        ++count;
     }
 
     public Author(long id, String login, String password) {

@@ -14,11 +14,11 @@
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <fmt:message key="version.wanttodelete" var="deletion"/>
     <script type="text/javascript">
-        function deleteA(){
+        function deleteA() {
             var retVal = confirm("${deletion}");
-            if( retVal == true ){
+            if (retVal == true) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
@@ -26,18 +26,19 @@
 </head>
 <body>
 
-<form action="Documents" method="POST">
-    <c:if test="${not empty versmessage}">
-        <h1>${versmessage}</h1>
-    </c:if>
+<c:if test="${not empty versmessage}">
+    <h1><fmt:message key="${versmessage}"/></h1>
+</c:if>
 
-    <c:if test="${not empty versionList}">
+<c:if test="${not empty versionList}">
     <table id="userDocs" summary="Meeting Results">
         <thead>
         <tr>
             <th scope="col"><fmt:message key="versions.date"/></th>
             <th scope="col"><fmt:message key="versions.author"/></th>
             <th scope="col"><fmt:message key="versions.description"/></th>
+            <th scope="col"><fmt:message key="versions.type"/></th>
+            <th scope="col"><fmt:message key="versions.type"/></th>
             <th scope="col">&nbsp</th>
             <th scope="col">&nbsp</th>
         </tr>
@@ -49,21 +50,22 @@
                 <td>${item.date}</td>
                 <td>${item.author.login}</td>
                 <td>${item.description}</td>
+                <td>${item.versionType}</td>
+                <td>${item.released}</td>
                 <td><a href=""><fmt:message key="versions.download"/></a></td>
                 <td><a onclick="return deleteA()"
-                     href="<c:url value="DeleteVersion">
-                    <c:param name="document" value="${document}"/>
-                    <c:param name="version to delete" value="${item.id}"/>
+                       href="<c:url value="DeleteVersion">
+                    <c:param name="version" value="${item.versionName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
             </tr>
         </c:forEach>
     </table>
-    </c:if>
-    <c:set var="document" value="${param.document}"/>
-    <input type="submit" value="submit">
+</c:if>
+<c:set var="document" value="${param.document}"/>
+<form action="/AddVersion" method="post">
+    <%--<input type="hidden" value="${param.document}" name="document"/>--%>
+    <fmt:message key="version.addNewVersion" var="butName"/>
+    <input type="submit" name="submit" value="${butName}"/>
 </form>
-<a href="<c:url value="Versions/AddVersion">
-                    <c:param name="document" value="${document}"/>
-                </c:url>">Add New Version</a>
 </body>
 </html>

@@ -39,7 +39,7 @@ public class AllScriptSInDirectoryRunner {
     private AllScriptSInDirectoryRunner(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
         this.directoryPath = directoryPath;
       // TODO : on other system does not work
-        this.storage = new File("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\launched.xml");
+        this.storage = new File("C:\\Documents and Settings\\Admin\\Рабочий стол\\docvers\\trunk\\DocsVersProject\\BakendModule\\src\\main\\java\\db\\launched.xml");
         storage.createNewFile();
         //storage.setReadOnly();
         this.whetherToScanForLaunchedScripts = whetherToScanForLaunchedScripts;
@@ -52,7 +52,7 @@ public class AllScriptSInDirectoryRunner {
     }
 
     public static void main(String[] args) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, BusinessException, SystemException, URISyntaxException, TransformerException {
-        AllScriptSInDirectoryRunner instatnce = getInstance("D:\\My Documents\\Downloads\\docvers-master (1)\\docvers-master\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\", true);
+        AllScriptSInDirectoryRunner instatnce = getInstance("C:\\Documents and Settings\\Admin\\Рабочий стол\\docvers\\trunk\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\", true);
         Connection conn = instatnce.getConnection();
         ScriptRunner sr = new ScriptRunner(conn, true, false);
         instatnce.runScripts(sr);

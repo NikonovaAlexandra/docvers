@@ -30,7 +30,7 @@
 <body>
 <div>
     <c:if test="${not empty logmessage}">
-        <h1>${logmessage}</h1>
+        <h1><fmt:message key="${logmessage}"/></h1>
     </c:if>
 </div>
 <div>

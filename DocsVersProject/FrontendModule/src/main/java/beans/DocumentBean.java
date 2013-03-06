@@ -14,22 +14,25 @@ public class DocumentBean implements Serializable {
     private AuthorBean author;
     private String name;
     private String description;
+    private long codeDocumentName;
 
     public DocumentBean() {
 
     }
 
-    public DocumentBean(AuthorBean author, String name, String description) {
+    public DocumentBean(AuthorBean author, String name, String description, long codeDocumentName) {
         this.author = author;
         this.name = name;
         this.description = description;
+        this.codeDocumentName = codeDocumentName;
     }
 
-    public DocumentBean(long id, AuthorBean author, String name, String description) {
+    public DocumentBean(long id, AuthorBean author, String name, String description, long codeDocumentName) {
         this.id = id;
         this.author = author;
         this.name = name;
         this.description = description;
+        this.codeDocumentName = codeDocumentName;
     }
 
     public long getId() {
@@ -62,6 +65,14 @@ public class DocumentBean implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getCodeDocumentName() {
+        return codeDocumentName;
+    }
+
+    public void setCodeDocumentName(long codeDocumentName) {
+        this.codeDocumentName = codeDocumentName;
     }
 
 }

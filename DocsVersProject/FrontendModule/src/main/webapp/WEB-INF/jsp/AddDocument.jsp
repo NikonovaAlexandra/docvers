@@ -29,7 +29,7 @@
 <body>
 <div>
     <c:if test="${not empty addmessage}">
-        <h1>${addmessage}</h1>
+        <h1><fmt:message key="${addmessage}"/></h1>
     </c:if>
 </div>
 <div>

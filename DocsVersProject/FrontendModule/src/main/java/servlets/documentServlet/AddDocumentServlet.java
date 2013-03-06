@@ -4,13 +4,10 @@ import beans.DocumentBean;
 import exception.BusinessException;
 import exception.ObjectAlreadyExistsException;
 import exception.SystemException;
-import service.DBOperations;
-import service.RequestParser;
-import service.ServerOperations;
+import servlets.ParentServlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,25 +19,15 @@ import java.io.IOException;
  * Time: 11:20
  * To change this template use File | Settings | File Templates.
  */
-public class AddDocumentServlet extends HttpServlet {
-    private RequestParser parser = RequestParser.getInstance();
-    private DBOperations service = DBOperations.getInstance();
-    private ServerOperations serverService = ServerOperations.getInstance();
-    private String filePath;
-
-    public void init( ){
-        // Get the file location where it would be stored.
-        filePath =
-                getServletContext().getInitParameter("file-upload");
-    }
+public class AddDocumentServlet extends ParentServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DocumentBean documentBean = null;
         try {
-            documentBean = parser.getDocumentBean(request);
+            documentBean = requestParser.getDocumentBean(request);
             service.addDocument(documentBean);
-            serverService.createUserDocumentFolder(filePath, documentBean.getAuthor().getLogin(), documentBean.getName());
-            showSuccessfulAdditionPage(documentBean, request, response);
+            serverService.createUserDocumentFolder(filePath, documentBean.getAuthor().getLogin(), documentBean.getCodeDocumentName());
+            showSuccessfulAdditionPage(request, response);
         } catch (BusinessException e) {
             if (e.getClass() == ObjectAlreadyExistsException.class) {
                 showAlreadyExistsMessage(request, response);
@@ -53,14 +40,13 @@ public class AddDocumentServlet extends HttpServlet {
 
     }
 
-    private void showSuccessfulAdditionPage(DocumentBean doc, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String message = "Document " + doc.getName() + " was added successfully";
+    private void showSuccessfulAdditionPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String message = "message.successfullyAdded";
         showMessage(message, request, response);
     }
 
     private void showAlreadyExistsMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      // todo : i18n
-        String message = "Document with the same name already exists";
+        String message = "message.documentAlreadyExists";
         showMessage(message, request, response);
     }
 
