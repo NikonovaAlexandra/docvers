@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class LogoutServlet extends HttpServlet {
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
 
         if (session != null) {

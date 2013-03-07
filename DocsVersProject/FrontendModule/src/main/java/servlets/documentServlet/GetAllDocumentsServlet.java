@@ -22,27 +22,24 @@ import java.util.List;
  */
 public class GetAllDocumentsServlet extends ParentServlet {
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private final String messageName = "docmessage";
+    private final String attrName = "documentList";
+    private final String url = "/AllDocuments";
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<DocumentBean> docs = service.getDocumentsByAuthor(requestParser.getAuthorBean(request).getLogin());
-            showDocuments(docs, request, response);
+            List<DocumentBean> docs = getService().getDocumentsByAuthor(
+                    getRequestParser().getAuthorBean(request).getLogin());
+            showMessage(request, response, docs, attrName, url);
         } catch (SystemException e) {
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
-                request.setAttribute("docmessage", "message.hoveNotAnyDocument");
-                RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
-                reqDispatcher.forward(request, response);
+                showMessage(request, response, "message.hoveNotAnyDocument", messageName, url);
             } else {
                 throw new ServletException(e);
             }
         }
     }
 
-    private void showDocuments(List<DocumentBean> docs, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("documentList", docs);
-        RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllDocuments");
-        reqDispatcher.forward(request, response);
-
-    }
 }

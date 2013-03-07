@@ -9,17 +9,15 @@ import org.apache.commons.fileupload.FileItem;
  * Time: 11:37
  * To change this template use File | Settings | File Templates.
  */
-public class RequestStruct {
+public class UploadVersionRequestStruct {
         private FileItem fileItem;
         private String description;
-        private long documentName;
-        private AuthorBean authorBean;
 
-        public RequestStruct(FileItem fileItem, String description, long documentName, AuthorBean authorBean){
+
+        public UploadVersionRequestStruct(FileItem fileItem, String description){
             this.fileItem = fileItem;
             this.description = description;
-            this.documentName = documentName;
-            this.authorBean = authorBean;
+
         }
 
         public FileItem getFileItem() {
@@ -36,22 +34,6 @@ public class RequestStruct {
 
         public void setDescription(String description) {
             this.description = description;
-        }
-
-        public long getDocumentName() {
-            return documentName;
-        }
-
-        public void setDocumentName(long documentName) {
-            this.documentName = documentName;
-        }
-
-        public AuthorBean getAuthorBean() {
-            return authorBean;
-        }
-
-        public void setAuthorBean(AuthorBean authorBean) {
-            this.authorBean = authorBean;
         }
 
 }

@@ -210,6 +210,49 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
+    public Version getVersion(long id, long versName) throws DAOException, SystemException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Version version = null;
+
+        try {
+            ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
+            ps.setLong(1, id);
+            ps.setLong(2, versName);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                version = new Version();
+                version.setId(rs.getLong("ID"));
+                version.setAuthorID(rs.getLong("AUTHOR_ID"));
+                version.setDate(rs.getDate("DATE"));
+                version.setDocumentID(rs.getLong("DOCUMENT_ID"));
+                version.setDocumentPath(rs.getString("DOCUMENT_PATH"));
+                version.setVersionDescription(rs.getString("VERSION_DESCRIPTION"));
+                version.setReleased(rs.getBoolean("is_released"));
+                version.setVersionName(rs.getLong("version_name"));
+                version.setVersionType(rs.getString("version_type"));
+            }
+            conn.commit();
+            if (version == null) throw new NoSuchObjectInDB("Version of this document with same name = " + versName);
+            return version;
+        } catch (SQLException e) {
+            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
+                throw new NullConnectionException(e);
+            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
+                throw new NotEnoughRightsException("", e);
+            } else throw new DAOException(e);
+        } finally {
+
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    @Override
     public long getLastVersionNameInfo(long docID) throws DAOException, SystemException {
         PreparedStatement ps = null;
         ResultSet rs = null;

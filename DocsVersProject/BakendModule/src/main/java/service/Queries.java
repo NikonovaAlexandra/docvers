@@ -34,4 +34,5 @@ public class Queries {
 
 
     public static final String SELECT_VERSION_TYPE_FROM_VERSION = "select version_type from version where version_name=? and document_id = (select id from document where code_document_name = ? and author_id=(select id from author where login = ?))";
+    public static final String SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME = "select * from version where document_id = ? and version_name = ?";
 }

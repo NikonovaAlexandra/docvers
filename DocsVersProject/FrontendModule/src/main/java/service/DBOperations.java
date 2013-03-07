@@ -234,6 +234,39 @@ public class DBOperations {
 
     }
 
+    public VersionBean getVersion(String login, long docNameCode, long versName) throws BusinessException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(conn);
+            Document doc = docDAO.getDocumentByAuthorAndName(login, docNameCode);
+
+            VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
+            Version ver = dao.getVersion(doc.getId(), versName);
+
+            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
+            Author authorDoc = authorDAO.getAuthorByLogin(login);
+            conn.commit();
+            Author authorVers = authorDAO.getAuthorByID(ver.getAuthorID());
+            VersionBean versionBean = Converter.convertVersionToVersionBean(ver, doc, authorDoc, authorVers);
+
+            conn.commit();
+            return versionBean;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            if (conn != null) {
+                connPool.free(conn);
+            }
+        }
+
+
+    }
+
+
     public void deleteDocument(String login, long docNameCode) throws BusinessException, SystemException {
         Connection conn = null;
         ConnectionPool connPool = null;

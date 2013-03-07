@@ -9,7 +9,7 @@ package service;
  */
 public class FileNameGenerator {
 
-    public static String generateName(long l){
+    public static String generateUploadVersionName(long l) {
         return "Version_" + l;
     }
 
@@ -19,5 +19,13 @@ public class FileNameGenerator {
             String type = arr[arr.length - 1];
             return type;
         } else return null;
+    }
+
+    public static String generateDownloadVersionName(String documentName, long version) {
+          return documentName + "_" + "v." + "_" + version;
+    }
+
+    public static String generateDownloadVersionName(String documentName, long version, String versionType) {
+        return documentName + "_" + "v." + "_" + version + "." + versionType;
     }
 }

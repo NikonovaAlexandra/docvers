@@ -21,30 +21,24 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GetVersionsServlet extends ParentServlet {
+    private final String messageName = "versmessage";
+    private final String url = "/AllVersions";
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             long docName = Long.parseLong(request.getParameter("document"));
             request.getSession().setAttribute("documentToView", docName);
-            List<VersionBean> vers = service.getVersionsOfDocument(requestParser.getAuthorBean(request).getLogin(), docName);
-            showVersions(vers, request, response);
+            List<VersionBean> vers = getService().getVersionsOfDocument(getRequestParser().getAuthorBean(request).getLogin(), docName);
+            showMessage(request, response, vers, "versionList", url);
         } catch (SystemException e) {
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
-                request.setAttribute("versmessage", "message.haveNotAnyVersion");
-                RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllVersions");
-                reqDispatcher.forward(request, response);
+                showMessage(request, response, "message.haveNotAnyVersion", messageName, url);
             } else {
                 throw new ServletException(e);
             }
         }
     }
 
-    private void showVersions(List<VersionBean> vers, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("versionList", vers);
-        RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllVersions");
-        reqDispatcher.forward(request, response);
-
-    }
 }

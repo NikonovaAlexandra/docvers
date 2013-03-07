@@ -5,8 +5,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import java.io.*;
 import java.util.ResourceBundle;
 
 /**
@@ -45,7 +47,7 @@ public class ServerOperations {
     }
 
     public void deleteUserDocumentVersion(String path, String login, long docName, long versName, String type) {
-        String name = FileNameGenerator.generateName(versName);
+        String name = FileNameGenerator.generateUploadVersionName(versName);
         File file = new File(path + login + separator + docName + separator + name + "." + type);
         if (file.exists()) {
             file.delete();
@@ -73,22 +75,37 @@ public class ServerOperations {
         return upload;
     }
 
-    public File storeFile(FileItem fi, String path, String newFileName) throws Exception {
+    public void storeFile(FileItem fi, String path) throws Exception {
         File file;
         // Get the uploaded file parameters
         String fileName = fi.getName();
         long sizeInBytes = fi.getSize();
 
-        if (fileName.isEmpty() && sizeInBytes == 0 || newFileName.isEmpty()) {
+        if (fileName.isEmpty() && sizeInBytes == 0) {
             throw new NullFileException("No file to upload.");
         } else {
 
             // Write the file
-            String pathToFile = path + newFileName;
-            file = new File(pathToFile);
+            file = new File(path);
             fi.write(file);
-            return file;
         }
+    }
+
+    public void downloadFile(String filePath, ServletOutputStream outputStream, int BUFSIZE) throws IOException {
+
+        File file = new File(filePath);
+        int length = 0;
+        byte[] byteBuffer = new byte[BUFSIZE];
+        DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+        // reads the file's bytes and writes them to the response stream
+        while ((in != null) && ((length = in.read(byteBuffer)) != -1))
+        {
+            outputStream.write(byteBuffer, 0, length);
+        }
+
+        in.close();
+        outputStream.close();
     }
 
 }

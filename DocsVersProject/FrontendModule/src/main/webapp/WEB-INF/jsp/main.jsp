@@ -15,7 +15,7 @@
 
 </head>
 <body>
-<FORM action="AddDocument" method="get">
+<FORM action="AddDocument" method="post">
     <fmt:message key="index.add" var="buttonValue"/>
     <input type="submit" name="submit" value="${buttonValue}">
 </FORM>
@@ -23,7 +23,7 @@
     <fmt:message key="index.getAll" var="buttonValue"/>
     <input type="submit" name="submit" value="${buttonValue}">
 </FORM>
-<FORM action="Logout" method="get">
+<FORM action="Logout" method="post">
     <input type="submit" name="submit" value="Logout">
 </FORM>
 

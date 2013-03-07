@@ -22,7 +22,7 @@ import static service.Authentication.performLogin;
  */
 public class LoginServlet extends HttpServlet {
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String login = request.getParameter("login");
         String password = request.getParameter("password");

@@ -52,7 +52,9 @@
                 <td>${item.description}</td>
                 <td>${item.versionType}</td>
                 <td>${item.released}</td>
-                <td><a href=""><fmt:message key="versions.download"/></a></td>
+                <td><a href="<c:url value="Download">
+                    <c:param name="version" value="${item.versionName}"/>
+                </c:url>"><fmt:message key="versions.download"/></a></td>
                 <td><a onclick="return deleteA()"
                        href="<c:url value="DeleteVersion">
                     <c:param name="version" value="${item.versionName}"/>

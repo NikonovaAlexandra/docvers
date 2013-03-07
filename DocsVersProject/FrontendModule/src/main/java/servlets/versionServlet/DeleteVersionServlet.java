@@ -20,32 +20,27 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class DeleteVersionServlet extends ParentServlet {
+    private final String url1 = "/Versions?document=";
+    private final String url2 = "/AllVersions";
+    private final String messageName = "versmessage";
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             long id = Long.parseLong(request.getParameter("version"));
             setDocumentName((Long) request.getSession().getAttribute("documentToView"));
-            String login = requestParser.getAuthorBean(request).getLogin();
-            String type = service.getVersionType(id, getDocumentName(), login);
-            serverService.deleteUserDocumentVersion(filePath, login, getDocumentName(), id, type);
-            service.deleteVersion(id, getDocumentName(), login);
-            showMessage(request, response);
+            String login = getRequestParser().getAuthorBean(request).getLogin();
+            String type = getService().getVersionType(id, getDocumentName(), login);
+            getServerService().deleteUserDocumentVersion(getFilePath(), login, getDocumentName(), id, type);
+            getService().deleteVersion(id, getDocumentName(), login);
+            response.sendRedirect(url1 + getDocumentName());
         } catch (SystemException e) {
             throw new ServletException(e);
         } catch (BusinessException e) {
             if (e.getClass() == NoSuchObjectInDB.class) {
-                request.setAttribute("versmessage", "message.versionBeenRemoved");
-                RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/AllVersions");
-                reqDispatcher.forward(request, response);
+                showMessage(request, response, "message.versionBeenRemoved", messageName, url2);
             } else {
                 throw new ServletException(e);
             }
         }
-    }
-
-    private void showMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//            RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/Versions?document=" + document);
-//            reqDispatcher.forward(request, response);
-        response.sendRedirect("/Versions?document=" + getDocumentName());
     }
 }

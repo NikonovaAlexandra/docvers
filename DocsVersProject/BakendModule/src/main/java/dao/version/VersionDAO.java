@@ -25,4 +25,6 @@ public interface VersionDAO extends DAO {
     void deleteVersion(long id, long docCode, String login) throws DAOException, SystemException;
 
     String getVersionType(long versionName, long documentName, String login) throws DAOException, SystemException;
+
+    Version getVersion(long id, long versName) throws DAOException, SystemException;
 }

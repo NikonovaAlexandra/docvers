@@ -3,16 +3,10 @@ package service;
 import beans.AuthorBean;
 import beans.DocumentBean;
 import beans.VersionBean;
-import exception.NullFileException;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Date;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,6 +34,9 @@ public class RequestParser {
                                       Date date, String path, String versionType) {
         return new VersionBean(authorBean, documentBean, description, date, path, versionType);
     }
+
+
+
 
 
 }
