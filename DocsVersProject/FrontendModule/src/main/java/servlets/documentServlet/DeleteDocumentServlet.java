@@ -26,6 +26,8 @@ public class DeleteDocumentServlet extends ParentServlet {
     private final String url2 = "/GetAllDocuments";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding(getEncoding());
+        request.setCharacterEncoding(getEncoding());
         try {
             long docNameCode = Long.parseLong(request.getParameter("document to delete"));
             String login = getRequestParser().getAuthorBean(request).getLogin();

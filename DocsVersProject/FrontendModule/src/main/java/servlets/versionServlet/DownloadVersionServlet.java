@@ -34,6 +34,8 @@ public class DownloadVersionServlet extends ParentServlet {
         private static final int BUFSIZE = 4096;
         private File file;
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            response.setCharacterEncoding(getEncoding());
+            request.setCharacterEncoding(getEncoding());
             ServerOperations serverOperations = new ServerOperations();
             try{
                 VersionBean versionBean = parse(request);

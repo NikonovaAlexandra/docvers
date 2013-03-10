@@ -13,6 +13,12 @@
         <param-value>/Login</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </context-param>
+
+
     <servlet>
         <servlet-name>Login</servlet-name>
         <jsp-file>/WEB-INF/jsp/Login.jsp</jsp-file>
@@ -198,6 +204,9 @@
         <filter-name>ExceptionalFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+
+
 
 
 

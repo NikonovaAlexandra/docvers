@@ -26,6 +26,9 @@
 <FORM action="Logout" method="post">
     <input type="submit" name="submit" value="Logout">
 </FORM>
-
+<jsp:include page="/WEB-INF/jsp/Template.jsp">
+    <jsp:param name="content" value="AddDocument"/>
+    <jsp:param name="title" value="Book Form"/>
+</jsp:include>
 </body>
 </html>

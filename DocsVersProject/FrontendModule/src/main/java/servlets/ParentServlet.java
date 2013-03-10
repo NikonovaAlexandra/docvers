@@ -24,6 +24,8 @@ public class ParentServlet extends HttpServlet {
     private ServerOperations serverService;
     private String filePath;
     private RequestParser requestParser;
+    private String encoding;
+
     public void init() {
         requestParser = new RequestParser();
         service = new DBOperations();
@@ -31,6 +33,7 @@ public class ParentServlet extends HttpServlet {
         // Get the file location where it would be stored.
         filePath =
                 getServletContext().getInitParameter("file-upload");
+        encoding = getServletContext().getInitParameter("encoding");
     }
 
     public long getDocumentName() {
@@ -56,6 +59,15 @@ public class ParentServlet extends HttpServlet {
     public RequestParser getRequestParser() {
         return requestParser;
     }
+
+    public String getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {

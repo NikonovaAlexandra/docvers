@@ -25,6 +25,8 @@ public class GetVersionsServlet extends ParentServlet {
     private final String url = "/AllVersions";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding(getEncoding());
+        request.setCharacterEncoding(getEncoding());
         try {
             long docName = Long.parseLong(request.getParameter("document"));
             request.getSession().setAttribute("documentToView", docName);

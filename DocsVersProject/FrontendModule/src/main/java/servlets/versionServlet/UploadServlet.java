@@ -43,7 +43,8 @@ public class UploadServlet extends ParentServlet {
             throws ServletException, java.io.IOException {
         String message;
         File file = null;
-
+        response.setCharacterEncoding(getEncoding());
+        request.setCharacterEncoding(getEncoding());
         // Check that we have a file upload request
         isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {

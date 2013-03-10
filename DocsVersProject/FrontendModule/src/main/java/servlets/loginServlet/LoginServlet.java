@@ -3,6 +3,7 @@ package servlets.loginServlet;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
+import servlets.ParentServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,10 +21,11 @@ import static service.Authentication.performLogin;
  * Time: 23:37
  * To change this template use File | Settings | File Templates.
  */
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends ParentServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+        response.setCharacterEncoding(getEncoding());
+        request.setCharacterEncoding(getEncoding());
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         ServletContext context = request.getSession().getServletContext();
@@ -32,8 +34,9 @@ public class LoginServlet extends HttpServlet {
             performLogin(request, response, login, password, context);
         } catch (BusinessException e) {
             if (e.getClass() == new NoSuchObjectInDB("No User with such login and password!").getClass()) {
-                request.getSession().setAttribute("logmessage", "message.incorrectLoginOrPassword");
                 String url = context.getInitParameter("login_page");
+                showMessage(request, response, "message.incorrectLoginOrPassword", "logmessage", url);
+
                 if (url != null && !"".equals(url)) {
                     response.sendRedirect(url);
                 }

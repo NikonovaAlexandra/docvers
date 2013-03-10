@@ -24,6 +24,9 @@ public class AddDocumentServlet extends ParentServlet {
     private final String url = "/AddDocument";
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setCharacterEncoding(getEncoding());
+        request.setCharacterEncoding(getEncoding());
+
         DocumentBean documentBean = null;
         try {
             documentBean = getRequestParser().getDocumentBean(request);
