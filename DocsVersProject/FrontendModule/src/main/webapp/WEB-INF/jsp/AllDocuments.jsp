@@ -8,11 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <fmt:setBundle basename="Messages"/>
 <html>
 <head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
     <fmt:message key="document.wanttodelete" var="deletion"/>
     <script type="text/javascript">
         function deleteA() {
@@ -25,34 +24,42 @@
         }
     </script>
 </head>
-<body>
 
-<c:if test="${not empty docmessage}">
-    <h1><fmt:message key="${docmessage}"/></h1>
-</c:if>
-<c:if test="${not empty documentList}">
-    <table id="userDocs">
-        <thead>
-        <tr>
-            <th scope="col"><fmt:message key="alldocuments.name"/></th>
-            <th scope="col"><fmt:message key="alldocuments.description"/></th>
-            <th scope="col">&nbsp</th>
-        </tr>
-        </thead>
+<t:TemplatePage>
+    <jsp:body>
+        <c:if test="${not empty docmessage}">
+            <h1><fmt:message key="${docmessage}"/></h1>
+        </c:if>
+        <c:if test="${not empty documentList}">
+                <table id="userDocs">
+                    <thead>
+                    <tr>
+                        <th scope="col"><fmt:message key="alldocuments.name"/></th>
+                        <th scope="col"><fmt:message key="alldocuments.description"/></th>
+                        <th scope="col" style="width: 100px">&nbsp</th>
+                    </tr>
+                    </thead>
 
-        <c:forEach items="${documentList}" var="item">
-            <tr>
-                <td><a href="<c:url value="Versions">
+                    <c:forEach items="${documentList}" var="item">
+                        <tr>
+                            <td><a href="<c:url value="Versions">
                 <c:param name="document" value="${item.codeDocumentName}"/>
                 </c:url>">${item.name}</a></td>
-                <td>${item.description}</td>
-                <td><a onclick="return deleteA()"
-                       href="<c:url value="DeleteDocument">
+                            <td>${item.description}</td>
+                            <td><a onclick="return deleteA()"
+                                   href="<c:url value="DeleteDocument">
                     <c:param name="document to delete" value="${item.codeDocumentName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
-</body>
+                        </tr>
+                    </c:forEach>
+                </table>
+        </c:if>
+
+        <FORM action="AddDocument" method="post">
+            <fmt:message key="index.add" var="buttonValue"/>
+            <input type="submit" name="submit" class="button" value="${buttonValue}">
+        </FORM>
+    </jsp:body>
+</t:TemplatePage>
+
 </html>

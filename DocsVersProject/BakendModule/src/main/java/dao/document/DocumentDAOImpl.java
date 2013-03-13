@@ -8,6 +8,7 @@ import exception.*;
 import org.h2.constant.ErrorCode;
 import service.Queries;
 
+import java.lang.IllegalArgumentException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,7 +76,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             rs = ps.executeQuery();
             conn.commit();
             doc = createDocumentFromResultSet(rs);
-            if(doc == null ) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
+            if (doc == null) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return doc;
         } catch (SQLException e) {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
@@ -165,6 +166,9 @@ public class DocumentDAOImpl implements DocumentDAO {
         PreparedStatement ps = null;
         if (document == null) {
             throw new IllegalArgumentException();
+        }
+        if (document.getName().length() > 20) {
+            throw new exception.IllegalArgumentException("Too long name");
         }
         try {
             ps = conn.prepareStatement(Queries.INSERT_INTO_DOCUMENT_AUTHOR_NAME_DESCRIPTION_VALUES);

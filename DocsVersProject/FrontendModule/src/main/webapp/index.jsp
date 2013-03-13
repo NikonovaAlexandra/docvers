@@ -1,5 +1,5 @@
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
-<core:redirect url="Menu"/>
+<core:redirect url="GetAllDocuments"/>
 
 <%--<%@ page import="java.io.StringWriter" %>--%>
 <%--<%@ page import="org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder" %>--%>

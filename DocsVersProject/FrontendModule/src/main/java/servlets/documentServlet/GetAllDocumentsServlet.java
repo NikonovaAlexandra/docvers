@@ -43,5 +43,5 @@ public class GetAllDocumentsServlet extends ParentServlet {
             }
         }
     }
-
+     //todo: pagination
 }

@@ -10,6 +10,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +36,6 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         try {
-
             boolean authorized = false;
             if (request instanceof HttpServletRequest) {
                 HttpSession session = ((HttpServletRequest) request).getSession(false);

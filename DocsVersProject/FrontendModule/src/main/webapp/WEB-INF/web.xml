@@ -17,7 +17,9 @@
         <param-name>encoding</param-name>
         <param-value>UTF-8</param-value>
     </context-param>
-
+    <listener>
+        <listener-class>servlets.ServletListener</listener-class>
+    </listener>
 
     <servlet>
         <servlet-name>Login</servlet-name>

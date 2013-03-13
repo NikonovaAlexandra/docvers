@@ -7,25 +7,30 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="Messages"/>
-<html>
+
+<html lang="${language}">
 <head>
     <title></title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
-    <script>
-        function validateForm() {
-            if (document.form.login.value == "") {
-                alert("${emptyName}");
-                document.form.login.focus();
-                return false;
-            }
-            if (document.form.password.value == "") {
-                alert("${emptyName}");
-                document.form.password.focus();
-                return false;
-            }
-        }
-    </script>
+    <%--<script>--%>
+        <%--function validateForm() {--%>
+            <%--if (document.form.login.value == "") {--%>
+                <%--alert("${emptyName}");--%>
+                <%--document.form.login.focus();--%>
+                <%--return false;--%>
+            <%--}--%>
+            <%--if (document.form.password.value == "") {--%>
+                <%--alert("${emptyName}");--%>
+                <%--document.form.password.focus();--%>
+                <%--return false;--%>
+            <%--}--%>
+        <%--}--%>
+    <%--</script>--%>
 </head>
 <body>
 <div>
@@ -37,6 +42,22 @@
     <%
         String urlParams = "http://localhost:8080/LoginServlet?cLogin";
     %>
+    <form>
+        <c:url value="Login" var="ruURL">
+
+            <c:param name="language" value="ru_RUS"/>
+
+        </c:url>
+
+        <a href="${ruURL}" onclick="submit()"> <img src="\images\russia-icon.png"/> </a>
+        <c:url value="Login" var="enURL">
+
+            <c:param name="language" value="en_US"/>
+
+        </c:url>
+
+        <a href="${enURL}" onclick="submit()"> <img src="images\uk-icon.png"/> </a>
+    </form>
     <form action="<%=urlParams%>" method="POST" name="form" onSubmit="return validateForm()">
         <table>
             <tr>
@@ -49,7 +70,7 @@
             </tr>
             <tr>
                 <td><fmt:message key="login.login" var="buttonValue"/>
-                    <input type="submit" name="submit" value="${buttonValue}"></td>
+                    <input type="submit" name="submit" class = "button" value="${buttonValue}"></td>
             </tr>
         </table>
     </form>

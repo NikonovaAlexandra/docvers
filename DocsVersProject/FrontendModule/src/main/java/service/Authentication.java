@@ -35,8 +35,7 @@ public class Authentication {
                 AuthorBean tok = authenticate(author, login, password);
                 if (tok != null) {
                     request.getSession().setAttribute("user", tok);
-                    RequestDispatcher reqDispatcher = context.getRequestDispatcher("/Menu");
-                    reqDispatcher.forward(request, response);
+                    response.sendRedirect("/GetAllDocuments");
                 } else throw new NoSuchObjectInDB("Incorrect login or password!");
             } else {
                 String url = context.getInitParameter("login_page");

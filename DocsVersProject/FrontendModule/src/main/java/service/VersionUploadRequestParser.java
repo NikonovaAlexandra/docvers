@@ -24,7 +24,6 @@ import java.util.List;
 public class VersionUploadRequestParser extends RequestParser{
 
     public UploadVersionRequestStruct geVersionDescriptionAndFileItem(HttpServletRequest request) throws Exception {
-
         ServerOperations serverOperations = new ServerOperations();
         ServletFileUpload upload = serverOperations.initUpload(request);
 

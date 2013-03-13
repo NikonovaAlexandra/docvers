@@ -8,7 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="Messages"/>
+
 <html lang="${language}">
 <head>
     <fmt:message key="adddocument.blankName" var="emptyName"/>
@@ -22,35 +27,38 @@
         }
     </script>
     <title><fmt:message key="adddocument.tittle"/></title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
-<body>
-<div>
-    <c:if test="${not empty addmessage}">
-        <h1><fmt:message key="${addmessage}"/></h1>
-    </c:if>
-</div>
-<div>
-    <hr>
-    <form action="Document" method="post" name="form" onSubmit="return validateForm()">
-        <table>
-            <tr>
-                <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
-                <td width="161"><input name="docname" type="text"/></td>
-            </tr>
-            <tr>
-                <td><fmt:message key="adddocument.docdescription"/></td>
-                <td><textarea name="docdescription"></textarea></td>
-            </tr>
-            <tr>
-                <td><fmt:message key="addocument.add" var="buttonValue"/>
-                    <input name="submit" type="submit" value="${buttonValue}"></td>
-            </tr>
-        </table>
-    </form>
-    <hr>
-</div>
-</body>
+<t:TemplatePage>
+    <jsp:body>
+
+    <div>
+        <c:if test="${not empty addmessage}">
+            <h1><fmt:message key="${addmessage}"/></h1>
+        </c:if>
+    </div>
+    <div>
+        <hr>
+        <form action="Document" method="post" name="form" onSubmit="return validateForm()">
+            <table>
+                <tr>
+                    <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
+                    <td width="161"><input name="docname" type="text"/></td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="adddocument.docdescription"/></td>
+                    <td><textarea name="docdescription"></textarea></td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="addocument.add" var="buttonValue"/>
+                        <input name="submit" type="submit" class = "button" value="${buttonValue}"></td>
+                </tr>
+            </table>
+        </form>
+        <hr>
+    </div>
+    </jsp:body>
+</t:TemplatePage>
+
 </html>

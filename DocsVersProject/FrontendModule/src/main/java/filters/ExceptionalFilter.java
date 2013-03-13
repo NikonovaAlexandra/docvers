@@ -40,7 +40,7 @@ public class ExceptionalFilter implements Filter {
             if (e.getRootCause() instanceof BusinessException) {
 
                 message = e.getCause().getClass() + "\n " + e.getMessage();
-                logger.error("Business Exception in application: " + message);
+                logger.error("Business Exception in application: " + message + " " + e.getStackTrace());
             } else if (e.getRootCause() instanceof SystemException) {
                 message = "An error has occured!\n " + e.getCause().getClass() + "\n " +
                         e.getMessage() + "\n Please contact your administrator!";
@@ -65,13 +65,6 @@ public class ExceptionalFilter implements Filter {
 
     @Override
     public void destroy() {
-        // todo: close connections somewhere else
-        try {
-            ConnectionPoolFactory.getInstance().getConnectionPool().closeAllConnections();
-        } catch (SystemException e) {
-            logger.error("System Exception while destroying Exceptional Filter.");
-        } catch (BusinessException e) {
-            logger.error("Business Exception while destroying Exceptional Filter.");
-        }
+
     }
 }
