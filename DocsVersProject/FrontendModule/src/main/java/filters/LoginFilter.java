@@ -38,16 +38,20 @@ public class LoginFilter implements Filter {
         try {
             boolean authorized = false;
             if (request instanceof HttpServletRequest) {
-                HttpSession session = ((HttpServletRequest) request).getSession(false);
-                if (session != null) {
-                    AuthorBean token = (AuthorBean) session.getAttribute("user");
-                    String qryStr = ((HttpServletRequest) request).getQueryString();
-                    if ((token != null) || "cLogin".equalsIgnoreCase(qryStr)) {
-                        authorized = true;
-                        //((HttpServletRequest) request).getSession().removeAttribute("logmessage");
+                if(isResourceRequest((HttpServletRequest) request)) {
+                    authorized = true;
+                } else {
+                    HttpSession session = ((HttpServletRequest) request).getSession(false);
+                    if (session != null) {
+                        AuthorBean token = (AuthorBean) session.getAttribute("user");
+                        String qryStr = ((HttpServletRequest) request).getQueryString();
+                        if ((token != null) || "cLogin".equalsIgnoreCase(qryStr)) {
+                            authorized = true;
+                            //((HttpServletRequest) request).getSession().removeAttribute("logmessage");
+
+                        }
 
                     }
-
                 }
             }
 
@@ -73,6 +77,13 @@ public class LoginFilter implements Filter {
 
         }
 
+    }
+
+    private boolean isResourceRequest(HttpServletRequest request) {
+        if (request.getRequestURI().matches("(.*)(/[js/|css/|images/])(.*)")) {
+            return true;
+        }
+        return false;
     }
 
     @Override

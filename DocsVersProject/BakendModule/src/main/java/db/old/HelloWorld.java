@@ -6,8 +6,6 @@ package db.old; /**
  * To change this template use File | Settings | File Templates.
  */
 
-import dao.DAOFactory;
-import dao.document.DocumentDAO;
 import exception.DAOException;
 import exception.SystemException;
 import org.slf4j.Logger;

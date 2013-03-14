@@ -3,7 +3,6 @@ package dao.document;
 import dao.DAO;
 import entities.Document;
 import exception.DAOException;
-import exception.NoSuchObjectInDB;
 import exception.SystemException;
 
 import java.util.List;

@@ -23,7 +23,7 @@
 
     <servlet>
         <servlet-name>Login</servlet-name>
-        <jsp-file>/WEB-INF/jsp/Login.jsp</jsp-file>
+        <jsp-file>/jsp/Login.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -51,7 +51,7 @@
     <!--=========================================================================-->
     <servlet>
         <servlet-name>main</servlet-name>
-        <jsp-file>/WEB-INF/jsp/main.jsp</jsp-file>
+        <jsp-file>/jsp/main.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>main</servlet-name>
@@ -71,7 +71,7 @@
 
     <servlet>
         <servlet-name>AddDocument</servlet-name>
-        <jsp-file>/WEB-INF/jsp/AddDocument.jsp</jsp-file>
+        <jsp-file>/jsp/AddDocument.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddDocument</servlet-name>
@@ -99,7 +99,7 @@
 
     <servlet>
         <servlet-name>AllDocuments</servlet-name>
-        <jsp-file>/WEB-INF/jsp/AllDocuments.jsp</jsp-file>
+        <jsp-file>/jsp/AllDocuments.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AllDocuments</servlet-name>
@@ -117,7 +117,7 @@
 
     <servlet>
         <servlet-name>AddVersion</servlet-name>
-        <jsp-file>/WEB-INF/jsp/NewVersion.jsp</jsp-file>
+        <jsp-file>/jsp/NewVersion.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddVersion</servlet-name>
@@ -125,7 +125,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AddVersion</servlet-name>
-        <jsp-file>/WEB-INF/jsp/NewVersion.jsp</jsp-file>
+        <jsp-file>/jsp/NewVersion.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddVersion</servlet-name>
@@ -135,7 +135,7 @@
 
     <servlet>
         <servlet-name>AllVersions</servlet-name>
-        <jsp-file>/WEB-INF/jsp/VersionsOfDocument.jsp</jsp-file>
+        <jsp-file>/jsp/VersionsOfDocument.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AllVersions</servlet-name>
@@ -176,21 +176,12 @@
 <!--=========================================================================-->
     <servlet>
         <servlet-name>ErrorPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/ErrorPage.jsp</jsp-file>
+        <jsp-file>/jsp/ErrorPage.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>ErrorPage</servlet-name>
         <url-pattern>/ErrorPage</url-pattern>
     </servlet-mapping>
-
-    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>filters.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <filter>
         <filter-name>ExceptionalFilter</filter-name>
@@ -206,10 +197,13 @@
         <filter-name>ExceptionalFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-
-
-
-
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

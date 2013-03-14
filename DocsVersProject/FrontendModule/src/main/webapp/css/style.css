@@ -1,0 +1,131 @@
+html {
+    background: url("../images/login_bg.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body {
+    /*background-image: url("../images/natural_paper.png");*/
+    background-repeat: no-repeat;
+    /*height: 100%;*/
+    margin: 0;
+    padding: 0;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    color: #7C4040;
+}
+
+A:link {
+    text-decoration: none;
+    color: #7C4040
+}
+
+A:visited {
+    text-decoration: none;
+    color: #7C4040
+}
+
+A:active {
+    text-decoration: none;
+    color: #7C4040
+}
+
+A:hover {
+    font-size: 15px;
+    color: #eee9d9;
+    text-shadow: 0 2px 3px #4c2222;
+    text-decoration: none;
+}
+
+#userDocs {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    margin: 45px;
+    width: 550px;
+    text-align: center;
+    border-collapse: collapse;
+    background: url('../images/table_bg.png');
+}
+
+#userDocs thead tr {
+    /*background: url('../images/paper.png');*/
+    height: 50px;
+}
+
+#userDocs th {
+    font-size: 17px;
+    font-weight: normal;
+    padding: 8px;
+    border-bottom: 1px solid #C0C0C0;
+    /*color: #7C4040;*/
+    color: #eee9d9;
+    text-shadow: 0 2px 3px #4c2222;
+    background: #9c5959;
+    height: 50px;
+}
+
+#userDocs td {
+    padding: 8px;
+    border-bottom: 1px solid #C0C0C0;
+    color: #9c5959;
+    border-top: 1px solid transparent;
+    height: 50px;
+}
+
+#userDocs tbody tr:hover td {
+    color: #eee9d9;
+    /*text-shadow: 0 2px 3px #4c2222;*/
+    background: #BA6767;
+}
+
+#userDocs tbody tr:hover a:link {
+    color: #eee9d9;
+    text-shadow: 0 2px 3px #4c2222;
+}
+
+#header{
+    position:fixed;
+    top:0px;
+    left:0px;
+    right: 0px;
+    /*width:180px;*/
+    height:150px;
+     /*background:transparent url(images/title.png) no-repeat top left;*/
+}
+
+#footer {
+    position: fixed;
+    color: #eee9d9;
+    bottom: 0px;
+    right: 5%;
+    height: 50px;
+    width: 100%;
+    background: url(../images/label-footer.png) no-repeat top right;
+    float: left;
+}
+#foot {
+    position: fixed;
+    bottom: 2%;
+    right: 13%;
+    float: left;
+}
+
+/*.button {*/
+    /*width: 200px;*/
+    /*height: auto;*/
+/*}*/
+
+#body  {
+    width: 50%;
+    margin-top: 151px;
+    margin-left: 20px;
+
+}
+
+#message {
+    /*position: fixed;*/
+    margin-top:10px;
+    margin-left: 20px;
+    width: 50%;
+    height: 20px;
+}

@@ -1,8 +1,5 @@
 package dao.document;
 
-import dao.DAOFactory;
-import dao.author.AuthorDAO;
-import entities.Author;
 import entities.Document;
 import exception.*;
 import org.h2.constant.ErrorCode;

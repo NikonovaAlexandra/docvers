@@ -35,8 +35,7 @@ public class LoginServlet extends ParentServlet {
         } catch (BusinessException e) {
             if (e.getClass() == new NoSuchObjectInDB("No User with such login and password!").getClass()) {
                 String url = context.getInitParameter("login_page");
-                showMessage(request, response, "message.incorrectLoginOrPassword", "logmessage", url);
-
+                request.getSession().setAttribute("logmessage", "message.incorrectLoginOrPassword");
                 if (url != null && !"".equals(url)) {
                     response.sendRedirect(url);
                 }

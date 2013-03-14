@@ -1,4 +1,7 @@
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
 <core:redirect url="GetAllDocuments"/>
 
 <%--<%@ page import="java.io.StringWriter" %>--%>

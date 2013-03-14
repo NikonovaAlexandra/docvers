@@ -3,7 +3,6 @@ package dao.version;
 import dao.DAO;
 import entities.Version;
 import exception.DAOException;
-import exception.NotEnoughRightsException;
 import exception.SystemException;
 
 import java.util.List;

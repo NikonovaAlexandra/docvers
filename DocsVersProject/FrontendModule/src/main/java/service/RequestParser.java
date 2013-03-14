@@ -19,7 +19,7 @@ public class RequestParser {
     private char separator = File.separatorChar;
 
     public AuthorBean getAuthorBean(HttpServletRequest request) {
-        // AuthorBean a = new AuthorBean("author2", "pass2");
+       // return new AuthorBean(3, "author2", "pass2");
         return (AuthorBean) request.getSession().getAttribute("user");
     }
 
