@@ -29,7 +29,7 @@ public class LoginServlet extends ParentServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         ServletContext context = request.getSession().getServletContext();
-        //todo: loginmessage
+        //todo: loginmessage after incorrect login
         try {
             performLogin(request, response, login, password, context);
         } catch (BusinessException e) {

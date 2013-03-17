@@ -59,17 +59,17 @@
                     <fieldset id="body">
                         <fieldset>
                             <label for="login"><fmt:message key="login.enterLogin"/></label>
-                            <input type="text" name="login" id="email"/>
+                            <input type="text" required  name="login" id="email"/>
                         </fieldset>
                         <fieldset>
                             <label for="password"><fmt:message key="login.password"/></label>
-                            <input type="password" name="password" id="password"/>
+                            <input type="password" required name="password" id="password"/>
                         </fieldset>
                         <fmt:message key="login.login" var="buttonValue"/>
                         <input type="submit" id="login" value="${buttonValue}"/>
-                        <label for="checkbox"><input type="checkbox" id="checkbox"/>Remember me</label>
+                        <label for="checkbox"><input type="checkbox" id="checkbox"/><fmt:message key="login.remember"/></label>
                     </fieldset>
-                    <span><a href="#">Forgot your password?</a></span>
+                    <span><a href="#"><fmt:message key="login.forgotPasswor"/></a></span>
                 </form>
             </div>
         </div>

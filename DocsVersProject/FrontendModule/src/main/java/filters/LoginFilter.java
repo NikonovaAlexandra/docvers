@@ -47,10 +47,7 @@ public class LoginFilter implements Filter {
                         String qryStr = ((HttpServletRequest) request).getQueryString();
                         if ((token != null) || "cLogin".equalsIgnoreCase(qryStr)) {
                             authorized = true;
-                            //((HttpServletRequest) request).getSession().removeAttribute("logmessage");
-
                         }
-
                     }
                 }
             }

@@ -41,57 +41,19 @@
     </c:if>
 </div>
 
-
 <div id="container">
     <ul id="nav">
         <li class="GetAllDocs"><a href="GetAllDocuments"><fmt:message key="index.getAll"/></a></li>
         <li class="AddDoc"><a href="AddDocument"><fmt:message key="index.add"/></a></li>
         <li class="Logout"><a href="Logout"><fmt:message key="logout"/></a></li>
         <form>
-  <%--&lt;%&ndash;///////////////////////////////////////////////////////////////////////&ndash;%&gt;--%>
-            <%--<c:set var="document" value="${param.document}"/>--%>
-            <%--<c:set var="url" value="${pageContext.request.servletPath}"/>--%>
-            <%--<c:set var="url1" value=" /AllDocuments"/>--%>
-            <%--<c:set var="url2" value="/AllVersions"/>--%>
-            <%--<c:if test="${url1} == ${url1} ">--%>
-                <%--<c:set var="url" value="/GetAllDocuments"/>--%>
-                <%--<c:out value="gggg1"/>--%>
-            <%--</c:if>--%>
-            <%--<c:if test="${url1 eq url1} ">--%>
-                <%--<c:set var="url" value="/GetAllDocuments"/>--%>
-                <%--<c:out value="gggg2"/>--%>
-            <%--</c:if>--%>
-            <%--<c:if test="${url1 == url1} ">--%>
-                <%--<c:set var="url" value="/GetAllDocuments"/>--%>
-                <%--<c:out value="gggg3"/>--%>
-            <%--</c:if>--%>
-      <%--<c:choose>--%>
-      <%--<c:when test="${url1} eq ${url1} ">--%>
-            <%--<c:set var="url" value="/GetAllDocuments"/>--%>
-            <%--<c:out value="gggg4"/>--%>
-        <%--</c:when>--%>
-      <%--<c:when test="${url1} == ${url1} ">--%>
-            <%--<c:set var="url" value="/GetAllDocuments"/>--%>
-            <%--<c:out value="gggg5"/>--%>
-        <%--</c:when>--%>
-      <%--<c:when test="${url1 eq url1} ">--%>
-            <%--<c:set var="url" value="/GetAllDocuments"/>--%>
-            <%--<c:out value="gggg6"/>--%>
-        <%--</c:when>--%>
-      <%--</c:choose>--%>
-            <%--&lt;%&ndash;////////////////////////////////////////&ndash;%&gt;--%>
 
-
-
-            <c:if test="${url == url2 } ">
-                <c:set var="url" value="/Versions"/>
-            </c:if>
-            <c:out value="${url}"/>
-
-            <c:url value="${url}" var="ruURL">
+            <c:set var="document" value="${param.document}"/>
+            <c:url value="" var="ruURL">
                 <c:if test="${not empty document}">
                     <c:param name="document" value="${document}"/>
                 </c:if>
+
                 <c:param name="language" value="ru_RUS"/>
             </c:url>
 

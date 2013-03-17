@@ -18,13 +18,10 @@
 </head>
 <t:TemplatePage>
     <jsp:body>
-
-        <%--<c:if test="${not empty uploadmessage}">--%>
-            <%--<h1><fmt:message key="${uploadmessage}"/></h1>--%>
-        <%--</c:if>--%>
         <hr>
         <h3><fmt:message key="version.upload"/>:</h3>
         <fmt:message key="version.upload.select"/>: <br/>
+
         <form action="Upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 
 
@@ -42,10 +39,8 @@
                     <td><textarea name="versdescription"></textarea></td>
                 </tr>
             </table>
-
             <br/>
-
-            <input type="submit" class = "button" value="${butName}"/>
+            <input type="submit" class="button" value="${butName}"/>
 
         </form>
         <hr>

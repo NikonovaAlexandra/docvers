@@ -3,7 +3,7 @@ package dao.version;
 import entities.Version;
 import exception.*;
 import org.h2.constant.ErrorCode;
-import service.Queries;
+import service.QueriesSQL;
 
 import java.lang.IllegalArgumentException;
 import java.sql.*;
@@ -30,7 +30,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException( e);
             } else throw new DAOException(e);
         }
     }
@@ -43,7 +43,7 @@ public class VersionDAOImpl implements VersionDAO {
         Version version;
 
         try {
-            ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
+            ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -66,7 +66,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } else throw new DAOException(e);
         } finally {
 
@@ -89,12 +89,12 @@ public class VersionDAOImpl implements VersionDAO {
         try {
             long name = getLastVersionNameInfo(version.getDocumentID()) + 1;
             conn.commit();
-            ps = conn.prepareStatement(Queries.UPDATE_VERSION_SET_IS_RELEASED);
+            ps = conn.prepareStatement(QueriesSQL.UPDATE_VERSION_SET_IS_RELEASED);
             ps.setBoolean(1, true);
             ps.setLong(2, version.getDocumentID());
             ps.setBoolean(3, true);
             ps.executeUpdate();
-            ps = conn.prepareStatement(Queries.INSERT_INTO_VERSION);
+            ps = conn.prepareStatement(QueriesSQL.INSERT_INTO_VERSION);
             ps.setLong(1, version.getDocumentID());
             ps.setLong(2, version.getAuthorID());
             ps.setDate(3, version.getDate());
@@ -119,10 +119,10 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
                 throw new ReferentialIntegrityViolatedException();
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             }
             if (e.getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
-                throw new NoDiskSpaceException("", e);
+                throw new NoDiskSpaceException(e);
             }   throw new DAOException(e);
 
         } finally {
@@ -141,7 +141,7 @@ public class VersionDAOImpl implements VersionDAO {
     public void deleteVersion(long versName, long docCode, String login) throws DAOException, SystemException {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement(Queries.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
+            ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
             ps.setLong(1, versName);
             ps.setLong(2, docCode);
             ps.setString(3, login);
@@ -152,7 +152,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             }
             try {
                 conn.rollback();
@@ -174,7 +174,7 @@ public class VersionDAOImpl implements VersionDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = conn.prepareStatement(Queries.SELECT_VERSION_TYPE_FROM_VERSION);
+            ps = conn.prepareStatement(QueriesSQL.SELECT_VERSION_TYPE_FROM_VERSION);
             ps.setLong(1, versionName);
             ps.setLong(2, documentName);
             ps.setString(3, login);
@@ -195,7 +195,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } throw new DAOException(e);
 
 
@@ -215,7 +215,7 @@ public class VersionDAOImpl implements VersionDAO {
         Version version = null;
 
         try {
-            ps = conn.prepareStatement(Queries.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
+            ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
             ps.setLong(1, id);
             ps.setLong(2, versName);
             rs = ps.executeQuery();
@@ -238,7 +238,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } else throw new DAOException(e);
         } finally {
 
@@ -256,7 +256,7 @@ public class VersionDAOImpl implements VersionDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = conn.prepareStatement(Queries.SELECT_VERSION_NAME_FROM_VERSION);
+            ps = conn.prepareStatement(QueriesSQL.SELECT_VERSION_NAME_FROM_VERSION);
             ps.setLong(1, docID);
             rs = ps.executeQuery();
             long name = 0;
@@ -275,7 +275,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } throw new DAOException(e);
 
 

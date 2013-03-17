@@ -8,7 +8,7 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class NotEnoughRightsException extends SystemException {
-    public NotEnoughRightsException(String s, Exception e) {
-        super(s, e);
+    public NotEnoughRightsException(Exception e) {
+        super("No enough rights for operation", e);
     }
 }

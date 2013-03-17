@@ -34,17 +34,12 @@
     <jsp:body>
 
     <div>
-        <%--<c:if test="${not empty addmessage}">--%>
-            <%--<h1><fmt:message key="${addmessage}"/></h1>--%>
-        <%--</c:if>--%>
-    </div>
-    <div>
         <hr>
         <form action="Document" method="post" name="form" onSubmit="return validateForm()">
             <table>
                 <tr>
                     <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
-                    <td width="161"><input name="docname" type="text" size="25" style="height: 20px;"/></td>
+                    <td width="161"><input name="docname" required type="text" size="25" style="height: 20px;"/></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="adddocument.docdescription"/></td>

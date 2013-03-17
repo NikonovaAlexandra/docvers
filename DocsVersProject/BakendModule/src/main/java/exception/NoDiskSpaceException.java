@@ -8,7 +8,8 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class NoDiskSpaceException extends SystemException {
-    public NoDiskSpaceException(String s, Exception e) {
-        super(s, e);
+
+    public NoDiskSpaceException(Exception e) {
+        super("No disk space available", e);
     }
 }

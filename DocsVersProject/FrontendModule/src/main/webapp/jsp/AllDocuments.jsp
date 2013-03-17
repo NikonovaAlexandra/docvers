@@ -27,9 +27,6 @@
 
 <t:TemplatePage>
     <jsp:body>
-        <%--<c:if test="${not empty docmessage}">--%>
-            <%--<h1><fmt:message key="${docmessage}"/></h1>--%>
-        <%--</c:if>--%>
         <c:if test="${not empty documentList}">
                 <table id="userDocs">
                     <thead>

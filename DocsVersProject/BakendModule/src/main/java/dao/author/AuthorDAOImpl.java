@@ -3,7 +3,7 @@ package dao.author;
 import entities.Author;
 import exception.*;
 import org.h2.constant.ErrorCode;
-import service.Queries;
+import service.QueriesSQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +31,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } else throw new DAOException(e);
         }
 
@@ -42,7 +42,7 @@ public class AuthorDAOImpl implements AuthorDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = conn.prepareStatement(Queries.SELECT_FROM_AUTHOR_WHERE_ID);
+            ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_AUTHOR_WHERE_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
             conn.commit();
@@ -55,41 +55,9 @@ public class AuthorDAOImpl implements AuthorDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } else throw new DAOException(e);
 
-        } finally {
-
-            try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                throw new DAOException(e);
-            }
-        }
-    }
-
-    @Override
-    public Author getAuthorByDocumentID(long id) throws DAOException, SystemException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = conn.prepareStatement(Queries.SELECT_AUTHOR_ID_FROM_DOCUMENT_WHERE_ID);
-            ps.setLong(1, id);
-            rs = ps.executeQuery();
-
-            Author author = null;
-            if (rs.next()) {
-                author = getAuthorByID(rs.getLong("author_id"));
-            } else throw new NoSuchObjectInDB("Author with document id = " + id);
-            conn.commit();
-            return author;
-        } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
-            } else throw new DAOException(e);
         } finally {
 
             try {
@@ -106,7 +74,7 @@ public class AuthorDAOImpl implements AuthorDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = conn.prepareStatement(Queries.SELECT_FROM_AUTHOR_WHERE_LOGIN);
+            ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_AUTHOR_WHERE_LOGIN);
             ps.setString(1, login);
             rs = ps.executeQuery();
             conn.commit();
@@ -119,7 +87,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException("", e);
+                throw new NotEnoughRightsException(e);
             } else throw new DAOException(e);
         } finally {
 

@@ -18,6 +18,8 @@ import java.io.IOException;
  * Time: 12:17
  * To change this template use File | Settings | File Templates.
  */
+//todo language 2 click
+//buttons
 public class ParentServlet extends HttpServlet {
     private DBOperations service;
     private long documentName;

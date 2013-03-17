@@ -23,7 +23,8 @@ import java.util.List;
 public class GetVersionsServlet extends ParentServlet {
     private final String messageName = "versmessage";
     private final String url = "/AllVersions";
-
+    //todo released
+    //todo type
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());

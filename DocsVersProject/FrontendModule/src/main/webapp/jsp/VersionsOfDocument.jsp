@@ -28,9 +28,6 @@
 </head>
 <t:TemplatePage>
     <jsp:body>
-        <%--<c:if test="${not empty versmessage}">--%>
-            <%--<h1><fmt:message key="${versmessage}"/></h1>--%>
-        <%--</c:if>--%>
 
         <c:if test="${not empty versionList}">
             <c:forEach items="${versionList}" var="item">
@@ -40,11 +37,13 @@
             <table id="userDocs" summary="Meeting Results">
                 <thead>
                 <tr>
+                    <th scope="col">№</th>
+
                     <th scope="col"><fmt:message key="versions.date"/></th>
                     <th scope="col"><fmt:message key="versions.author"/></th>
                     <th scope="col"><fmt:message key="versions.description"/></th>
                     <th scope="col"><fmt:message key="versions.type"/></th>
-                    <th scope="col"><fmt:message key="versions.type"/></th>
+                    <th scope="col"><fmt:message key="versions.isReleased"/></th>
                     <th scope="col" style="width: 15%">&nbsp</th>
                     <th scope="col" style="width: 15%">&nbsp</th>
                 </tr>
@@ -53,7 +52,8 @@
                 <c:forEach items="${versionList}" var="item">
 
                     <tr>
-                        <td><fmt:formatDate value="${item.date}" type="date" /></td>
+                        <td>${item.versionName}</td>
+                        <td><fmt:formatDate value="${item.date}" type="date" var="date" /></td>
                         <td>${item.author.login}</td>
                         <td>${item.description}</td>
                         <td>${item.versionType}</td>
@@ -72,7 +72,7 @@
         <c:set var="document" value="${param.document}"/>
         <form action="/AddVersion" method="post">
             <fmt:message key="version.addNewVersion" var="butName"/>
-            <input type="submit" name="submit" value="${butName}"/>
+            <input type="submit" name="submit" class = "button" value="${butName}"/>
         </form>
     </jsp:body>
 </t:TemplatePage>

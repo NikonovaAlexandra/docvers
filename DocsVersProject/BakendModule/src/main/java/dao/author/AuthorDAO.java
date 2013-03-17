@@ -15,7 +15,5 @@ import exception.SystemException;
 public interface AuthorDAO extends DAO {
     public Author getAuthorByID(long id) throws DAOException, SystemException;
 
-    public Author getAuthorByDocumentID(long id) throws DAOException, SystemException;
-
     public Author getAuthorByLogin(String login) throws DAOException, SystemException;
 }
