@@ -110,13 +110,13 @@ public class DocumentDAOImpl implements DocumentDAO {
         if (document == null) {
             throw new IllegalArgumentException();
         }
-        if (document.getName().length() > 20) {
+        if (document.getDocumentName().length() > 20) {
             throw new exception.IllegalArgumentException("Too long name");
         }
         try {
             ps = conn.prepareStatement(QueriesSQL.INSERT_INTO_DOCUMENT_AUTHOR_NAME_DESCRIPTION_VALUES);
             ps.setLong(1, document.getAuthorID());
-            ps.setString(2, document.getName());
+            ps.setString(2, document.getDocumentName());
             ps.setString(3, document.getDescription());
             ps.setLong(4, document.getCodeDocumentName());
             ps.executeUpdate();
@@ -245,7 +245,7 @@ public void deleteDocument(String login, long docNameCode) throws DAOException, 
         boolean flag = true;
             while (flag) {
                 document = createDocumentFromResultSet(rs);
-                if(document != null){
+                if (document != null){
                     documents.add(document);
                 } else flag = false;
 
@@ -263,7 +263,7 @@ public void deleteDocument(String login, long docNameCode) throws DAOException, 
                 document = new Document();
                 document.setId(rs.getLong("ID"));
                 document.setAuthorID(rs.getLong("AUTHOR_ID"));
-                document.setName(rs.getString("DOCUMENT_NAME"));
+                document.setDocumentName(rs.getString("DOCUMENT_NAME"));
                 document.setDescription(rs.getString("DESCRIPTION"));
                 document.setCodeDocumentName(rs.getLong("code_document_name"));
             }

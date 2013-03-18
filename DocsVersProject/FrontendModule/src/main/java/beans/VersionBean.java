@@ -1,7 +1,7 @@
 package beans;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -16,7 +16,7 @@ public class VersionBean implements Serializable {
     private AuthorBean author;
     private DocumentBean document;
     private String description;
-    private Date date;
+    private Timestamp date;
     private String path;
     private boolean released;
     private long versionName;
@@ -27,7 +27,7 @@ public class VersionBean implements Serializable {
     }
 
     public VersionBean(long id, AuthorBean author, DocumentBean document,
-                       String description, Date date, String path, String versionType,
+                       String description, Timestamp date, String path, String versionType,
                        boolean isReleased, long versionName) {
         this.id = id;
         this.author = author;
@@ -41,7 +41,7 @@ public class VersionBean implements Serializable {
 
     }
     public VersionBean(AuthorBean author, DocumentBean document,
-                       String description, Date date, String path, String versionType) {
+                       String description, Timestamp date, String path, String versionType) {
         this.author = author;
         this.document = document;
         this.description = description;
@@ -77,19 +77,11 @@ public class VersionBean implements Serializable {
         this.document = document;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -124,5 +116,13 @@ public class VersionBean implements Serializable {
 
     public void setVersionType(String versionType) {
         this.versionType = versionType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

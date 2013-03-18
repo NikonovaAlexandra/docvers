@@ -1,6 +1,10 @@
 package beans;
 
+import entities.Version;
+
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,13 +63,6 @@ public class DocumentBean implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public long getCodeDocumentName() {
         return codeDocumentName;
@@ -73,6 +70,14 @@ public class DocumentBean implements Serializable {
 
     public void setCodeDocumentName(long codeDocumentName) {
         this.codeDocumentName = codeDocumentName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

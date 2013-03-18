@@ -1,6 +1,8 @@
 package servlets;
 
-import service.DBOperations;
+import service.dbOperations.DBOperations;
+import service.dbOperations.DBOperationsH;
+import service.dbOperations.DBOperationsJDBC;
 import service.RequestParser;
 import service.ServerOperations;
 
@@ -21,7 +23,7 @@ import java.io.IOException;
 //todo language 2 click
 //buttons
 public class ParentServlet extends HttpServlet {
-    private DBOperations service;
+    private DBOperationsH service;
     private long documentName;
     private ServerOperations serverService;
     private String filePath;
@@ -30,7 +32,7 @@ public class ParentServlet extends HttpServlet {
 
     public void init() {
         requestParser = new RequestParser();
-        service = new DBOperations();
+        service = new DBOperationsH();
         serverService = new ServerOperations();
         // Get the file location where it would be stored.
         filePath =
@@ -50,7 +52,7 @@ public class ParentServlet extends HttpServlet {
         return filePath;
     }
 
-    public DBOperations getService() {
+    public DBOperationsH getService() {
         return service;
     }
 

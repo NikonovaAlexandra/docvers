@@ -1,25 +1,22 @@
 package entities;
 
 import javax.persistence.*;
-import java.sql.Date;
-
+import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA.
  * User: alni
- * Date: 07.02.13
- * Time: 10:26
+ * Date: 14.03.13
+ * Time: 15:35
  * To change this template use File | Settings | File Templates.
  */
-
-//@Table(name = "VERSION", uniqueConstraints = @UniqueConstraint(name = "LOGIN_UNIQUE", columnNames = "LOGIN"), catalog = "docs")
+@javax.persistence.Table(name = "VERSION", schema = "PUBLIC", catalog = "DOCS")
 @Entity
 public class Version {
-
-    @Column(name = "ID")
-    @GeneratedValue
-    @Id
     private long id;
+
+    @javax.persistence.Column(name = "ID")
+    @Id
     public long getId() {
         return id;
     }
@@ -27,8 +24,135 @@ public class Version {
     public void setId(long id) {
         this.id = id;
     }
-    //todo: fk
-    @Column(name = "DOCUMENT_ID", nullable = false)
+
+    private Timestamp date;
+
+    @javax.persistence.Column(name = "DATE")
+    @Basic
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
+
+    private String versionDescription;
+
+    @javax.persistence.Column(name = "VERSION_DESCRIPTION")
+    @Basic
+    public String getVersionDescription() {
+        return versionDescription;
+    }
+
+    public void setVersionDescription(String versionDescription) {
+        this.versionDescription = versionDescription;
+    }
+
+    private String documentPath;
+
+    @javax.persistence.Column(name = "DOCUMENT_PATH")
+    @Basic
+    public String getDocumentPath() {
+        return documentPath;
+    }
+
+    public void setDocumentPath(String documentPath) {
+        this.documentPath = documentPath;
+    }
+
+    private boolean isReleased;
+
+    @javax.persistence.Column(name = "IS_RELEASED")
+    @Basic
+    public boolean isReleased() {
+        return isReleased;
+    }
+
+    public void setReleased(boolean released) {
+        isReleased = released;
+    }
+
+    private String versionType;
+
+    @javax.persistence.Column(name = "VERSION_TYPE")
+    @Basic
+    public String getVersionType() {
+        return versionType;
+    }
+
+    public void setVersionType(String versionType) {
+        this.versionType = versionType;
+    }
+
+    private long versionName;
+
+    @javax.persistence.Column(name = "VERSION_NAME")
+    @Basic
+    public long getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(long versionName) {
+        this.versionName = versionName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Version that = (Version) o;
+
+        if (id != that.id) return false;
+        if (isReleased != that.isReleased) return false;
+        if (versionName != that.versionName) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (documentPath != null ? !documentPath.equals(that.documentPath) : that.documentPath != null) return false;
+        if (versionDescription != null ? !versionDescription.equals(that.versionDescription) : that.versionDescription != null)
+            return false;
+        if (versionType != null ? !versionType.equals(that.versionType) : that.versionType != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (versionDescription != null ? versionDescription.hashCode() : 0);
+        result = 31 * result + (documentPath != null ? documentPath.hashCode() : 0);
+        result = 31 * result + (isReleased ? 1 : 0);
+        result = 31 * result + (versionType != null ? versionType.hashCode() : 0);
+        result = 31 * result + (int) (versionName ^ (versionName >>> 32));
+        return result;
+    }
+
+    private Author authorId;
+
+    @ManyToOne
+    @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID", nullable = false)
+    public Author getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Author authorId) {
+        this.authorId = authorId;
+    }
+
+    private Document documentId;
+
+    @ManyToOne
+    @JoinColumn(name = "DOCUMENT_ID", referencedColumnName = "ID", nullable = false)
+    public Document getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(Document documentId) {
+        this.documentId = documentId;
+    }
+
+    @Transient
     private long documentID;
     public long getDocumentID() {
 
@@ -39,8 +163,7 @@ public class Version {
         this.documentID = documentID;
     }
 
-    //todo: fk
-    @Column(name = "AUTHOR_ID", nullable = false)
+    @Transient
     private long authorID;
     public long getAuthorID() {
         return authorID;
@@ -50,71 +173,10 @@ public class Version {
         this.authorID = authorID;
     }
 
-    @Column(name = "DATE", nullable = false)
-    private Date date;
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @Column(name = "VERSION_DESCRIPTION")
-    private String versionDescription;
-    public String getVersionDescription() {
-        return versionDescription;
-    }
-
-    public void setVersionDescription(String versionDescription) {
-        this.versionDescription = versionDescription;
-    }
-
-    @Column(name = "DOCUMENT_PATH", nullable = false)
-    private String documentPath;
-    public String getDocumentPath() {
-        return documentPath;
-    }
-
-    public void setDocumentPath(String documentPath) {
-        this.documentPath = documentPath;
-    }
-
-    @Column(name = "IS_RELEASED", nullable = false)
-    private boolean isReleased;
-    public boolean isReleased() {
-
-        return isReleased;
-    }
-
-    public void setReleased(boolean released) {
-        isReleased = released;
-    }
-
-    @Column(name = "VERSION_NAME", length = 255, nullable = false)
-    private long versionName;
-    public long getVersionName() {
-        return versionName;
-    }
-
-    public void setVersionName(long versionName) {
-        this.versionName = versionName;
-    }
-
-    @Column(name = "VERSION_TYPE", length = 5, nullable = false)
-    private String versionType;
-    public String getVersionType() {
-        return versionType;
-    }
-
-    public void setVersionType(String versionType) {
-        this.versionType = versionType;
-    }
-
     public Version() {
     }
 
-    public Version(long id, long documentID, long authorID, Date date,
+    public Version(long id, long documentID, long authorID, Timestamp date,
                    String versionDescription, String documentPath, String versionType, long versionName) {
         this.id = id;
         this.documentID = documentID;
@@ -126,5 +188,7 @@ public class Version {
         this.versionName = versionName;
 
     }
+
+
 
 }

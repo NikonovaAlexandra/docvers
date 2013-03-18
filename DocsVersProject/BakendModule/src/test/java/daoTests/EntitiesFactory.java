@@ -3,6 +3,7 @@ package daoTests;
 import entities.Author;
 import entities.Document;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: alni
@@ -12,7 +13,7 @@ import entities.Document;
  */
 public class EntitiesFactory {
     public static Document createNewDocument() {
-        return new Document(1,"","","".hashCode());
+        return new Document(1,"", "","".hashCode());
     }
 
     public static Author createNewAuthor() {

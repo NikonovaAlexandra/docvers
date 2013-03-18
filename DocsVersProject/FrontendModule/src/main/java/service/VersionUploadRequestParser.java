@@ -6,10 +6,13 @@ import beans.UploadVersionRequestStruct;
 import beans.VersionBean;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import service.dbOperations.DBOperations;
+import service.dbOperations.DBOperationsH;
+import service.dbOperations.DBOperationsJDBC;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -49,8 +52,8 @@ public class VersionUploadRequestParser extends RequestParser{
 
     public VersionBean getVersionBean(String filePath, AuthorBean authorBean, long documentCode, String versName, String descriprion) throws Exception {
 
-        DBOperations operations = new DBOperations();
-
+        //DBOperationsJDBC operations = new DBOperationsJDBC();
+        DBOperationsH operations = new DBOperationsH();
         char separator = File.separatorChar;
         String login = authorBean.getLogin();
         String newFilePath = filePath + login + separator
@@ -66,7 +69,7 @@ public class VersionUploadRequestParser extends RequestParser{
 
         DocumentBean documentBean = operations.getDocumentsByAuthorAndName(login,
                 documentCode);
-        Date date = new Date(Calendar.getInstance().getTimeInMillis());
+        Timestamp date = new Timestamp(Calendar.getInstance().getTimeInMillis());
         VersionBean versionBean = getVersionBean(authorBean, documentBean,
                 descriprion, date, newFilePath + newFileName, type);
 

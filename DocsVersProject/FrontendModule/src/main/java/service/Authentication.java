@@ -4,8 +4,9 @@ import beans.AuthorBean;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
+import service.dbOperations.DBOperationsH;
+import service.dbOperations.DBOperationsJDBC;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,8 @@ public class Authentication {
 
     public static void performLogin(HttpServletRequest request, HttpServletResponse response, String login,
                                     String password, ServletContext context) throws ServletException, IOException, BusinessException, SystemException {
-        DBOperations operations = new DBOperations();
+        //DBOperationsJDBC operations = new DBOperationsJDBC();
+        DBOperationsH operations = new DBOperationsH();
         if ((login != null) & (password != null)) {
             AuthorBean author = operations.getAuthorByLogin(login);
             if (author != null) {

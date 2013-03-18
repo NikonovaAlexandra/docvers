@@ -1,6 +1,6 @@
 package dao.author;
 
-import entities.AuthorEntity;
+import entities.Author;
 import exception.DAOException;
 import exception.NotEnoughRightsException;
 import exception.NullConnectionException;
@@ -13,7 +13,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ExceptionUtils;
 import service.QueriesHQL;
 
-public class AuthorDAOImplH {
+public class AuthorDAOImplH implements AuthorDAO{
     private Session session;
 
     public AuthorDAOImplH(Session session) {
@@ -26,16 +26,17 @@ public class AuthorDAOImplH {
 //        Session session1 = sessionFactory.openSession();
 //        AuthorDAOImplH dao = new AuthorDAOImplH(session1);
 //
-//        AuthorEntity a = dao.getAuthorByLogin("author2");
+//        Author a = dao.getAuthorByLogin("author2");
 //        System.out.println(a.getLogin());
 //        session1.close();
 //
 //    }
 
-    public AuthorEntity getAuthorByID(long id) throws DAOException, SystemException {
+    @Override
+    public Author getAuthorByID(long id) throws DAOException, SystemException {
         try {
             Transaction tr = session.beginTransaction();
-            AuthorEntity author = (AuthorEntity) session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_ID).setLong("id", id).uniqueResult();
+            Author author = (Author) session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_ID).setLong("id", id).uniqueResult();
             tr.commit();
             return author;
         } catch (Exception e) {
@@ -54,10 +55,11 @@ public class AuthorDAOImplH {
         }
     }
 
-    public AuthorEntity getAuthorByLogin(String login) throws DAOException, SystemException {
+    @Override
+    public Author getAuthorByLogin(String login) throws DAOException, SystemException {
         try {
             Transaction tr = session.beginTransaction();
-            AuthorEntity author = (AuthorEntity) session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_LOGIN).setString("login", login).uniqueResult();
+            Author author = (Author) session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_LOGIN).setString("login", login).uniqueResult();
             tr.commit();
             return author;
         } catch (Exception e) {

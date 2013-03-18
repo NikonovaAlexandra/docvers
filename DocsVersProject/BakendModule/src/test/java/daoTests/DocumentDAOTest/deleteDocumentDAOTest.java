@@ -1,18 +1,7 @@
 package daoTests.DocumentDAOTest;
 
-import dao.DAOFactory;
-import dao.document.DocumentDAO;
-import daoTests.EntitiesFactory;
-import entities.Document;
 import exception.NoSuchObjectInDB;
 import org.junit.Test;
-import service.QueriesSQL;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.

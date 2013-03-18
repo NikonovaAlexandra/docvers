@@ -12,6 +12,10 @@
         <param-name>login_page</param-name>
         <param-value>/Login</param-value>
     </context-param>
+    <context-param>
+        <param-name>hibernateConfigFilePath</param-name>
+        <param-value>C:\Documents and Settings\alni\Desktop\New Folder (3)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml</param-value>
+    </context-param>
 
     <context-param>
         <param-name>encoding</param-name>

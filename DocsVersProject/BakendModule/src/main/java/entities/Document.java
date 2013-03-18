@@ -1,22 +1,22 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: alni
- * Date: 07.02.13
- * Time: 10:30
+ * Date: 14.03.13
+ * Time: 15:35
  * To change this template use File | Settings | File Templates.
  */
-//@Table(name = "DOCUMENT", catalog = "docs", uniqueConstraints = @UniqueConstraint(name = "UNIQUE_DOCUMENT_NAME", columnNames = "author_id, document_name"))
+@javax.persistence.Table(name = "DOCUMENT", schema = "PUBLIC", catalog = "DOCS")
 @Entity
 public class Document {
-
-    @Column(name = "ID")
-    @GeneratedValue
-    @Id
     private long id;
+
+    @javax.persistence.Column(name = "ID")
+    @Id
     public long getId() {
         return id;
     }
@@ -25,30 +25,22 @@ public class Document {
         this.id = id;
     }
 
-    @Column(name = "AUTHOR_ID")
-    //todo: fk
-    private long authorID;
-    public long getAuthorID() {
-        return authorID;
+    private String documentName;
+
+    @javax.persistence.Column(name = "DOCUMENT_NAME")
+    @Basic
+    public String getDocumentName() {
+        return documentName;
     }
 
-    public void setAuthorID(long authorID) {
-        this.authorID = authorID;
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 
-    @Column(name = "DOCUMENT_NAME", length = 20, nullable = false)
-    private String name;
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(name = "DOCUMENT_DECSRIPTION")
-    @Lob
     private String description;
+
+    @javax.persistence.Column(name = "DESCRIPTION")
+    @Basic
     public String getDescription() {
         return description;
     }
@@ -57,8 +49,10 @@ public class Document {
         this.description = description;
     }
 
-    @Column(name = "code_Document_Name", nullable = false)
     private long codeDocumentName;
+
+    @javax.persistence.Column(name = "CODE_DOCUMENT_NAME")
+    @Basic
     public long getCodeDocumentName() {
         return codeDocumentName;
     }
@@ -67,23 +61,60 @@ public class Document {
         this.codeDocumentName = codeDocumentName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Document that = (Document) o;
+
+        if (codeDocumentName != that.codeDocumentName) return false;
+        if (id != that.id) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (documentName != null ? !documentName.equals(that.documentName) : that.documentName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (documentName != null ? documentName.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (int) (codeDocumentName ^ (codeDocumentName >>> 32));
+        return result;
+    }
+
+    private Author authorId;
+
+    @ManyToOne
+    @JoinColumn(name = "AUTHOR_ID", referencedColumnName = "ID", nullable = false)
+    public Author getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Author authorId) {
+        this.authorId = authorId;
+    }
+
+    @Transient
+    private long authorID;
+
+    public long getAuthorID() {
+        return authorID;
+    }
+
+    public void setAuthorID(long authorID) {
+        this.authorID = authorID;
+    }
+
     public Document() {
     }
 
     public Document(long authorID, String name, String description, long codeDocumentName) {
         this.authorID = authorID;
-        this.name = name;
+        this.documentName = name;
         this.description = description;
         this.codeDocumentName = codeDocumentName;
     }
-
-
-
-
-
-
-
-
-
-
 }

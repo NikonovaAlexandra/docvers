@@ -6,7 +6,8 @@ import beans.VersionBean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.sql.Date;
+
+import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +32,7 @@ public class RequestParser {
     }
 
     public VersionBean getVersionBean(AuthorBean authorBean, DocumentBean documentBean, String description,
-                                      Date date, String path, String versionType) {
+                                      Timestamp date, String path, String versionType) {
         return new VersionBean(authorBean, documentBean, description, date, path, versionType);
     }
 

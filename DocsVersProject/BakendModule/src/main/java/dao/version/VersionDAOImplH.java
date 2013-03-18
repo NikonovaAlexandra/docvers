@@ -1,18 +1,14 @@
 package dao.version;
 
-import entities.AuthorEntity;
-import entities.DocumentEntity;
-import entities.VersionEntity;
+import entities.Version;
 import exception.*;
 import org.h2.constant.ErrorCode;
 import org.h2.jdbc.JdbcBatchUpdateException;
 import org.h2.jdbc.JdbcSQLException;
 import org.hibernate.*;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.exception.ExceptionUtils;
 import service.QueriesHQL;
 
-import java.io.File;
 import java.lang.IllegalArgumentException;
 import java.util.List;
 
@@ -23,7 +19,7 @@ import java.util.List;
  * Time: 17:11
  * To change this template use File | Settings | File Templates.
  */
-public class VersionDAOImplH {
+public class VersionDAOImplH implements VersionDAO{
     private Session session;
 
     public VersionDAOImplH(Session session) {
@@ -31,45 +27,13 @@ public class VersionDAOImplH {
 
     }
 
-    public static void main(String[] args) throws SystemException, DAOException {
-        SessionFactory sessionFactory = new AnnotationConfiguration().configure(new File("BakendModule\\src\\main\\java\\hibernate.xml")).buildSessionFactory();
-        Session session1 = sessionFactory.openSession();
-        VersionDAOImplH dao = new VersionDAOImplH(session1);
-//        DocumentEntity d = new DocumentEntity();
-        AuthorEntity a = new AuthorEntity();
-        a.setId(3);
-        a.setLogin("author2");
-        a.setPassword("pass2");
-//        dao.deleteDocument("author2", 2218442);
-//        d.setAuthorId(a);
-//        d.setDocumentName("dsdsd");
-//        dao.addDocument(d);
-//        long d = dao.getDocumentID("author2", 2218442);
-        DocumentEntity d = new DocumentEntity();
-        d.setAuthorId(a);
-        d.setCodeDocumentName(-1990522244);
-        d.setId(35);
-        d.setDocumentName("Ð°Ð¿Ð°Ð¿Ð¿Ð°Ð°Ð¿");
-        VersionEntity v = new VersionEntity();
-        v.setAuthorId(a);
-        v.setDocumentId(d);
-        dao.addVersion(v);
-        //System.out.println(dao.getVersionType(1,-1990522244,"author2"));
-        System.out.println(dao.getLastVersionNameInfo(35));
-//        List<VersionEntity> li = dao.getVersionsOfDocument(35);
-//        for (int i = 0; i < li.size(); ++i) {
-//            System.out.println(li.get(i).getId());
-//        }
-        session1.close();
-
-    }
-
-    public List<VersionEntity> getVersionsOfDocument(long id) throws DAOException, SystemException {
+    @Override
+    public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
         try {
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
             query.setLong("id", id);
-            List<VersionEntity> versions = query.list();
+            List<Version> versions = query.list();
             tr.commit();
             if (versions.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
@@ -89,13 +53,13 @@ public class VersionDAOImplH {
         }
     }
 
-    public void addVersion(VersionEntity version) throws DAOException, SystemException {
+    @Override
+    public void addVersion(Version version) throws DAOException, SystemException {
         Transaction tr = null;
         if (version == null) {
             throw new IllegalArgumentException();
         }
         try {
-            //todo exception???
             tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.UPDATE_VERSION_SET_IS_RELEASED);
             query.setBoolean("isReleased", true);
@@ -112,21 +76,29 @@ public class VersionDAOImplH {
 
         } catch (Exception e) {
             tr.rollback();
-            if (ExceptionUtils.getCause(e) instanceof JdbcSQLException || ExceptionUtils.getCause(e) instanceof JdbcBatchUpdateException) {
+            if (ExceptionUtils.getCause(e) instanceof JdbcSQLException) {
                 e = (JdbcSQLException) ExceptionUtils.getCause(e);
-                if (((JdbcSQLException) e).getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
-                    throw new ObjectAlreadyExistsException();
-                }
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                     throw new NullConnectionException(e);
-                if (((JdbcSQLException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
-                    throw new ReferentialIntegrityViolatedException();
+
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
                 }
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
                     throw new NoDiskSpaceException(e);
                 }
+            }
+            if (ExceptionUtils.getCause(e) instanceof JdbcBatchUpdateException){
+                e = (JdbcBatchUpdateException) ExceptionUtils.getCause(e);
+                if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
+                    throw new ObjectAlreadyExistsException();
+                }
+                if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.NULL_NOT_ALLOWED) {
+                    throw new IntegrityConstraintException(e, "NULL is not allowed");
+                }
+                if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
+                    throw new ReferentialIntegrityViolatedException();
+
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -136,6 +108,7 @@ public class VersionDAOImplH {
 
     }
 
+    @Override
     public void deleteVersion(long versName, long docCode, String login) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
         try {
@@ -162,6 +135,7 @@ public class VersionDAOImplH {
         }
     }
 
+    @Override
     public String getVersionType(long versionName, long documentName, String login) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
         try {
@@ -189,14 +163,15 @@ public class VersionDAOImplH {
         }
     }
 
-    public VersionEntity getVersion(long id, long versName) throws DAOException, SystemException {
-        VersionEntity version = null;
+    @Override
+    public Version getVersion(long id, long versName) throws DAOException, SystemException {
+        Version version = null;
         Transaction tr = session.beginTransaction();
         try {
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
             query.setLong("id", id);
             query.setLong("versionName", versName);
-            version = (VersionEntity) query.uniqueResult();
+            version = (Version) query.uniqueResult();
             tr.commit();
             if (version == null) throw new NoSuchObjectInDB("Version of this document with same name = " + versName);
             return version;
@@ -216,13 +191,12 @@ public class VersionDAOImplH {
         }
     }
 
+    @Override
     public long getLastVersionNameInfo(long docID) throws DAOException, SystemException {
-        Transaction tr = session.beginTransaction();
         try {
             Query query = session.createQuery(QueriesHQL.SELECT_VERSION_NAME_FROM_VERSION);
             query.setLong("id", docID);
             Long versionName = (Long) query.uniqueResult();
-            tr.commit();
             return versionName;
         } catch (Exception e) {
             if (ExceptionUtils.getCause(e) instanceof JdbcSQLException) {

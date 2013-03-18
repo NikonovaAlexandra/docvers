@@ -1,0 +1,191 @@
+package service.dbOperations;
+
+import beans.AuthorBean;
+import beans.Converter;
+import beans.DocumentBean;
+import beans.VersionBean;
+import dao.DAOFactory;
+import dao.author.AuthorDAO;
+import dao.document.DocumentDAO;
+import dao.version.VersionDAO;
+import entities.Author;
+import entities.Document;
+import entities.Version;
+import exception.BusinessException;
+import exception.SystemException;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
+import service.SessionFactoryUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: alni
+ * Date: 18.03.13
+ * Time: 11:10
+ * To change this template use File | Settings | File Templates.
+ */
+public class DBOperationsH implements DBOperations {
+    private SessionFactory sessionFactory = SessionFactoryUtil.getInstance().getSessionFactory();
+
+    @Override
+    public void addDocument(DocumentBean documentBean) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(session);
+            documentDAO.addDocument(Converter.convertDocumentBeanToDocumentH(documentBean));
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public long getLastVersionNameInfo(long docID) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(session);
+            long id = versionDAO.getLastVersionNameInfo(docID);
+            return id;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public void addVersion(VersionBean versionBean) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(session);
+            versionDAO.addVersion(Converter.convertVersionBeanToVersionH(versionBean));
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public List<DocumentBean> getDocumentsByAuthor(String login) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
+            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(session);
+            Author author = authorDAO.getAuthorByLogin(login);
+            DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(session);
+            List<Document> docs = dao.getDocumentsByAuthorID(author.getId());
+            for (Document doc : docs) {
+                DocumentBean documentBean = Converter.convertDocumentHToDocumentBean(doc);
+                documentBeans.add(documentBean);
+            }
+
+            return documentBeans;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(session);
+            Document doc = dao.getDocumentByAuthorAndName(login, docNameCode);
+            DocumentBean documentBean = Converter.convertDocumentHToDocumentBean(doc);
+            return documentBean;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public AuthorBean getAuthorByLogin(String login) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(session);
+            Author author = authorDAO.getAuthorByLogin(login);
+            return Converter.convertAuthorToAuthorBean(author);
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public List<VersionBean> getVersionsOfDocument(String login, long docNameCode) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            List<VersionBean> versionBeans = new ArrayList<VersionBean>();
+            DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session);
+            Document doc = docDAO.getDocumentByAuthorAndName(login, docNameCode);
+            VersionDAO dao = DAOFactory.getInstance().getVersionDAO(session);
+            List<Version> vers = dao.getVersionsOfDocument(doc.getId());
+            for (Version ver : vers) {
+                VersionBean versionBean = Converter.convertVersionHToVersionBean(ver);
+                versionBeans.add(versionBean);
+            }
+            return versionBeans;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public VersionBean getVersion(String login, long docNameCode, long versName) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session);
+            Document doc = docDAO.getDocumentByAuthorAndName(login, docNameCode);
+            VersionDAO dao = DAOFactory.getInstance().getVersionDAO(session);
+            Version ver = dao.getVersion(doc.getId(), versName);
+            VersionBean versionBean = Converter.convertVersionHToVersionBean(ver);
+            return versionBean;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public void deleteDocument(String login, long docNameCode) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session);
+            docDAO.deleteDocument(login, docNameCode);
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public void deleteVersion(long versName, long docCode, String login) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(session);
+            verDAO.deleteVersion(versName, docCode, login);
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session);
+            long id = docDAO.getDocumentID(login, docName);
+            return id;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+
+    @Override
+    public String getVersionType(long versionName, long documentName, String login) throws BusinessException, SystemException {
+        Session session = sessionFactory.openSession();
+        try {
+            VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(session);
+            String type = verDAO.getVersionType(versionName, documentName, login);
+            return type;
+        } finally {
+            if (session.isOpen()) session.close();
+        }
+    }
+}

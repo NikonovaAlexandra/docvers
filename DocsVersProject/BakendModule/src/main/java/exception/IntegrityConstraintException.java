@@ -11,10 +11,10 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public class IntegrityConstraintException extends DAOException {
-    private SQLException e;
+    private Exception e;
     private String message;
 
-    public IntegrityConstraintException( SQLException e, String message ) {
+    public IntegrityConstraintException( Exception e, String message ) {
         super(e);
 
         this.e = e;

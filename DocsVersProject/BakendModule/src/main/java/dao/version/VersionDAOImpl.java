@@ -30,7 +30,7 @@ public class VersionDAOImpl implements VersionDAO {
             if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                 throw new NullConnectionException(e);
             if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException( e);
+                throw new NotEnoughRightsException(e);
             } else throw new DAOException(e);
         }
     }
@@ -50,7 +50,7 @@ public class VersionDAOImpl implements VersionDAO {
                 version = new Version();
                 version.setId(rs.getLong("ID"));
                 version.setAuthorID(rs.getLong("AUTHOR_ID"));
-                version.setDate(rs.getDate("DATE"));
+                version.setDate(rs.getTimestamp("DATE"));
                 version.setDocumentID(rs.getLong("DOCUMENT_ID"));
                 version.setDocumentPath(rs.getString("DOCUMENT_PATH"));
                 version.setVersionDescription(rs.getString("VERSION_DESCRIPTION"));
@@ -97,7 +97,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps = conn.prepareStatement(QueriesSQL.INSERT_INTO_VERSION);
             ps.setLong(1, version.getDocumentID());
             ps.setLong(2, version.getAuthorID());
-            ps.setDate(3, version.getDate());
+            ps.setTimestamp(3, version.getDate());
             ps.setString(4, version.getVersionDescription());
             ps.setString(5, version.getDocumentPath());
             ps.setBoolean(6, false);
@@ -180,7 +180,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps.setString(3, login);
             rs = ps.executeQuery();
             String type = null;
-            if(rs.next()){
+            if (rs.next()){
                 type = rs.getString("version_type");
             }
 
@@ -223,7 +223,7 @@ public class VersionDAOImpl implements VersionDAO {
                 version = new Version();
                 version.setId(rs.getLong("ID"));
                 version.setAuthorID(rs.getLong("AUTHOR_ID"));
-                version.setDate(rs.getDate("DATE"));
+                version.setDate(rs.getTimestamp("DATE"));
                 version.setDocumentID(rs.getLong("DOCUMENT_ID"));
                 version.setDocumentPath(rs.getString("DOCUMENT_PATH"));
                 version.setVersionDescription(rs.getString("VERSION_DESCRIPTION"));
@@ -260,7 +260,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps.setLong(1, docID);
             rs = ps.executeQuery();
             long name = 0;
-            if(rs.next()){
+            if (rs.next()){
                 name = rs.getLong("version_max_name");
             }
 

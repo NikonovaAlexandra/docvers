@@ -3,9 +3,11 @@ package servlets;
 import exception.BusinessException;
 import exception.SystemException;
 import filters.LoginFilter;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.ConnectionPoolFactory;
+import service.SessionFactoryUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -27,6 +29,8 @@ public class ServletListener implements ServletContextListener {
 //        String whatType = sc.getInitParameter("typeSelected");
 //        Furniture f = new Furniture(whatType);
 //        sc.setAttribute("furniture", f);
+        String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
+        SessionFactoryUtil.getInstance(path).getSessionFactory();
         logger.trace("Initializing context...");
     }
 

@@ -2,12 +2,16 @@ package dao;
 
 import dao.author.AuthorDAO;
 import dao.author.AuthorDAOImpl;
+import dao.author.AuthorDAOImplH;
 import dao.document.DocumentDAO;
 import dao.document.DocumentDAOImpl;
+import dao.document.DocumentDAOImplH;
 import dao.version.VersionDAO;
 import dao.version.VersionDAOImpl;
+import dao.version.VersionDAOImplH;
 import exception.DAOException;
 import exception.SystemException;
+import org.hibernate.Session;
 
 import java.sql.Connection;
 
@@ -49,6 +53,27 @@ public class DAOFactory {
     public VersionDAO getVersionDAO(Connection conn) throws DAOException, SystemException {
         if (versionDAO == null) {
             versionDAO = new VersionDAOImpl(conn);
+        }
+        return versionDAO;
+    }
+
+    public DocumentDAO getDocumentDAO(Session session) throws DAOException, SystemException {
+        if (documentDAO == null) {
+            documentDAO = new DocumentDAOImplH(session);
+        }
+        return documentDAO;
+    }
+
+    public AuthorDAO getAuthorDAO(Session session) throws DAOException, SystemException {
+        if (authorDAO == null) {
+            authorDAO = new AuthorDAOImplH(session);
+        }
+        return authorDAO;
+    }
+
+    public VersionDAO getVersionDAO(Session session) throws DAOException, SystemException {
+        if (versionDAO == null) {
+            versionDAO = new VersionDAOImplH(session);
         }
         return versionDAO;
     }

@@ -1,6 +1,6 @@
 package dao.document;
 
-import entities.DocumentEntity;
+import entities.Document;
 import exception.*;
 import org.h2.constant.ErrorCode;
 import org.h2.jdbc.JdbcBatchUpdateException;
@@ -23,7 +23,7 @@ import java.util.List;
  * Time: 17:10
  * To change this template use File | Settings | File Templates.
  */
-public class DocumentDAOImplH {
+public class DocumentDAOImplH implements DocumentDAO{
 
     private Session session;
 
@@ -32,15 +32,16 @@ public class DocumentDAOImplH {
 
     }
 
-    public DocumentEntity getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException {
+    @Override
+    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException {
 
-        DocumentEntity doc = null;
+        Document doc = null;
         try {
             Transaction tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_CODE_AND_AUTHOR_ID);
             query.setString("login", login);
             query.setLong("codeDocumentName", docNameCode);
-            doc = (DocumentEntity) query.uniqueResult();
+            doc = (Document) query.uniqueResult();
             tr.commit();
             if (doc == null)
                 throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
@@ -62,6 +63,7 @@ public class DocumentDAOImplH {
         }
     }
 
+    @Override
     public long getDocumentID(String login, long docName) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
 
@@ -90,7 +92,8 @@ public class DocumentDAOImplH {
         }
     }
 
-    public void addDocument(DocumentEntity document) throws DAOException, SystemException {
+    @Override
+    public void addDocument(Document document) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
         if (document == null) {
             throw new IllegalArgumentException();
@@ -103,21 +106,29 @@ public class DocumentDAOImplH {
             tr.commit();
         } catch (Exception e) {
             tr.rollback();
-            if (ExceptionUtils.getCause(e) instanceof JdbcSQLException || ExceptionUtils.getCause(e) instanceof JdbcBatchUpdateException) {
+            if (ExceptionUtils.getCause(e) instanceof JdbcSQLException) {
                 e = (JdbcSQLException) ExceptionUtils.getCause(e);
-                if (((JdbcSQLException) e).getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
-                    throw new ObjectAlreadyExistsException();
-                }
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
                     throw new NullConnectionException(e);
-                if (((JdbcSQLException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
-                    throw new ReferentialIntegrityViolatedException();
+
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
                 }
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
                     throw new NoDiskSpaceException(e);
                 }
+            }
+            if (ExceptionUtils.getCause(e) instanceof JdbcBatchUpdateException){
+                e = (JdbcBatchUpdateException) ExceptionUtils.getCause(e);
+                if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
+                    throw new ObjectAlreadyExistsException();
+                }
+                if(((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.NULL_NOT_ALLOWED) {
+                    throw new IntegrityConstraintException(e, "NULL is not allowed");
+                }
+                if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
+                    throw new ReferentialIntegrityViolatedException();
+
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -128,12 +139,13 @@ public class DocumentDAOImplH {
 
     }
 
-    public List<DocumentEntity> getDocumentsByAuthorID(long id) throws DAOException, SystemException {
+    @Override
+    public List<Document> getDocumentsByAuthorID(long id) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
         try {
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID);
             query.setLong("id", id);
-            List<DocumentEntity> docs = query.list();
+            List<Document> docs = query.list();
             tr.commit();
             if (docs.isEmpty()) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return docs;
@@ -153,7 +165,8 @@ public class DocumentDAOImplH {
         }
     }
 
-//    public void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException {
+    @Override
+    public void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException {
 
 //        PreparedStatement ps = null;
 //        try {
@@ -176,8 +189,9 @@ public class DocumentDAOImplH {
 //                throw new DAOException(e);
 //            }
 //        }
-//    }
+    }
 
+    @Override
     public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
         Transaction tr = session.beginTransaction();
         try {
