@@ -7,16 +7,14 @@ import exception.NullFileException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import service.ServerOperations;
+import service.FileFolderService;
 import service.VersionUploadRequestParser;
 import servlets.ParentServlet;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,18 +27,18 @@ import java.io.IOException;
 public class UploadServlet extends ParentServlet {
 
     private boolean isMultipart;
-    private final String messageName = "uploadmessage";
-    private final String url = "/AddVersion?document=";
+    private static final String messageName = "uploadmessage";
+    private static final String url = "/AddVersion?document=";
     private VersionUploadRequestParser requestParser;
     private UploadVersionRequestStruct struct;
-    private ServerOperations serverOperations;
+
     public void init() {
         super.init();
         requestParser = new VersionUploadRequestParser();
-        serverOperations = new ServerOperations();
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {
+        //todo check if ex while storage => del row from db
         String message;
         File file = null;
         response.setCharacterEncoding(getEncoding());
@@ -57,7 +55,7 @@ public class UploadServlet extends ParentServlet {
                 setDocumentName(versionBean.getDocument().getCodeDocumentName());
                 FileItem fi = struct.getFileItem();
                 if (versionBean != null) {
-                    serverOperations.storeFile(fi, versionBean.getPath());
+                    getFileFolderService().storeFile(fi, versionBean.getPath());
                 }
                 getService().addVersion(versionBean);
                 response.sendRedirect("/Versions?document=" + getDocumentName());

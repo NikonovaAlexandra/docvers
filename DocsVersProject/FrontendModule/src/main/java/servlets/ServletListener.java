@@ -29,9 +29,10 @@ public class ServletListener implements ServletContextListener {
 //        String whatType = sc.getInitParameter("typeSelected");
 //        Furniture f = new Furniture(whatType);
 //        sc.setAttribute("furniture", f);
-        String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
-        SessionFactoryUtil.getInstance(path).getSessionFactory();
         logger.trace("Initializing context...");
+//        String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
+//        SessionFactoryUtil.init(path);
+
     }
 
     @Override
@@ -41,6 +42,8 @@ public class ServletListener implements ServletContextListener {
          // todo: logger
         try {
             ConnectionPoolFactory.getInstance().getConnectionPool().closeAllConnections();
+            SessionFactory sf = SessionFactoryUtil.getInstance().getSessionFactory();
+            if (!sf.isClosed()) sf.close();
             logger.trace("Destroying context...");
         } catch (SystemException e) {
             logger.error("System Exception while destroying Exceptional Filter.");

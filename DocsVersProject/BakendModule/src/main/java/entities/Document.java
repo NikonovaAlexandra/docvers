@@ -100,10 +100,12 @@ public class Document {
     @Transient
     private long authorID;
 
+    @Transient
     public long getAuthorID() {
         return authorID;
     }
 
+    @Transient
     public void setAuthorID(long authorID) {
         this.authorID = authorID;
     }

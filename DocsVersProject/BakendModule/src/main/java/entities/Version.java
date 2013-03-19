@@ -154,21 +154,27 @@ public class Version {
 
     @Transient
     private long documentID;
+
+    @Transient
     public long getDocumentID() {
 
         return documentID;
     }
 
+    @Transient
     public void setDocumentID(long documentID) {
         this.documentID = documentID;
     }
 
     @Transient
     private long authorID;
+
+    @Transient
     public long getAuthorID() {
         return authorID;
     }
 
+    @Transient
     public void setAuthorID(long authorID) {
         this.authorID = authorID;
     }

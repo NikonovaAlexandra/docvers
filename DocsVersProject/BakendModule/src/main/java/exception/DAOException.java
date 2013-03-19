@@ -8,16 +8,20 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class DAOException extends BusinessException {
-    private Exception e;
 
     public DAOException() {
+        super(null);
     }
 
     public DAOException(Exception e) {
-        this.e = e;
+       super(e);
     }
 
     public String toString() {
-        return "Exception while access database: " + (e != null ? e.getMessage() : "");
+        return "Exception while access database: " + (getException() != null ? getException().getMessage() : "");
+    }
+
+    public String getMessage() {
+        return "Exception while access database";
     }
 }

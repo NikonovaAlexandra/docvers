@@ -39,12 +39,12 @@ public class ExceptionalFilter implements Filter {
         } catch (ServletException e) {
             if (e.getRootCause() instanceof BusinessException) {
 
-                message = e.getCause().getClass() + "\n " + e.getMessage();
-                logger.error("Business Exception in application: " + message + " " + e.getStackTrace());
+                message = "Business Exception in application: " + e.getCause().getClass();
+                logger.error(message + "\n " + e.getMessage() + " " + e.getStackTrace());
             } else if (e.getRootCause() instanceof SystemException) {
-                message = "An error has occured!\n " + e.getCause().getClass() + "\n " +
-                        e.getMessage() + "\n Please contact your administrator!";
-                logger.error("System Exception in application: " + message);
+                message = "An error has occured!\n " + e.getCause().getClass() + "\n Please contact your administrator!";
+                logger.error("System Exception in application: " + message+
+                        e.getMessage());
             } else {
                 message = "Servlet Exception in application: " + e.getMessage();
                 logger.error("Servlet Exception in application: " + e.getMessage());

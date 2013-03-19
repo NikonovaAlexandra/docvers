@@ -5,6 +5,7 @@ import exception.BusinessException;
 import exception.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.SessionFactoryUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,8 @@ public class LoginFilter implements Filter {
         if (filterConfig != null) {
             loginPage = filterConfig.getServletContext().getInitParameter("login_page");
         }
+        String path = filterConfig.getServletContext().getInitParameter("hibernateConfigFilePath");
+        SessionFactoryUtil.init(path);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class LoginFilter implements Filter {
         try {
             boolean authorized = false;
             if (request instanceof HttpServletRequest) {
-                if(isResourceRequest((HttpServletRequest) request)) {
+                if (isResourceRequest((HttpServletRequest) request)) {
                     authorized = true;
                 } else {
                     HttpSession session = ((HttpServletRequest) request).getSession(false);
@@ -70,7 +73,7 @@ public class LoginFilter implements Filter {
                 logger.error("Servlet Exception in Login Filter: " + e.getMessage());
             }
         } catch (IOException e) {
-            logger.error("IOException raised in Login Filter. " + e.getMessage());
+                logger.error("IOException raised in Login Filter. " + e.getMessage());
 
         }
 

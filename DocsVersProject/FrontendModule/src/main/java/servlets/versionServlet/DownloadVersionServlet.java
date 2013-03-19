@@ -1,19 +1,13 @@
 package servlets.versionServlet;
 
 import beans.AuthorBean;
-import beans.UploadVersionRequestStruct;
 import beans.VersionBean;
 import exception.BusinessException;
-import exception.NullFileException;
 import exception.SystemException;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadBase;
 import service.FileNameGenerator;
-import service.ServerOperations;
 import servlets.ParentServlet;
-import java.io.DataInputStream;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -36,7 +30,7 @@ public class DownloadVersionServlet extends ParentServlet {
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             response.setCharacterEncoding(getEncoding());
             request.setCharacterEncoding(getEncoding());
-            ServerOperations serverOperations = new ServerOperations();
+
             try{
                 VersionBean versionBean = parse(request);
                 setDocumentName(versionBean.getDocument().getCodeDocumentName());
@@ -45,7 +39,7 @@ public class DownloadVersionServlet extends ParentServlet {
                         versionBean.getVersionName(), versionBean.getVersionType());
                 ServletOutputStream outStream = response.getOutputStream();
                 setRespose(response, newFileName);
-                serverOperations.downloadFile(file.getAbsolutePath(), outStream, BUFSIZE);
+                getFileFolderService().downloadFile(file.getAbsolutePath(), outStream, BUFSIZE);
             } catch (Exception e){
                 throw new ServletException(e);
             }

@@ -37,7 +37,9 @@ public class DBOperationsH implements DBOperations {
             DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(session);
             documentDAO.addDocument(Converter.convertDocumentBeanToDocumentH(documentBean));
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
     }
 
@@ -49,7 +51,9 @@ public class DBOperationsH implements DBOperations {
             long id = versionDAO.getLastVersionNameInfo(docID);
             return id;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -60,7 +64,9 @@ public class DBOperationsH implements DBOperations {
             VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(session);
             versionDAO.addVersion(Converter.convertVersionBeanToVersionH(versionBean));
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -80,7 +86,9 @@ public class DBOperationsH implements DBOperations {
 
             return documentBeans;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -93,7 +101,9 @@ public class DBOperationsH implements DBOperations {
             DocumentBean documentBean = Converter.convertDocumentHToDocumentBean(doc);
             return documentBean;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -105,7 +115,9 @@ public class DBOperationsH implements DBOperations {
             Author author = authorDAO.getAuthorByLogin(login);
             return Converter.convertAuthorToAuthorBean(author);
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -124,7 +136,9 @@ public class DBOperationsH implements DBOperations {
             }
             return versionBeans;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -139,7 +153,9 @@ public class DBOperationsH implements DBOperations {
             VersionBean versionBean = Converter.convertVersionHToVersionBean(ver);
             return versionBean;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -150,7 +166,9 @@ public class DBOperationsH implements DBOperations {
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session);
             docDAO.deleteDocument(login, docNameCode);
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -161,7 +179,9 @@ public class DBOperationsH implements DBOperations {
             VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(session);
             verDAO.deleteVersion(versName, docCode, login);
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -173,7 +193,9 @@ public class DBOperationsH implements DBOperations {
             long id = docDAO.getDocumentID(login, docName);
             return id;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 
@@ -185,7 +207,9 @@ public class DBOperationsH implements DBOperations {
             String type = verDAO.getVersionType(versionName, documentName, login);
             return type;
         } finally {
-            if (session.isOpen()) session.close();
+            if (session.isOpen()){
+                session.close();
+            }
         }
     }
 }

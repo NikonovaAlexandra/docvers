@@ -21,8 +21,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GetVersionsServlet extends ParentServlet {
-    private final String messageName = "versmessage";
-    private final String url = "/AllVersions";
+    private static final String messageName = "versmessage";
+    private static final String url = "/AllVersions";
     //todo released
     //todo type
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

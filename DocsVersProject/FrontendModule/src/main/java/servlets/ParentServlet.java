@@ -1,10 +1,10 @@
 package servlets;
 
+import service.FileFolderService;
 import service.dbOperations.DBOperations;
-import service.dbOperations.DBOperationsH;
-import service.dbOperations.DBOperationsJDBC;
+import service.dbOperations.DBOperationsFactory;
 import service.RequestParser;
-import service.ServerOperations;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,18 +23,20 @@ import java.io.IOException;
 //todo language 2 click
 //buttons
 public class ParentServlet extends HttpServlet {
-    private DBOperationsH service;
+    private DBOperations service;
+    //todo check if work on 2 users
     private long documentName;
-    private ServerOperations serverService;
+    private FileFolderService fileFolderService;
     private String filePath;
     private RequestParser requestParser;
     private String encoding;
 
     public void init() {
         requestParser = new RequestParser();
-        service = new DBOperationsH();
-        serverService = new ServerOperations();
+        service = DBOperationsFactory.getDBService();;
+        fileFolderService = new FileFolderService();
         // Get the file location where it would be stored.
+
         filePath =
                 getServletContext().getInitParameter("file-upload");
         encoding = getServletContext().getInitParameter("encoding");
@@ -52,12 +54,12 @@ public class ParentServlet extends HttpServlet {
         return filePath;
     }
 
-    public DBOperationsH getService() {
+    public DBOperations getService() {
         return service;
     }
 
-    public ServerOperations getServerService() {
-        return serverService;
+    public FileFolderService getFileFolderService() {
+        return fileFolderService;
     }
 
     public RequestParser getRequestParser() {

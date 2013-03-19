@@ -46,7 +46,7 @@ public class AuthorDAOImplH implements AuthorDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -69,7 +69,7 @@ public class AuthorDAOImplH implements AuthorDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);

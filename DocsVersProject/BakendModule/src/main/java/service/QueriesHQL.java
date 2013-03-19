@@ -12,7 +12,7 @@ public class QueriesHQL {
 //    public static final String INSERT_INTO_DOCUMENT_AUTHOR_NAME_DESCRIPTION_VALUES = "insert into document (author_id, document_name, description, code_document_name ) values (?,?,?,?)";
 //    public static final String INSERT_INTO_DOCUMENT = "insert into document (author_id, document_name, description, code_document_name) values (?,?,?,?)";
 //    public static final String SELECT_FROM_DOCUMENT = "select * from document order by id desc";
-    public static final String SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID = "from Document where author_id = :id order by id desc";
+    public static final String SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID = "from Document d where d.authorId = :docId order by d.id desc";
 //    public static final String SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_AND_AUTHOR_ID = "from Document where document_name=? and author_id= (select id from author  where login = ?)";
 //    public static final String SELECT_AUTHOR_ID_FROM_DOCUMENT_WHERE_ID = "select author_id from document where id=?";
 //    public static final String DELETE_FROM_DOCUMENT_WHERE_ID = "delete from document where id=?";

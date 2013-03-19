@@ -14,7 +14,8 @@
     </context-param>
     <context-param>
         <param-name>hibernateConfigFilePath</param-name>
-        <param-value>C:\Documents and Settings\alni\Desktop\New Folder (3)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml</param-value>
+        <param-value>C:\Documents and Settings\alni\Desktop\New Folder (3)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml
+        </param-value>
     </context-param>
 
     <context-param>
@@ -62,7 +63,7 @@
         <url-pattern>/Menu</url-pattern>
     </servlet-mapping>
 
-<!--=========================================================================-->
+    <!--=========================================================================-->
     <servlet>
         <servlet-name>AddDocumentServlet</servlet-name>
         <servlet-class>servlets.documentServlet.AddDocumentServlet</servlet-class>
@@ -109,7 +110,7 @@
         <servlet-name>AllDocuments</servlet-name>
         <url-pattern>/AllDocuments</url-pattern>
     </servlet-mapping>
-<!--=========================================================================-->
+    <!--=========================================================================-->
     <servlet>
         <servlet-name>Versions</servlet-name>
         <servlet-class>servlets.versionServlet.GetVersionsServlet</servlet-class>
@@ -177,7 +178,7 @@
         <servlet-name>DeleteVersion</servlet-name>
         <url-pattern>/DeleteVersion</url-pattern>
     </servlet-mapping>
-<!--=========================================================================-->
+    <!--=========================================================================-->
     <servlet>
         <servlet-name>ErrorPage</servlet-name>
         <jsp-file>/jsp/ErrorPage.jsp</jsp-file>
@@ -186,7 +187,6 @@
         <servlet-name>ErrorPage</servlet-name>
         <url-pattern>/ErrorPage</url-pattern>
     </servlet-mapping>
-
     <filter>
         <filter-name>ExceptionalFilter</filter-name>
         <filter-class>
@@ -202,6 +202,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
+
         <filter-name>LoginFilter</filter-name>
         <filter-class>filters.LoginFilter</filter-class>
     </filter>

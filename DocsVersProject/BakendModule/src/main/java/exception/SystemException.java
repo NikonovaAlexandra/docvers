@@ -8,7 +8,18 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class SystemException extends Exception {
-    public SystemException(String s, Exception e) {
+    private Exception e;
+    private String message;
 
+    public SystemException(String message, Exception e) {
+        this.e = e;
+        this.message = message;
+    }
+
+    public Exception getException() {
+        return e;
+    }
+    public String toString() {
+        return message + (e != null ? e.getMessage() : "");
     }
 }

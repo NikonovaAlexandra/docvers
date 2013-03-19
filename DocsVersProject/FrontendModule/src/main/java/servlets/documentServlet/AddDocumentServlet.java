@@ -20,8 +20,8 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class AddDocumentServlet extends ParentServlet {
-    private final String messageName = "addmessage";
-    private final String url = "/AddDocument";
+    private static final String messageName = "addmessage";
+    private static final String url = "/AddDocument";
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setCharacterEncoding(getEncoding());
@@ -31,7 +31,7 @@ public class AddDocumentServlet extends ParentServlet {
         try {
             documentBean = getRequestParser().getDocumentBean(request);
             getService().addDocument(documentBean);
-            getServerService().createUserDocumentFolder(getFilePath(),
+            getFileFolderService().createUserDocumentFolder(getFilePath(),
                     documentBean.getAuthor().getLogin(), documentBean.getCodeDocumentName());
             showMessage(request, response, "message.successfullyAdded", messageName, url);
         } catch (BusinessException e) {

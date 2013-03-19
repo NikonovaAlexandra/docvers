@@ -9,7 +9,9 @@ package exception;
  */
 public class NullFileException extends BusinessException{
     private String message;
+
     public NullFileException(String message) {
+        super(null);
         this.message = message;
     }
 

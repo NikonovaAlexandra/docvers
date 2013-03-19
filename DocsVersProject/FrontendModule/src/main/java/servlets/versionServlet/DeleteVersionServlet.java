@@ -20,9 +20,9 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class DeleteVersionServlet extends ParentServlet {
-    private final String url1 = "/Versions?document=";
-    private final String url2 = "/AllVersions";
-    private final String messageName = "versmessage";
+    private static final String url1 = "/Versions?document=";
+    private static final String url2 = "/AllVersions";
+    private static final String messageName = "versmessage";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding(getEncoding());
@@ -32,7 +32,7 @@ public class DeleteVersionServlet extends ParentServlet {
             setDocumentName((Long) request.getSession().getAttribute("documentToView"));
             String login = getRequestParser().getAuthorBean(request).getLogin();
             String type = getService().getVersionType(id, getDocumentName(), login);
-            getServerService().deleteUserDocumentVersion(getFilePath(), login, getDocumentName(), id, type);
+            getFileFolderService().deleteUserDocumentVersion(getFilePath(), login, getDocumentName(), id, type);
             getService().deleteVersion(id, getDocumentName(), login);
             response.sendRedirect(url1 + getDocumentName());
         } catch (SystemException e) {

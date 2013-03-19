@@ -43,7 +43,7 @@ public class VersionDAOImplH implements VersionDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -86,7 +86,7 @@ public class VersionDAOImplH implements VersionDAO{
                 }
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
                     throw new NoDiskSpaceException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (ExceptionUtils.getCause(e) instanceof JdbcBatchUpdateException){
                 e = (JdbcBatchUpdateException) ExceptionUtils.getCause(e);
@@ -98,6 +98,7 @@ public class VersionDAOImplH implements VersionDAO{
                 }
                 if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
                     throw new ReferentialIntegrityViolatedException();
+                else throw new DAOException(e);
 
             }
             if (e instanceof SessionException) {
@@ -126,7 +127,7 @@ public class VersionDAOImplH implements VersionDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -153,7 +154,7 @@ public class VersionDAOImplH implements VersionDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -181,7 +182,7 @@ public class VersionDAOImplH implements VersionDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);
@@ -204,7 +205,7 @@ public class VersionDAOImplH implements VersionDAO{
                     throw new NullConnectionException(e);
                 if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
                     throw new NotEnoughRightsException(e);
-                }
+                } else throw new DAOException(e);
             }
             if (e instanceof SessionException) {
                 throw new NullConnectionException(e);

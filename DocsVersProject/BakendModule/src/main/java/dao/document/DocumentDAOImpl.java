@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: alni
- * Date: 07.02.13
- * Time: 11:03
- * To change this template use File | Settings | File Templates.
- */
+* Created with IntelliJ IDEA.
+* User: alni
+* Date: 07.02.13
+* Time: 11:03
+* To change this template use File | Settings | File Templates.
+*/
 public class DocumentDAOImpl implements DocumentDAO {
     private Connection conn;
 
-    public DocumentDAOImpl(Connection conn) throws DAOException {
+    public DocumentDAOImpl(Connection conn) throws DAOException, SystemException {
         if (conn == null)
             throw new NullConnectionException();
         try {
@@ -239,7 +239,7 @@ public void deleteDocument(String login, long docNameCode) throws DAOException, 
     }
 }
 
-    private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws DAOException {
+    private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws DAOException, SystemException {
         List<Document> documents = new ArrayList<Document>();
         Document document = null;
         boolean flag = true;
@@ -256,7 +256,7 @@ public void deleteDocument(String login, long docNameCode) throws DAOException, 
 
     }
 
-    private Document createDocumentFromResultSet(ResultSet rs) throws DAOException {
+    private Document createDocumentFromResultSet(ResultSet rs) throws DAOException, SystemException {
         Document document = null;
         try {
             if (rs.next()) {

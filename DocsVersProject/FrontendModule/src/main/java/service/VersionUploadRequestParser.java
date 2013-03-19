@@ -7,6 +7,7 @@ import beans.VersionBean;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import service.dbOperations.DBOperations;
+import service.dbOperations.DBOperationsFactory;
 import service.dbOperations.DBOperationsH;
 import service.dbOperations.DBOperationsJDBC;
 
@@ -27,8 +28,8 @@ import java.util.List;
 public class VersionUploadRequestParser extends RequestParser{
 
     public UploadVersionRequestStruct geVersionDescriptionAndFileItem(HttpServletRequest request) throws Exception {
-        ServerOperations serverOperations = new ServerOperations();
-        ServletFileUpload upload = serverOperations.initUpload(request);
+        FileFolderService fileFolderOperations = new FileFolderService();
+        ServletFileUpload upload = fileFolderOperations.initUpload(request);
 
         FileItem fileItem = null;
         String description = null;
@@ -52,8 +53,7 @@ public class VersionUploadRequestParser extends RequestParser{
 
     public VersionBean getVersionBean(String filePath, AuthorBean authorBean, long documentCode, String versName, String descriprion) throws Exception {
 
-        //DBOperationsJDBC operations = new DBOperationsJDBC();
-        DBOperationsH operations = new DBOperationsH();
+        DBOperations operations = DBOperationsFactory.getDBService();
         char separator = File.separatorChar;
         String login = authorBean.getLogin();
         String newFilePath = filePath + login + separator

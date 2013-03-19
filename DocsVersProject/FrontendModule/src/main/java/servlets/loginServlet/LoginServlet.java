@@ -24,8 +24,10 @@ import static service.Authentication.performLogin;
 public class LoginServlet extends ParentServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //todo to filter
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
+
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         ServletContext context = request.getSession().getServletContext();
