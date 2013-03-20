@@ -1,3 +1,4 @@
+<%@ page import="java.util.Date" %>
 <%--
   Created by IntelliJ IDEA.
   User: alni
@@ -48,12 +49,11 @@
                     <th scope="col" style="width: 15%">&nbsp</th>
                 </tr>
                 </thead>
-
                 <c:forEach items="${versionList}" var="item">
 
                     <tr>
                         <td>${item.versionName}</td>
-                        <td><fmt:formatDate value="${item.date}" type="date" var="date" /></td>
+                        <td><fmt:formatDate value="${item.date}" type="date" var="date"/></td>
                         <td>${item.author.login}</td>
                         <td>${item.description}</td>
                         <td>${item.versionType}</td>
@@ -72,7 +72,7 @@
         <c:set var="document" value="${param.document}"/>
         <form action="/AddVersion" method="post">
             <fmt:message key="version.addNewVersion" var="butName"/>
-            <input type="submit" name="submit" class = "button" value="${butName}"/>
+            <input type="submit" name="submit" class="button" value="${butName}"/>
         </form>
     </jsp:body>
 </t:TemplatePage>

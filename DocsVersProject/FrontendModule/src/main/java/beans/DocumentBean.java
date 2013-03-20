@@ -1,10 +1,6 @@
 package beans;
 
-import entities.Version;
-
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

@@ -11,7 +11,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,8 +31,9 @@ public class LoginFilter implements Filter {
         if (filterConfig != null) {
             loginPage = filterConfig.getServletContext().getInitParameter("login_page");
         }
-        String path = filterConfig.getServletContext().getInitParameter("hibernateConfigFilePath");
-        SessionFactoryUtil.init(path);
+        //todo SessionFactoryUtil.init(path);
+//        String path = filterConfig.getServletContext().getInitParameter("hibernateConfigFilePath");
+//        SessionFactoryUtil.init(path);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class LoginFilter implements Filter {
             } else {
                 logger.error("Servlet Exception in Login Filter: " + e.getMessage());
             }
-        } catch (IOException e) {
-                logger.error("IOException raised in Login Filter. " + e.getMessage());
+         } catch (IOException e) {
+            logger.error("IOException raised in Login Filter. " + e.getMessage());
 
         }
 

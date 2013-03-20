@@ -7,6 +7,6 @@
 --%>
 <div id="footer">
 
-  <label id="foot"> Copyright (c)</label>
+    <label id="foot"> Copyright (c)</label>
 
 </div>

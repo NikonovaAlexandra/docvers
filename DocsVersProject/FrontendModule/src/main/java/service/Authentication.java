@@ -1,13 +1,12 @@
 package service;
 
 import beans.AuthorBean;
+import dao.DAOType;
 import exception.BusinessException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import service.dbOperations.DBOperations;
 import service.dbOperations.DBOperationsFactory;
-import service.dbOperations.DBOperationsH;
-import service.dbOperations.DBOperationsJDBC;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -32,7 +31,7 @@ public class Authentication {
     public static void performLogin(HttpServletRequest request, HttpServletResponse response, String login,
                                     String password, ServletContext context) throws ServletException, IOException, BusinessException, SystemException {
 
-        DBOperations operations = DBOperationsFactory.getDBService();
+        DBOperations operations = DBOperationsFactory.getDBService((DAOType)context.getAttribute("type"));
         if ((login != null) & (password != null)) {
             AuthorBean author = operations.getAuthorByLogin(login);
             if (author != null) {

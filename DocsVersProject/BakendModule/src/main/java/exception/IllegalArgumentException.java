@@ -7,7 +7,7 @@ package exception;
  * Time: 12:02
  * To change this template use File | Settings | File Templates.
  */
-public class IllegalArgumentException extends DAOException{
+public class IllegalArgumentException extends DAOException {
 
     private String ob;
 

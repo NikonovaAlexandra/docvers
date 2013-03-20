@@ -4,7 +4,7 @@ import entities.Document;
 import exception.*;
 import org.h2.constant.ErrorCode;
 import service.QueriesSQL;
-
+import dao.ExceptionsThrower;
 import java.lang.IllegalArgumentException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: alni
-* Date: 07.02.13
-* Time: 11:03
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA.
+ * User: alni
+ * Date: 07.02.13
+ * Time: 11:03
+ * To change this template use File | Settings | File Templates.
+ */
 public class DocumentDAOImpl implements DocumentDAO {
     private Connection conn;
 
@@ -30,9 +30,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             this.conn = conn;
             this.conn.setAutoCommit(false);
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
         }
     }
 
@@ -48,15 +46,12 @@ public class DocumentDAOImpl implements DocumentDAO {
             rs = ps.executeQuery();
             conn.commit();
             doc = createDocumentFromResultSet(rs);
-            if (doc == null) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
+            if (doc == null)
+                throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return doc;
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
-
+            ExceptionsThrower.throwException(e);
+            return null;
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -77,7 +72,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             rs = ps.executeQuery();
             long id = 0;
             if (rs.next()) {
-               id = rs.getLong("id");
+                id = rs.getLong("id");
             }
             conn.commit();
             if (id == 0) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
@@ -88,13 +83,8 @@ public class DocumentDAOImpl implements DocumentDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
-
-
+            ExceptionsThrower.throwException(e);
+            return 0;
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -127,20 +117,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            if (e.getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
-                throw new ObjectAlreadyExistsException();
-            }
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
-                throw new ReferentialIntegrityViolatedException();
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            }
-            if (e.getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
-                throw new NoDiskSpaceException(e);
-            } else throw new DAOException(e);
-
+            ExceptionsThrower.throwException(e);
         } finally {
             try {
 
@@ -165,11 +142,8 @@ public class DocumentDAOImpl implements DocumentDAO {
             conn.commit();
             return createDocumentsListFromResultSet(rs);
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
+            return null;
 
         } finally {
             try {
@@ -192,11 +166,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps.setString(3, login);
             conn.commit();
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -207,51 +177,46 @@ public class DocumentDAOImpl implements DocumentDAO {
         }
     }
 
-@Override
-public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
-    PreparedStatement ps = null;
-    try {
-        ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
-        ps.setString(1, login);
-        ps.setLong(2, docNameCode);
-        int i = ps.executeUpdate();
-        if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
-        conn.commit();
-    } catch (SQLException e) {
+    @Override
+    public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
+        PreparedStatement ps = null;
         try {
-            conn.rollback();
-        } catch (SQLException e1) {
-            throw new DAOException(e);
-        }
-        if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-            throw new NullConnectionException(e);
-        if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-            throw new NotEnoughRightsException(e);
-        }  else throw new DAOException(e);
-
-
-    } finally {
-        try {
-            if (ps != null) ps.close();
+            ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
+            ps.setString(1, login);
+            ps.setLong(2, docNameCode);
+            int i = ps.executeUpdate();
+            if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
+            conn.commit();
         } catch (SQLException e) {
-            throw new DAOException(e);
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            ExceptionsThrower.throwException(e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
         }
     }
-}
 
     private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws DAOException, SystemException {
         List<Document> documents = new ArrayList<Document>();
         Document document = null;
         boolean flag = true;
-            while (flag) {
-                document = createDocumentFromResultSet(rs);
-                if (document != null){
-                    documents.add(document);
-                } else flag = false;
+        while (flag) {
+            document = createDocumentFromResultSet(rs);
+            if (document != null) {
+                documents.add(document);
+            } else flag = false;
 
-            }
-            if (documents.isEmpty()) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
-            return documents;
+        }
+        if (documents.isEmpty())
+            throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
+        return documents;
 
 
     }
@@ -269,9 +234,8 @@ public void deleteDocument(String login, long docNameCode) throws DAOException, 
             }
             return document;
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
+            return null;
         }
 
     }

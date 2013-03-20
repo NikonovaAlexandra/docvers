@@ -17,12 +17,12 @@
 <!doctype html>
 <html lang="${language}">
 <head>
-<meta charset="utf8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title><fmt:message key="login.login"/></title>
-<link rel="stylesheet" href="css/login.css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
-<script src="js/login.js"></script>
+    <meta charset="utf8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title><fmt:message key="login.login"/></title>
+    <link rel="stylesheet" href="css/login.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
+    <script src="js/login.js"></script>
 </head>
 <body>
 <div id="bar">
@@ -59,7 +59,7 @@
                     <fieldset id="body">
                         <fieldset>
                             <label for="login"><fmt:message key="login.enterLogin"/></label>
-                            <input type="text" required  name="login" id="email"/>
+                            <input type="text" required name="login" id="email"/>
                         </fieldset>
                         <fieldset>
                             <label for="password"><fmt:message key="login.password"/></label>

@@ -1,10 +1,10 @@
 package servlets;
 
+import dao.DAOType;
 import service.FileFolderService;
+import service.RequestParser;
 import service.dbOperations.DBOperations;
 import service.dbOperations.DBOperationsFactory;
-import service.RequestParser;
-
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,19 +27,24 @@ public class ParentServlet extends HttpServlet {
     //todo check if work on 2 users
     private long documentName;
     private FileFolderService fileFolderService;
-    private String filePath;
     private RequestParser requestParser;
     private String encoding;
-
+    private String filePath;
     public void init() {
         requestParser = new RequestParser();
-        service = DBOperationsFactory.getDBService();;
+        service = DBOperationsFactory.getDBService((DAOType) getServletContext().getAttribute("type"));
         fileFolderService = new FileFolderService();
         // Get the file location where it would be stored.
+        encoding = (String) getServletContext().getAttribute("encoding");
+        filePath = (String) getServletContext().getAttribute("filePath");
+    }
 
-        filePath =
-                getServletContext().getInitParameter("file-upload");
-        encoding = getServletContext().getInitParameter("encoding");
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public String getEncoding() {
+        return encoding;
     }
 
     public long getDocumentName() {
@@ -48,10 +53,6 @@ public class ParentServlet extends HttpServlet {
 
     public void setDocumentName(long documentName) {
         this.documentName = documentName;
-    }
-
-    public String getFilePath() {
-        return filePath;
     }
 
     public DBOperations getService() {
@@ -65,15 +66,6 @@ public class ParentServlet extends HttpServlet {
     public RequestParser getRequestParser() {
         return requestParser;
     }
-
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {

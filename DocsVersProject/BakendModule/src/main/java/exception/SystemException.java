@@ -19,6 +19,7 @@ public class SystemException extends Exception {
     public Exception getException() {
         return e;
     }
+
     public String toString() {
         return message + (e != null ? e.getMessage() : "");
     }

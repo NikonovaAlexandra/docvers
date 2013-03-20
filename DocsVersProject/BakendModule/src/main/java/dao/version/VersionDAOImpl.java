@@ -1,12 +1,16 @@
 package dao.version;
 
+import dao.ExceptionsThrower;
 import entities.Version;
 import exception.*;
 import org.h2.constant.ErrorCode;
 import service.QueriesSQL;
 
 import java.lang.IllegalArgumentException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +31,7 @@ public class VersionDAOImpl implements VersionDAO {
             this.conn = conn;
             this.conn.setAutoCommit(false);
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
         }
     }
 
@@ -63,11 +63,13 @@ public class VersionDAOImpl implements VersionDAO {
             if (versions.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            ExceptionsThrower.throwException(e);
+            return null;
         } finally {
 
             try {
@@ -111,19 +113,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            if (e.getErrorCode() == ErrorCode.DUPLICATE_KEY_1) {
-                throw new ObjectAlreadyExistsException();
-            }
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1)
-                throw new ReferentialIntegrityViolatedException();
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            }
-            if (e.getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
-                throw new NoDiskSpaceException(e);
-            }   throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -149,16 +139,12 @@ public class VersionDAOImpl implements VersionDAO {
             if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
             conn.commit();
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            }
             try {
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
+            ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -180,7 +166,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps.setString(3, login);
             rs = ps.executeQuery();
             String type = null;
-            if (rs.next()){
+            if (rs.next()) {
                 type = rs.getString("version_type");
             }
 
@@ -192,12 +178,8 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } throw new DAOException(e);
-
+            ExceptionsThrower.throwException(e);
+            return null;
 
         } finally {
             try {
@@ -235,11 +217,13 @@ public class VersionDAOImpl implements VersionDAO {
             if (version == null) throw new NoSuchObjectInDB("Version of this document with same name = " + versName);
             return version;
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            ExceptionsThrower.throwException(e);
+            return null;
         } finally {
 
             try {
@@ -260,7 +244,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps.setLong(1, docID);
             rs = ps.executeQuery();
             long name = 0;
-            if (rs.next()){
+            if (rs.next()) {
                 name = rs.getLong("version_max_name");
             }
 
@@ -272,12 +256,8 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } throw new DAOException(e);
-
+            ExceptionsThrower.throwException(e);
+            return 0;
 
         } finally {
             try {

@@ -1,8 +1,5 @@
 package exception;
 
-import java.lang.reflect.Method;
-import java.sql.SQLException;
-
 /**
  * Created with IntelliJ IDEA.
  * User: alni
@@ -14,7 +11,7 @@ public class IntegrityConstraintException extends DAOException {
     private Exception e;
     private String message;
 
-    public IntegrityConstraintException( Exception e, String message ) {
+    public IntegrityConstraintException(Exception e, String message) {
         super(e);
 
         this.e = e;
@@ -23,7 +20,7 @@ public class IntegrityConstraintException extends DAOException {
 
     public String toString() {
 
-        return "Integrity Constraint Exception: "+ e.getMessage()+ " with message " + message;
+        return "Integrity Constraint Exception: " + e.getMessage() + " with message " + message;
 
     }
 }

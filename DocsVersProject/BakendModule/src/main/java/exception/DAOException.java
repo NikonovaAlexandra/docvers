@@ -14,7 +14,7 @@ public class DAOException extends BusinessException {
     }
 
     public DAOException(Exception e) {
-       super(e);
+        super(e);
     }
 
     public String toString() {

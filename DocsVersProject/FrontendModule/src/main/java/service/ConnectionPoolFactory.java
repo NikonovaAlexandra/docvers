@@ -18,7 +18,7 @@ public class ConnectionPoolFactory {
     private static ConnectionPoolFactory instance;
     private ConnectionPool connectionPool;
 
-    public static synchronized ConnectionPoolFactory getInstance() {
+    public static ConnectionPoolFactory getInstance() {
         if (instance == null) {
             instance = new ConnectionPoolFactory();
         }

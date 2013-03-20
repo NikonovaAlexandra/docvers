@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -18,6 +19,7 @@ public class Author {
 
     @javax.persistence.Column(name = "ID")
     @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
@@ -71,6 +73,7 @@ public class Author {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
+
     public Author() {
     }
 

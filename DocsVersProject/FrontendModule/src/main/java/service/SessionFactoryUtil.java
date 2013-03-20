@@ -19,16 +19,18 @@ public class SessionFactoryUtil {
     private SessionFactoryUtil(String path) {
         sessionFactory = new AnnotationConfiguration().configure(new File(path)).buildSessionFactory();
     }
-    public static synchronized SessionFactoryUtil init(String path) {
+
+    public static SessionFactoryUtil init(String path) {
         if (instance == null) {
             instance = new SessionFactoryUtil(path);
         }
         return instance;
     }
 
-    public static synchronized SessionFactoryUtil getInstance() {
+    public static SessionFactoryUtil getInstance() {
         return instance;
     }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }

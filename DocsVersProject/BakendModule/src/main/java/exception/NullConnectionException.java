@@ -19,7 +19,7 @@ public class NullConnectionException extends SystemException {
     }
 
     public NullConnectionException() {
-       super(message, null);
+        super(message, null);
     }
 
 }

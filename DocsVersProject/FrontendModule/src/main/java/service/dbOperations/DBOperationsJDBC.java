@@ -24,13 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: Admin
-* Date: 17.02.13
-* Time: 17:03
-* To change this template use File | Settings | File Templates.
-*/
-public class DBOperationsJDBC implements DBOperations{
+ * Created with IntelliJ IDEA.
+ * User: Admin
+ * Date: 17.02.13
+ * Time: 17:03
+ * To change this template use File | Settings | File Templates.
+ */
+public class DBOperationsJDBC implements DBOperations {
 
     public void addDocument(DocumentBean documentBean) throws BusinessException, SystemException {
         Connection conn = null;
@@ -50,24 +50,25 @@ public class DBOperationsJDBC implements DBOperations{
 
         }
     }
-    public long getLastVersionNameInfo(long docID) throws BusinessException, SystemException {
-            Connection conn = null;
-            ConnectionPool connPool = null;
-            try {
-                connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
-                conn = connPool.getConnection();
-                VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(conn);
-                long id = versionDAO.getLastVersionNameInfo(docID);
-                conn.commit();
-                return id;
-            } catch (SQLException e) {
-                throw new DAOException(e);
 
-            } finally {
-                if (conn != null) {
-                    connPool.free(conn);
-                }
+    public long getLastVersionNameInfo(long docID) throws BusinessException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(conn);
+            long id = versionDAO.getLastVersionNameInfo(docID);
+            conn.commit();
+            return id;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+
+        } finally {
+            if (conn != null) {
+                connPool.free(conn);
             }
+        }
     }
 
     public void addVersion(VersionBean versionBean) throws BusinessException, SystemException {
@@ -267,7 +268,7 @@ public class DBOperationsJDBC implements DBOperations{
 
     }
 
-    public long getDocumentIDByCodeNameAndLogin(String login, long docName)throws BusinessException, SystemException {
+    public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws BusinessException, SystemException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {

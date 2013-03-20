@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class ConnectionFactory {
     private static ConnectionFactory instance;
 
-    public static synchronized ConnectionFactory getInstance() {
+    public static ConnectionFactory getInstance() {
         if (instance == null) {
             instance = new ConnectionFactory();
         }

@@ -28,33 +28,33 @@
 <t:TemplatePage>
     <jsp:body>
         <c:if test="${not empty documentList}">
-                <table id="userDocs">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="width: 30%"><fmt:message key="alldocuments.name"/></th>
-                        <th scope="col"><fmt:message key="alldocuments.description"/></th>
-                        <th scope="col" style="width: 100px">&nbsp</th>
-                    </tr>
-                    </thead>
+            <table id="userDocs">
+                <thead>
+                <tr>
+                    <th scope="col" style="width: 30%"><fmt:message key="alldocuments.name"/></th>
+                    <th scope="col"><fmt:message key="alldocuments.description"/></th>
+                    <th scope="col" style="width: 100px">&nbsp</th>
+                </tr>
+                </thead>
 
-                    <c:forEach items="${documentList}" var="item">
-                        <tr>
-                            <td><a href="<c:url value="Versions">
+                <c:forEach items="${documentList}" var="item">
+                    <tr>
+                        <td><a href="<c:url value="Versions">
                 <c:param name="document" value="${item.codeDocumentName}"/>
                 </c:url>">${item.name}</a></td>
-                            <td>${item.description}</td>
-                            <td><a onclick="return deleteA()"
-                                   href="<c:url value="DeleteDocument">
+                        <td>${item.description}</td>
+                        <td><a onclick="return deleteA()"
+                               href="<c:url value="DeleteDocument">
                     <c:param name="document to delete" value="${item.codeDocumentName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
-                        </tr>
-                    </c:forEach>
-                </table>
+                    </tr>
+                </c:forEach>
+            </table>
         </c:if>
 
         <%--<FORM action="AddDocument" method="post">--%>
-            <%--<fmt:message key="index.add" var="buttonValue"/>--%>
-            <%--<input type="submit" name="submit" class="button" value="${buttonValue}">--%>
+        <%--<fmt:message key="index.add" var="buttonValue"/>--%>
+        <%--<input type="submit" name="submit" class="button" value="${buttonValue}">--%>
         <%--</FORM>--%>
     </jsp:body>
 </t:TemplatePage>

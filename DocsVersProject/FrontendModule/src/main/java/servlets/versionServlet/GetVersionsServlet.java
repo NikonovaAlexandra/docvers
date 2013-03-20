@@ -6,7 +6,6 @@ import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import servlets.ParentServlet;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +22,7 @@ import java.util.List;
 public class GetVersionsServlet extends ParentServlet {
     private static final String messageName = "versmessage";
     private static final String url = "/AllVersions";
+
     //todo released
     //todo type
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

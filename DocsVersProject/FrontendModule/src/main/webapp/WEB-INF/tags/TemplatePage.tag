@@ -1,7 +1,7 @@
-<%@tag description="Overall Page template" pageEncoding="UTF-8"%>
+<%@tag description="Overall Page template" pageEncoding="UTF-8" %>
 
 <!DOCTYPE HTML>
-<html  lang="${language}">
+<html lang="${language}">
 <head>
     <title>${param.title}</title>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -11,6 +11,6 @@
 <div id="body">
     <jsp:doBody/>
 </div>
-    <jsp:include page="/jsp/Footer.jsp"/>
+<jsp:include page="/jsp/Footer.jsp"/>
 </body>
 </html>

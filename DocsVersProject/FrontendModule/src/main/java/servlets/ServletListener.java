@@ -1,8 +1,8 @@
 package servlets;
 
+import dao.DAOType;
 import exception.BusinessException;
 import exception.SystemException;
-import filters.LoginFilter;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,24 +22,27 @@ import javax.servlet.ServletContextListener;
  */
 public class ServletListener implements ServletContextListener {
     private Logger logger = LoggerFactory.getLogger(ServletListener.class);
+
     @Override
-    public void contextInitialized(ServletContextEvent event)
-    {
-//        ServletContext sc = event.getServletContext();
-//        String whatType = sc.getInitParameter("typeSelected");
-//        Furniture f = new Furniture(whatType);
-//        sc.setAttribute("furniture", f);
+    public void contextInitialized(ServletContextEvent event) {
+        ServletContext sc = event.getServletContext();
         logger.trace("Initializing context...");
-//        String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
-//        SessionFactoryUtil.init(path);
+        DAOType type = DAOType.valueOf(event.getServletContext().getInitParameter("ConnType"));
+        sc.setAttribute("type", type);
+
+        String filePath = event.getServletContext().getInitParameter("file-upload");
+        sc.setAttribute("filePath", filePath);
+        String encoding = event.getServletContext().getInitParameter("encoding");
+        sc.setAttribute("encoding", encoding);
+        String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
+        SessionFactoryUtil.init(path);
 
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent event)
-    {
+    public void contextDestroyed(ServletContextEvent event) {
 
-         // todo: logger
+        // todo: logger
         try {
             ConnectionPoolFactory.getInstance().getConnectionPool().closeAllConnections();
             SessionFactory sf = SessionFactoryUtil.getInstance().getSessionFactory();

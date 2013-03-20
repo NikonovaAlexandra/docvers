@@ -5,10 +5,12 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
@@ -99,8 +101,7 @@ public class FileFolderService {
         DataInputStream in = new DataInputStream(new FileInputStream(file));
 
         // reads the file's bytes and writes them to the response stream
-        while ((in != null) && ((length = in.read(byteBuffer)) != -1))
-        {
+        while ((in != null) && ((length = in.read(byteBuffer)) != -1)) {
             outputStream.write(byteBuffer, 0, length);
         }
 

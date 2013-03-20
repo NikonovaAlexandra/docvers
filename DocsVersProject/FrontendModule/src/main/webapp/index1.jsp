@@ -1,7 +1,7 @@
-<%@ page import="java.io.StringWriter" %>
-<%@ page import="org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder" %>
-<%@ page import="org.eclipse.mylyn.wikitext.core.parser.MarkupParser" %>
 <%@ page import="org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage" %>
+<%@ page import="org.eclipse.mylyn.wikitext.core.parser.MarkupParser" %>
+<%@ page import="org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder" %>
+<%@ page import="java.io.StringWriter" %>
 <%--
   Created by IntelliJ IDEA.
   User: gosha
@@ -13,39 +13,39 @@
 
 <html>
 <body>
-<link rel="stylesheet" href="wiki.css" type="text/css" />
+<link rel="stylesheet" href="wiki.css" type="text/css"/>
 
 <%
-   StringWriter writer = new StringWriter();
+    StringWriter writer = new StringWriter();
 
 
-   HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
+    HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
 
-   // avoid the <html> and <body> tags
-   builder.setEmitAsDocument(false);
+    // avoid the <html> and <body> tags
+    builder.setEmitAsDocument(false);
 
-   MarkupParser parser = new MarkupParser(new ConfluenceLanguage());
-   parser.setBuilder(builder);
+    MarkupParser parser = new MarkupParser(new ConfluenceLanguage());
+    parser.setBuilder(builder);
 
-   parser.parse("h2. Headers i DataLoader\n" +
-                " main class : com.siemens.modias.loader.hfdheader.HeaderParser\n" +
-                "\n" +
-                "\n" +
-                "|| Header Name || (+) || (-) || Notes ||\n" +
-                "| @HFDVERSION | values | null/empty | error handling works incorrect |\n" +
-                "| @CONTENTTYPE | | | |\n" +
-                "| @INTERFACE | | | |\n" +
-                "| @ENCODING | | | |\n" +
-                "| @SOURCESYSTEM | | | |\n" +
-                "| @SOURCESYSTEMDATASOURCE | | | |\n" +
-                "| @SOURCESYSTEMPROGRAM | | | |\n" +
-                "| @SOURCESYSTEMENCODING| | | |\n" +
-                "| @EXPORTDATETIME | | | |\n" +
-                "| @FIELDNAMES | | | |\n");
+    parser.parse("h2. Headers i DataLoader\n" +
+            " main class : com.siemens.modias.loader.hfdheader.HeaderParser\n" +
+            "\n" +
+            "\n" +
+            "|| Header Name || (+) || (-) || Notes ||\n" +
+            "| @HFDVERSION | values | null/empty | error handling works incorrect |\n" +
+            "| @CONTENTTYPE | | | |\n" +
+            "| @INTERFACE | | | |\n" +
+            "| @ENCODING | | | |\n" +
+            "| @SOURCESYSTEM | | | |\n" +
+            "| @SOURCESYSTEMDATASOURCE | | | |\n" +
+            "| @SOURCESYSTEMPROGRAM | | | |\n" +
+            "| @SOURCESYSTEMENCODING| | | |\n" +
+            "| @EXPORTDATETIME | | | |\n" +
+            "| @FIELDNAMES | | | |\n");
 
-   String htmlContent = writer.toString();
+    String htmlContent = writer.toString();
 
- %>
- <%=htmlContent%>
+%>
+<%=htmlContent%>
 </body>
 </html>

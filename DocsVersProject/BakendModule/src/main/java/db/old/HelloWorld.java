@@ -21,7 +21,7 @@ public class HelloWorld {
 
     public static void main(String[] args) throws SQLException, DAOException, SystemException {
         HelloWorld hw = new HelloWorld();
-       // Connection conn = hw.getConnection();
+        // Connection conn = hw.getConnection();
         //DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(conn);
 //        Document doc = new Document(2, "doc1", "descr");
 //        documentDAO.addDocument(doc);

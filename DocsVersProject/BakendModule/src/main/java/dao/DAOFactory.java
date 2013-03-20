@@ -2,13 +2,16 @@ package dao;
 
 import dao.author.AuthorDAO;
 import dao.author.AuthorDAOImpl;
-import dao.author.AuthorDAOImplH;
+import dao.author.AuthorDAOImplHCriteria;
+import dao.author.AuthorDAOImplHHQL;
 import dao.document.DocumentDAO;
 import dao.document.DocumentDAOImpl;
-import dao.document.DocumentDAOImplH;
+import dao.document.DocumentDAOImplHCriteria;
+import dao.document.DocumentDAOImplHHQL;
 import dao.version.VersionDAO;
 import dao.version.VersionDAOImpl;
-import dao.version.VersionDAOImplH;
+import dao.version.VersionDAOImplHCriteria;
+import dao.version.VersionDAOImplHHQL;
 import exception.DAOException;
 import exception.SystemException;
 import org.hibernate.Session;
@@ -22,14 +25,14 @@ import java.sql.Connection;
  * Time: 9:04
  * To change this template use File | Settings | File Templates.
  */
+
 public class DAOFactory {
 
     private static DocumentDAO documentDAO = null;
     private static AuthorDAO authorDAO = null;
     private static VersionDAO versionDAO = null;
     private static DAOFactory instance = null;
-
-    public static synchronized DAOFactory getInstance() {
+    public static DAOFactory getInstance() {
         if (instance == null) {
             instance = new DAOFactory();
         }
@@ -57,23 +60,35 @@ public class DAOFactory {
         return versionDAO;
     }
 
-    public DocumentDAO getDocumentDAO(Session session) throws DAOException, SystemException {
+    public DocumentDAO getDocumentDAO(Session session, DAOType type) throws DAOException, SystemException {
         if (documentDAO == null) {
-            documentDAO = new DocumentDAOImplH(session);
+            switch (type) {
+                case CRITERIA: documentDAO = new DocumentDAOImplHCriteria(session); break;
+                case HQL: documentDAO = new DocumentDAOImplHHQL(session); break;
+                default: break;
+            }
         }
         return documentDAO;
     }
 
-    public AuthorDAO getAuthorDAO(Session session) throws DAOException, SystemException {
+    public AuthorDAO getAuthorDAO(Session session, DAOType type) throws DAOException, SystemException {
         if (authorDAO == null) {
-            authorDAO = new AuthorDAOImplH(session);
+            switch (type) {
+                case CRITERIA: authorDAO = new AuthorDAOImplHCriteria(session); break;
+                case HQL: authorDAO = new AuthorDAOImplHHQL(session); break;
+                default: break;
+            };
         }
         return authorDAO;
     }
 
-    public VersionDAO getVersionDAO(Session session) throws DAOException, SystemException {
+    public VersionDAO getVersionDAO(Session session, DAOType type) throws DAOException, SystemException {
         if (versionDAO == null) {
-            versionDAO = new VersionDAOImplH(session);
+            switch (type) {
+                case CRITERIA: versionDAO = new VersionDAOImplHCriteria(session); break;
+                case HQL: versionDAO = new VersionDAOImplHHQL(session); break;
+                default: break;
+            };
         }
         return versionDAO;
     }

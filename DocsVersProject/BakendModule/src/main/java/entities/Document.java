@@ -1,7 +1,6 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +16,7 @@ public class Document {
 
     @javax.persistence.Column(name = "ID")
     @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }

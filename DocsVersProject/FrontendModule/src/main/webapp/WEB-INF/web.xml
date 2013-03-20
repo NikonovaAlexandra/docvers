@@ -13,8 +13,12 @@
         <param-value>/Login</param-value>
     </context-param>
     <context-param>
+        <param-name>ConnType</param-name>
+        <param-value>JDBC</param-value>
+    </context-param>
+    <context-param>
         <param-name>hibernateConfigFilePath</param-name>
-        <param-value>C:\Documents and Settings\alni\Desktop\New Folder (3)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml
+        <param-value>C:\Documents and Settings\alni\Desktop\New Folder (4)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml
         </param-value>
     </context-param>
 
@@ -187,10 +191,11 @@
         <servlet-name>ErrorPage</servlet-name>
         <url-pattern>/ErrorPage</url-pattern>
     </servlet-mapping>
+
     <filter>
-        <filter-name>ExceptionalFilter</filter-name>
+        <filter-name>InternalExceptionalFilter</filter-name>
         <filter-class>
-            filters.ExceptionalFilter
+            filters.InternalExceptionalFilter
         </filter-class>
         <init-param>
             <param-name>error-page</param-name>
@@ -198,11 +203,10 @@
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>ExceptionalFilter</filter-name>
+        <filter-name>InternalExceptionalFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
-
         <filter-name>LoginFilter</filter-name>
         <filter-class>filters.LoginFilter</filter-class>
     </filter>
@@ -210,5 +214,20 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>ExternalExceptionalFilter</filter-name>
+        <filter-class>
+            filters.ExternalExceptionalFilter
+        </filter-class>
+        <init-param>
+            <param-name>error-page</param-name>
+            <param-value>/ErrorPage</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>ExternalExceptionalFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 
 </web-app>

@@ -15,14 +15,14 @@ public class FileNameGenerator {
 
     public static String getType(String fileName) {
         if (fileName.contains(".")) {
-           String [] arr = fileName.split("\\.");
+            String[] arr = fileName.split("\\.");
             String type = arr[arr.length - 1];
             return type;
         } else return null;
     }
 
     public static String generateDownloadVersionName(String documentName, long version) {
-          return documentName + "_" + "v." + "_" + version;
+        return documentName + "_" + "v." + "_" + version;
     }
 
     public static String generateDownloadVersionName(String documentName, long version, String versionType) {

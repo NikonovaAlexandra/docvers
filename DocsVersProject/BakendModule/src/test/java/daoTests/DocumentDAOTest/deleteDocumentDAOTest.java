@@ -12,7 +12,7 @@ import org.junit.Test;
  */
 public class deleteDocumentDAOTest {
 
-    @Test (expected = NoSuchObjectInDB.class)
+    @Test(expected = NoSuchObjectInDB.class)
     public void deleteDocumentSuccessful() throws Exception {
 //        Connection conn = mock(Connection.class);
 //        PreparedStatement ps = mock(PreparedStatement.class);

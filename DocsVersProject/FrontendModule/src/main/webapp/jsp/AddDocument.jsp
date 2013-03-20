@@ -10,7 +10,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="Messages"/>
 
@@ -33,26 +35,27 @@
 <t:TemplatePage>
     <jsp:body>
 
-    <div>
-        <hr>
-        <form action="Document" method="post" name="form" onSubmit="return validateForm()">
-            <table>
-                <tr>
-                    <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
-                    <td width="161"><input name="docname" required type="text" size="25" style="height: 20px;"/></td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="adddocument.docdescription"/></td>
-                    <td><textarea name="docdescription" rows="5"></textarea></td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="addocument.add" var="buttonValue"/>
-                        <input name="submit" type="submit" class = "button" value="${buttonValue}"></td>
-                </tr>
-            </table>
-        </form>
-        <hr>
-    </div>
+        <div>
+            <hr>
+            <form action="Document" method="post" name="form" onSubmit="return validateForm()">
+                <table>
+                    <tr>
+                        <td width="103" height="32"><fmt:message key="adddocument.docname"/></td>
+                        <td width="161"><input name="docname" required type="text" size="25" style="height: 20px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="adddocument.docdescription"/></td>
+                        <td><textarea name="docdescription" rows="5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="addocument.add" var="buttonValue"/>
+                            <input name="submit" type="submit" class="button" value="${buttonValue}"></td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+        </div>
     </jsp:body>
 </t:TemplatePage>
 

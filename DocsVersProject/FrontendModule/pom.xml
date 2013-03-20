@@ -72,11 +72,11 @@
             <artifactId>confluence-core</artifactId>
             <version>1.4</version>
         </dependency>
-      <dependency>
-      	<groupId>org.fusesource.wikitext</groupId>
-      	<artifactId>confluence-core</artifactId>
-      	<version>1.4</version>
-      </dependency>
+        <dependency>
+            <groupId>org.fusesource.wikitext</groupId>
+            <artifactId>confluence-core</artifactId>
+            <version>1.4</version>
+        </dependency>
 
     </dependencies>
 </project>

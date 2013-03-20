@@ -4,13 +4,13 @@ import beans.AuthorBean;
 import beans.DocumentBean;
 import beans.UploadVersionRequestStruct;
 import beans.VersionBean;
+import dao.DAOType;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import service.dbOperations.DBOperations;
 import service.dbOperations.DBOperationsFactory;
-import service.dbOperations.DBOperationsH;
-import service.dbOperations.DBOperationsJDBC;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Timestamp;
@@ -25,7 +25,7 @@ import java.util.List;
  * Time: 11:19
  * To change this template use File | Settings | File Templates.
  */
-public class VersionUploadRequestParser extends RequestParser{
+public class VersionUploadRequestParser extends RequestParser {
 
     public UploadVersionRequestStruct geVersionDescriptionAndFileItem(HttpServletRequest request) throws Exception {
         FileFolderService fileFolderOperations = new FileFolderService();
@@ -51,12 +51,12 @@ public class VersionUploadRequestParser extends RequestParser{
         return new UploadVersionRequestStruct(fileItem, description);
     }
 
-    public VersionBean getVersionBean(String filePath, AuthorBean authorBean, long documentCode, String versName, String descriprion) throws Exception {
+    public VersionBean getVersionBean(AuthorBean authorBean, long documentCode, String versName, String descriprion, ServletContext context) throws Exception {
 
-        DBOperations operations = DBOperationsFactory.getDBService();
+        DBOperations operations = DBOperationsFactory.getDBService((DAOType) context.getAttribute("type"));
         char separator = File.separatorChar;
         String login = authorBean.getLogin();
-        String newFilePath = filePath + login + separator
+        String newFilePath = context.getAttribute("filePath") + login + separator
                 + documentCode + separator;
 
         long docID = operations.getDocumentIDByCodeNameAndLogin(login, documentCode);

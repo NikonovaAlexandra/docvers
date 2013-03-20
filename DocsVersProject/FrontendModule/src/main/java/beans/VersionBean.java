@@ -40,6 +40,7 @@ public class VersionBean implements Serializable {
         this.versionName = versionName;
 
     }
+
     public VersionBean(AuthorBean author, DocumentBean document,
                        String description, Timestamp date, String path, String versionType) {
         this.author = author;

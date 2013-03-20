@@ -7,10 +7,10 @@ import exception.NullFileException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import service.FileFolderService;
 import service.VersionUploadRequestParser;
 import servlets.ParentServlet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,11 +31,13 @@ public class UploadServlet extends ParentServlet {
     private static final String url = "/AddVersion?document=";
     private VersionUploadRequestParser requestParser;
     private UploadVersionRequestStruct struct;
-
+    private ServletContext context;
     public void init() {
         super.init();
         requestParser = new VersionUploadRequestParser();
+        context = getServletContext();
     }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {
         //todo check if ex while storage => del row from db
@@ -79,8 +81,7 @@ public class UploadServlet extends ParentServlet {
         struct = requestParser.geVersionDescriptionAndFileItem(request);
         String descr = struct.getDescription();
         FileItem fi = struct.getFileItem();
-        VersionBean versionBean = requestParser.getVersionBean(getFilePath(),
-                authorBean, documentCode, fi.getName(), descr);
+        VersionBean versionBean = requestParser.getVersionBean(authorBean, documentCode, fi.getName(), descr, context);
         return versionBean;
     }
 }

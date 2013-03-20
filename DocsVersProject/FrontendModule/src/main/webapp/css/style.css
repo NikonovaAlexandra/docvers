@@ -5,6 +5,7 @@ html {
     -o-background-size: cover;
     background-size: cover;
 }
+
 body {
     /*background-image: url("../images/natural_paper.png");*/
     background-repeat: no-repeat;
@@ -83,14 +84,14 @@ A:hover {
     text-shadow: 0 2px 3px #4c2222;
 }
 
-#header{
-    position:fixed;
-    top:0px;
-    left:0px;
+#header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
     right: 0px;
     /*width:180px;*/
-    height:150px;
-     /*background:transparent url(images/title.png) no-repeat top left;*/
+    height: 150px;
+    /*background:transparent url(images/title.png) no-repeat top left;*/
 }
 
 #footer {
@@ -103,6 +104,7 @@ A:hover {
     background: url(../images/label-footer.png) no-repeat top right;
     float: left;
 }
+
 #foot {
     position: fixed;
     bottom: 2%;
@@ -126,7 +128,7 @@ A:hover {
     padding: 7px 2px 8px 2px; /* IE7 Fix */
 }
 
-#body  {
+#body {
     width: 50%;
     margin-top: 151px;
     margin-left: 20px;
@@ -135,7 +137,7 @@ A:hover {
 
 #message {
     /*position: fixed;*/
-    margin-top:10px;
+    margin-top: 10px;
     margin-left: 20px;
     width: 50%;
     height: 20px;

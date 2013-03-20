@@ -1,5 +1,7 @@
 body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote {
-    margin: 0; padding: 0; border: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 body {
@@ -15,22 +17,33 @@ body {
 }
 
 ul#nav {
-    width: 600px; margin: 0 auto; text-align: center; overflow: hidden;
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    overflow: hidden;
     background: url(../images/table_bg.png);
 }
+
 ul#nav li {
-    float: left; list-style: none;
+    float: left;
+    list-style: none;
 }
+
 ul#nav li a {
-    display: block; width: 97px; height: 77px;
-    padding: 72px 0 0 0; margin: 0 32px 0 32px;
-    font: bold 16px Helvetica, Arial, Sans-Serif; text-transform: uppercase;
+    display: block;
+    width: 97px;
+    height: 77px;
+    padding: 72px 0 0 0;
+    margin: 0 32px 0 32px;
+    font: bold 16px Helvetica, Arial, Sans-Serif;
+    text-transform: uppercase;
     color: #9c5959;
     text-shadow: 0 1px 3px #c4bda6;
     text-decoration: none;
 
     background: url(../images/label.png) 0 -149px no-repeat;
 }
+
 ul#nav li a:hover {
     background: url(../images/label.png) 0 0 no-repeat;
     color: #eee9d9;

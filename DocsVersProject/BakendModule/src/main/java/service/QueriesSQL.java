@@ -11,7 +11,6 @@ public class QueriesSQL {
     public static final String INSERT_INTO_DOCUMENT_AUTHOR_NAME_DESCRIPTION_VALUES = "insert into document (author_id, document_name, description, code_document_name ) values (?,?,?,?)";
     public static final String SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID = "select * from document where author_id = ? order by id desc";
     public static final String UPDATE_DOCUMENT_SET_DESCRIPTION_WHERE_DOCUMENT_NAME_AND_LOGIN = "update document set description = ?  where document_name=? and author_id= (select id from author  where login = ?)";
-    public static final String SELECT_MAX_ID_FROM_DOCUMENT = "select max(id) as document_max_id from document";
     public static final String DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE = "delete from document where author_id=(select id from author where login = ?) and code_document_name=?";
     public static final String SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_CODE_AND_AUTHOR_ID = "select * from document where code_document_name=? and author_id= (select id from author  where login = ?)";
     public static final String SELECT_ID_FROM_DOCUMENT = "select id from document where author_id=(select id from author where login = ?) and code_document_name = ?";

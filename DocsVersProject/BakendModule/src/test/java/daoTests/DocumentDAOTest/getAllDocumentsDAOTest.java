@@ -1,20 +1,9 @@
 package daoTests.DocumentDAOTest;
 
-import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import dao.document.DocumentDAOImpl;
 import exception.NullConnectionException;
 import org.junit.Test;
-import org.mockito.Mockito;
-import service.QueriesSQL;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created with IntelliJ IDEA.

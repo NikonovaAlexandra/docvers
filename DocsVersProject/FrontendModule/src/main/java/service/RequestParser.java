@@ -6,7 +6,6 @@ import beans.VersionBean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-
 import java.sql.Timestamp;
 
 /**
@@ -20,7 +19,7 @@ public class RequestParser {
     private char separator = File.separatorChar;
 
     public AuthorBean getAuthorBean(HttpServletRequest request) {
-       // return new AuthorBean(3, "author2", "pass2");
+        // return new AuthorBean(3, "author2", "pass2");
         return (AuthorBean) request.getSession().getAttribute("user");
     }
 
@@ -35,9 +34,6 @@ public class RequestParser {
                                       Timestamp date, String path, String versionType) {
         return new VersionBean(authorBean, documentBean, description, date, path, versionType);
     }
-
-
-
 
 
 }

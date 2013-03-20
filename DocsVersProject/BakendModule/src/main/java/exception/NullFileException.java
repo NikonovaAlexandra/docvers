@@ -7,7 +7,7 @@ package exception;
  * Time: 11:40
  * To change this template use File | Settings | File Templates.
  */
-public class NullFileException extends BusinessException{
+public class NullFileException extends BusinessException {
     private String message;
 
     public NullFileException(String message) {

@@ -1,8 +1,11 @@
 package dao.author;
 
+import dao.ExceptionsThrower;
 import entities.Author;
-import exception.*;
-import org.h2.constant.ErrorCode;
+import exception.DAOException;
+import exception.NoSuchObjectInDB;
+import exception.NullConnectionException;
+import exception.SystemException;
 import service.QueriesSQL;
 
 import java.sql.Connection;
@@ -28,11 +31,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             this.conn = conn;
             this.conn.setAutoCommit(false);
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
         }
 
     }
@@ -52,12 +51,8 @@ public class AuthorDAOImpl implements AuthorDAO {
             } else throw new NoSuchObjectInDB("Author with id = " + id);
             return author;
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
-
+            ExceptionsThrower.throwException(e);
+            return null;
         } finally {
 
             try {
@@ -84,13 +79,9 @@ public class AuthorDAOImpl implements AuthorDAO {
             } else throw new NoSuchObjectInDB("Author with login = " + login);
             return author;
         } catch (SQLException e) {
-            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-                throw new NullConnectionException(e);
-            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-                throw new NotEnoughRightsException(e);
-            } else throw new DAOException(e);
+            ExceptionsThrower.throwException(e);
+            return null;
         } finally {
-
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();

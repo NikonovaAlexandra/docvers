@@ -17,6 +17,7 @@ public class Version {
 
     @javax.persistence.Column(name = "ID")
     @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
@@ -194,7 +195,6 @@ public class Version {
         this.versionName = versionName;
 
     }
-
 
 
 }
