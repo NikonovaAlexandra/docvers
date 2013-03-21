@@ -1,9 +1,6 @@
 package entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +16,7 @@ public class Author {
 
     @javax.persistence.Column(name = "ID")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public long getId() {
         return id;
     }

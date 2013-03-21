@@ -2,10 +2,7 @@ package dao.author;
 
 import dao.ExceptionsThrower;
 import entities.Author;
-import exception.DAOException;
-import exception.NoSuchObjectInDB;
-import exception.NullConnectionException;
-import exception.SystemException;
+import exception.*;
 import service.QueriesSQL;
 
 import java.sql.Connection;
@@ -24,20 +21,20 @@ public class AuthorDAOImpl implements AuthorDAO {
 
     private Connection conn;
 
-    public AuthorDAOImpl(Connection conn) throws DAOException, SystemException {
+    public AuthorDAOImpl(Connection conn) throws MyException {
         if (conn == null)
             throw new NullConnectionException();
         try {
             this.conn = conn;
             this.conn.setAutoCommit(false);
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
 
     }
 
     @Override
-    public Author getAuthorByID(long id) throws DAOException, SystemException {
+    public Author getAuthorByID(long id) throws MyException{
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -51,8 +48,8 @@ public class AuthorDAOImpl implements AuthorDAO {
             } else throw new NoSuchObjectInDB("Author with id = " + id);
             return author;
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
-            return null;
+           throw ExceptionsThrower.throwException(e);
+
         } finally {
 
             try {
@@ -65,7 +62,7 @@ public class AuthorDAOImpl implements AuthorDAO {
     }
 
     @Override
-    public Author getAuthorByLogin(String login) throws DAOException, SystemException {
+    public Author getAuthorByLogin(String login) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -79,8 +76,7 @@ public class AuthorDAOImpl implements AuthorDAO {
             } else throw new NoSuchObjectInDB("Author with login = " + login);
             return author;
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         } finally {
             try {
                 if (rs != null) rs.close();

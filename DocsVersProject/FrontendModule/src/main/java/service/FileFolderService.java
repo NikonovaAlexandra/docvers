@@ -86,7 +86,7 @@ public class FileFolderService {
         if (fileName.isEmpty() && sizeInBytes == 0) {
             throw new NullFileException("No file to upload.");
         } else {
-
+           //todo if folder for doc or author !exist
             // Write the file
             file = new File(path);
             fi.write(file);

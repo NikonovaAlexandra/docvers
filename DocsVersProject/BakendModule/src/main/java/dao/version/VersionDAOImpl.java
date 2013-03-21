@@ -24,19 +24,19 @@ import java.util.List;
 public class VersionDAOImpl implements VersionDAO {
     private Connection conn;
 
-    public VersionDAOImpl(Connection conn) throws DAOException, SystemException {
+    public VersionDAOImpl(Connection conn) throws MyException {
         if (conn == null)
             throw new NullConnectionException();
         try {
             this.conn = conn;
             this.conn.setAutoCommit(false);
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException {
+    public List<Version> getVersionsOfDocument(long id) throws MyException {
         List<Version> versions = new ArrayList<Version>();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -68,8 +68,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         } finally {
 
             try {
@@ -82,14 +81,14 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
-    public void addVersion(Version version) throws DAOException, SystemException {
+    public void addVersion(Version version) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         if (version == null) {
             throw new IllegalArgumentException();
         }
         try {
-            long name = getLastVersionNameInfo(version.getDocumentID()) + 1;
+           // long name = getLastVersionNameInfo(version.getDocumentID()) + 1;
             conn.commit();
             ps = conn.prepareStatement(QueriesSQL.UPDATE_VERSION_SET_IS_RELEASED);
             ps.setBoolean(1, true);
@@ -104,7 +103,7 @@ public class VersionDAOImpl implements VersionDAO {
             ps.setString(5, version.getDocumentPath());
             ps.setBoolean(6, false);
             ps.setString(7, version.getVersionType());
-            ps.setLong(8, name);
+            ps.setLong(8, version.getVersionName());
             ps.executeUpdate();
             conn.commit();
         } catch (SQLException e) {
@@ -113,7 +112,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -128,7 +127,7 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
-    public void deleteVersion(long versName, long docCode, String login) throws DAOException, SystemException {
+    public void deleteVersion(long versName, long docCode, String login) throws MyException {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
@@ -144,7 +143,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -156,7 +155,7 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
-    public String getVersionType(long versionName, long documentName, String login) throws DAOException, SystemException {
+    public String getVersionType(long versionName, long documentName, String login) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -178,8 +177,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -191,7 +189,7 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
-    public Version getVersion(long id, long versName) throws DAOException, SystemException {
+    public Version getVersion(long id, long versName) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Version version = null;
@@ -222,8 +220,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         } finally {
 
             try {
@@ -236,7 +233,7 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
-    public long getLastVersionNameInfo(long docID) throws DAOException, SystemException {
+    public long getLastVersionNameInfo(long docID) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -256,8 +253,7 @@ public class VersionDAOImpl implements VersionDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
-            return 0;
+            throw ExceptionsThrower.throwException(e);
 
         } finally {
             try {

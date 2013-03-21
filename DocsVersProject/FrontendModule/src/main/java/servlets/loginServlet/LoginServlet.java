@@ -1,6 +1,7 @@
 package servlets.loginServlet;
 
 import exception.BusinessException;
+import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import servlets.ParentServlet;
@@ -26,7 +27,7 @@ public class LoginServlet extends ParentServlet {
         //todo to filter
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
-
+        System.out.println(request.getLocale());
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         ServletContext context = request.getSession().getServletContext();
@@ -42,6 +43,8 @@ public class LoginServlet extends ParentServlet {
                 }
             }
         } catch (SystemException e) {
+            throw new ServletException(e);
+        }   catch (MyException e) {
             throw new ServletException(e);
         }
 

@@ -3,6 +3,7 @@ package dao.author;
 import dao.DAO;
 import entities.Author;
 import exception.DAOException;
+import exception.MyException;
 import exception.SystemException;
 
 /**
@@ -13,7 +14,7 @@ import exception.SystemException;
  * To change this template use File | Settings | File Templates.
  */
 public interface AuthorDAO extends DAO {
-    public Author getAuthorByID(long id) throws DAOException, SystemException;
+    public Author getAuthorByID(long id) throws MyException;
 
-    public Author getAuthorByLogin(String login) throws DAOException, SystemException;
+    public Author getAuthorByLogin(String login) throws MyException;
 }

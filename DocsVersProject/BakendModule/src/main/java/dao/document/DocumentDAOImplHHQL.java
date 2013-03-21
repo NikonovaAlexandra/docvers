@@ -33,7 +33,7 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
     }
 
     @Override
-    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException {
+    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws MyException {
         Transaction tr = null;
         Document doc = null;
         try {
@@ -48,14 +48,13 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             return doc;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         }
     }
 
     @Override
-    public long getDocumentID(String login, long docName) throws DAOException, SystemException {
+    public long getDocumentID(String login, long docName) throws MyException {
         Transaction tr = null;
 
         try {
@@ -71,13 +70,12 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             return id;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return 0;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public void addDocument(Document document) throws DAOException, SystemException {
+    public void addDocument(Document document) throws MyException {
         Transaction tr = null;
         if (document == null) {
             throw new IllegalArgumentException();
@@ -90,14 +88,15 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             session.save(document);
             tr.commit();
         } catch (Exception e) {
+            session.clear();
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
 
     }
 
     @Override
-    public List<Document> getDocumentsByAuthorID(long id) throws DAOException, SystemException {
+    public List<Document> getDocumentsByAuthorID(long id) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -110,8 +109,7 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             return docs;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         }
     }
@@ -143,7 +141,7 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
     }
 
     @Override
-    public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
+    public void deleteDocument(String login, long docNameCode) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -155,7 +153,7 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             tr.commit();
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
     }
 

@@ -3,16 +3,13 @@ package dao.version;
 import dao.ExceptionsThrower;
 import entities.Version;
 import exception.*;
-import org.h2.constant.ErrorCode;
-import org.h2.jdbc.JdbcBatchUpdateException;
-import org.h2.jdbc.JdbcSQLException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionException;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ExceptionUtils;
 import service.QueriesHQL;
 
+import javax.swing.*;
 import java.lang.IllegalArgumentException;
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class VersionDAOImplHHQL implements VersionDAO {
     }
 
     @Override
-    public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException {
+    public List<Version> getVersionsOfDocument(long id) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -44,26 +41,26 @@ public class VersionDAOImplHHQL implements VersionDAO {
             return versions;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public void addVersion(Version version) throws DAOException, SystemException {
+    public void addVersion(Version version) throws MyException{
         Transaction tr = null;
         if (version == null) {
             throw new IllegalArgumentException();
         }
         try {
+            //long name = getLastVersionNameInfo(version.getDocumentID());
             tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.UPDATE_VERSION_SET_IS_RELEASED);
             query.setBoolean("isReleased", true);
             query.setLong("id", version.getDocumentId().getId());
             query.executeUpdate();
             session.cancelQuery();
-            long name = getLastVersionNameInfo(version.getDocumentId().getId()) + 1;
-            version.setVersionName(name);
+            session.clear();
+            //version.setVersionName(name + 1);
             version.setReleased(false);
             session.save(version);
 
@@ -72,13 +69,13 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
 
     }
 
     @Override
-    public void deleteVersion(long versName, long docCode, String login) throws DAOException, SystemException {
+    public void deleteVersion(long versName, long docCode, String login) throws MyException{
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -91,12 +88,12 @@ public class VersionDAOImplHHQL implements VersionDAO {
             tr.commit();
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public String getVersionType(long versionName, long documentName, String login) throws DAOException, SystemException {
+    public String getVersionType(long versionName, long documentName, String login) throws MyException{
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -110,13 +107,12 @@ public class VersionDAOImplHHQL implements VersionDAO {
             return type;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public Version getVersion(long id, long versName) throws DAOException, SystemException {
+    public Version getVersion(long id, long versName) throws MyException{
         Version version = null;
         Transaction tr = null;
         try {
@@ -130,25 +126,24 @@ public class VersionDAOImplHHQL implements VersionDAO {
             return version;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public long getLastVersionNameInfo(long docID) throws DAOException, SystemException {
+    public long getLastVersionNameInfo(long docID) throws MyException{
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_VERSION_NAME_FROM_VERSION);
             query.setLong("id", docID);
-            Long versionName = (Long) query.uniqueResult();
+            Long l = (Long) query.uniqueResult();
+            long versionName = (l == null ? 0 : l);
             tr.commit();
             return versionName;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return 0;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 }

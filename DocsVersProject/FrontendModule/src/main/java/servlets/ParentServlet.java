@@ -24,7 +24,6 @@ import java.io.IOException;
 //buttons
 public class ParentServlet extends HttpServlet {
     private DBOperations service;
-    //todo check if work on 2 users
     private long documentName;
     private FileFolderService fileFolderService;
     private RequestParser requestParser;

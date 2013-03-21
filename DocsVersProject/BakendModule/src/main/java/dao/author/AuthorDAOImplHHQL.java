@@ -3,6 +3,7 @@ package dao.author;
 import dao.ExceptionsThrower;
 import entities.Author;
 import exception.DAOException;
+import exception.MyException;
 import exception.SystemException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -28,7 +29,7 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
 //    }
 
     @Override
-    public Author getAuthorByID(long id) throws DAOException, SystemException {
+    public Author getAuthorByID(long id) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -37,14 +38,13 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
             return author;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         }
     }
 
     @Override
-    public Author getAuthorByLogin(String login) throws DAOException, SystemException {
+    public Author getAuthorByLogin(String login) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -53,8 +53,7 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
             return author;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         }
     }

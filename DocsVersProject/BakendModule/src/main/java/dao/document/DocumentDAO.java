@@ -3,6 +3,7 @@ package dao.document;
 import dao.DAO;
 import entities.Document;
 import exception.DAOException;
+import exception.MyException;
 import exception.SystemException;
 
 import java.util.List;
@@ -15,15 +16,15 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface DocumentDAO extends DAO {
-    public void addDocument(Document document) throws DAOException, SystemException;
+    public void addDocument(Document document) throws MyException;
 
-    public List<Document> getDocumentsByAuthorID(long id) throws DAOException, SystemException;
+    public List<Document> getDocumentsByAuthorID(long id) throws MyException;
 
-    void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException;
+    void editDocumentDescription(String login, String docName, String newDescription) throws MyException;
 
-    void deleteDocument(String login, long docNameCode) throws DAOException, SystemException;
+    void deleteDocument(String login, long docNameCode) throws MyException;
 
-    Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException;
+    Document getDocumentByAuthorAndName(String login, long docNameCode) throws MyException;
 
-    long getDocumentID(String login, long docName) throws DAOException, SystemException;
+    long getDocumentID(String login, long docName) throws MyException;
 }

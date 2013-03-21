@@ -14,6 +14,7 @@ import entities.Document;
 import entities.Version;
 import exception.BusinessException;
 import exception.DAOException;
+import exception.MyException;
 import exception.SystemException;
 import service.ConnectionPool;
 import service.ConnectionPoolFactory;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class DBOperationsJDBC implements DBOperations {
 
-    public void addDocument(DocumentBean documentBean) throws BusinessException, SystemException {
+    public void addDocument(DocumentBean documentBean) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -51,7 +52,7 @@ public class DBOperationsJDBC implements DBOperations {
         }
     }
 
-    public long getLastVersionNameInfo(long docID) throws BusinessException, SystemException {
+    public long getLastVersionNameInfo(long docID) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -71,7 +72,7 @@ public class DBOperationsJDBC implements DBOperations {
         }
     }
 
-    public void addVersion(VersionBean versionBean) throws BusinessException, SystemException {
+    public void addVersion(VersionBean versionBean) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -90,7 +91,7 @@ public class DBOperationsJDBC implements DBOperations {
         }
     }
 
-    public List<DocumentBean> getDocumentsByAuthor(String login) throws BusinessException, SystemException {
+    public List<DocumentBean> getDocumentsByAuthor(String login) throws MyException {
         List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
         Connection conn = null;
         ConnectionPool connPool = null;
@@ -120,7 +121,7 @@ public class DBOperationsJDBC implements DBOperations {
 
     }
 
-    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws BusinessException, SystemException {
+    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -144,7 +145,7 @@ public class DBOperationsJDBC implements DBOperations {
 
     }
 
-    public AuthorBean getAuthorByLogin(String login) throws BusinessException, SystemException {
+    public AuthorBean getAuthorByLogin(String login) throws MyException {
         Author author;
         Connection conn = null;
         ConnectionPool connPool = null;
@@ -165,7 +166,7 @@ public class DBOperationsJDBC implements DBOperations {
         }
     }
 
-    public List<VersionBean> getVersionsOfDocument(String login, long docNameCode) throws BusinessException, SystemException {
+    public List<VersionBean> getVersionsOfDocument(String login, long docNameCode) throws MyException {
         List<VersionBean> versionBeans = new ArrayList<VersionBean>();
         Connection conn = null;
         ConnectionPool connPool = null;
@@ -197,7 +198,7 @@ public class DBOperationsJDBC implements DBOperations {
 
     }
 
-    public VersionBean getVersion(String login, long docNameCode, long versName) throws BusinessException, SystemException {
+    public VersionBean getVersion(String login, long docNameCode, long versName) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -229,7 +230,7 @@ public class DBOperationsJDBC implements DBOperations {
     }
 
 
-    public void deleteDocument(String login, long docNameCode) throws BusinessException, SystemException {
+    public void deleteDocument(String login, long docNameCode) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -248,7 +249,7 @@ public class DBOperationsJDBC implements DBOperations {
         }
     }
 
-    public void deleteVersion(long versName, long docCode, String login) throws BusinessException, SystemException {
+    public void deleteVersion(long versName, long docCode, String login) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -268,7 +269,7 @@ public class DBOperationsJDBC implements DBOperations {
 
     }
 
-    public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws BusinessException, SystemException {
+    public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -288,7 +289,7 @@ public class DBOperationsJDBC implements DBOperations {
         }
     }
 
-    public String getVersionType(long versionName, long documentName, String login) throws BusinessException, SystemException {
+    public String getVersionType(long versionName, long documentName, String login) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {

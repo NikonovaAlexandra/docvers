@@ -3,6 +3,7 @@ package servlets.versionServlet;
 import beans.AuthorBean;
 import beans.VersionBean;
 import exception.BusinessException;
+import exception.MyException;
 import exception.SystemException;
 import service.FileNameGenerator;
 import servlets.ParentServlet;
@@ -45,7 +46,7 @@ public class DownloadVersionServlet extends ParentServlet {
         }
     }
 
-    private VersionBean parse(HttpServletRequest request) throws SystemException, BusinessException {
+    private VersionBean parse(HttpServletRequest request) throws MyException {
         long id = Long.parseLong(request.getParameter("version"));
         long documentCode = (Long) request.getSession().getAttribute("documentToView");
         AuthorBean authorBean = getRequestParser().getAuthorBean(request);

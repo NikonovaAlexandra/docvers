@@ -12,6 +12,9 @@ import dao.DAOType;
 public class DBOperationsFactory {
 
     public static DBOperations getDBService(DAOType type) {
-        return new DBOperationsH(type);
+        if (type == DAOType.JDBC)
+            return new DBOperationsJDBC();
+        else
+            return new DBOperationsH(type);
     }
 }

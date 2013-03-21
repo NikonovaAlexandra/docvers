@@ -12,8 +12,7 @@ import dao.version.VersionDAO;
 import entities.Author;
 import entities.Document;
 import entities.Version;
-import exception.BusinessException;
-import exception.SystemException;
+import exception.MyException;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import service.SessionFactoryUtil;
@@ -37,13 +36,14 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public void addDocument(DocumentBean documentBean) throws BusinessException, SystemException {
+    public void addDocument(DocumentBean documentBean) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(session, type);
             documentDAO.addDocument(Converter.convertDocumentBeanToDocumentH(documentBean));
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+               // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -51,14 +51,15 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public long getLastVersionNameInfo(long docID) throws BusinessException, SystemException {
+    public long getLastVersionNameInfo(long docID) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(session, type);
             long id = versionDAO.getLastVersionNameInfo(docID);
             return id;
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+                //session.flush();
                 session.clear();
                 //session.close();
             }
@@ -66,13 +67,14 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public void addVersion(VersionBean versionBean) throws BusinessException, SystemException {
+    public void addVersion(VersionBean versionBean) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(session, type);
             versionDAO.addVersion(Converter.convertVersionBeanToVersionH(versionBean));
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+                //session.flush();
                 session.clear();
                 //session.close();
             }
@@ -80,7 +82,7 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public List<DocumentBean> getDocumentsByAuthor(String login) throws BusinessException, SystemException {
+    public List<DocumentBean> getDocumentsByAuthor(String login) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
@@ -95,7 +97,8 @@ public class DBOperationsH implements DBOperations {
 
             return documentBeans;
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+                //session.flush();
                 session.clear();
                 //session.close();
             }
@@ -103,7 +106,7 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws BusinessException, SystemException {
+    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(session, type);
@@ -111,7 +114,8 @@ public class DBOperationsH implements DBOperations {
             DocumentBean documentBean = Converter.convertDocumentHToDocumentBean(doc);
             return documentBean;
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+                //session.flush();
                 session.clear();
                 //session.close();
             }
@@ -119,14 +123,15 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public AuthorBean getAuthorByLogin(String login) throws BusinessException, SystemException {
+    public AuthorBean getAuthorByLogin(String login) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(session, type);
             Author author = authorDAO.getAuthorByLogin(login);
             return Converter.convertAuthorToAuthorBean(author);
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+               // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -134,7 +139,7 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public List<VersionBean> getVersionsOfDocument(String login, long docNameCode) throws BusinessException, SystemException {
+    public List<VersionBean> getVersionsOfDocument(String login, long docNameCode) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             List<VersionBean> versionBeans = new ArrayList<VersionBean>();
@@ -148,7 +153,8 @@ public class DBOperationsH implements DBOperations {
             }
             return versionBeans;
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+               // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -156,7 +162,7 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public VersionBean getVersion(String login, long docNameCode, long versName) throws BusinessException, SystemException {
+    public VersionBean getVersion(String login, long docNameCode, long versName) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session, type);
@@ -166,7 +172,8 @@ public class DBOperationsH implements DBOperations {
             VersionBean versionBean = Converter.convertVersionHToVersionBean(ver);
             return versionBean;
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+              //  session.flush();
                session.clear();
                //session.close();
             }
@@ -174,13 +181,14 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public void deleteDocument(String login, long docNameCode) throws BusinessException, SystemException {
+    public void deleteDocument(String login, long docNameCode) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session, type);
             docDAO.deleteDocument(login, docNameCode);
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+              //  session.flush();
                 session.clear();
                // session.close();
             }
@@ -188,13 +196,14 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public void deleteVersion(long versName, long docCode, String login) throws BusinessException, SystemException {
+    public void deleteVersion(long versName, long docCode, String login) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(session, type);
             verDAO.deleteVersion(versName, docCode, login);
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+              //  session.flush();
                 session.clear();
                //session.close();
             }
@@ -202,29 +211,31 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws BusinessException, SystemException {
+    public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(session, type);
             long id = docDAO.getDocumentID(login, docName);
             return id;
         } finally {
-            if (session.isOpen()) {
-               session.clear();
+            if (session != null) {
+               // session.flush();
+                session.clear();
                 //session.close();
             }
         }
     }
 
     @Override
-    public String getVersionType(long versionName, long documentName, String login) throws BusinessException, SystemException {
+    public String getVersionType(long versionName, long documentName, String login) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(session, type);
             String t = verDAO.getVersionType(versionName, documentName, login);
             return t;
         } finally {
-            if (session.isOpen()) {
+            if (session != null) {
+               // session.flush();
                 session.clear();
                //session.close();
             }

@@ -4,6 +4,7 @@ import dao.ExceptionsThrower;
 import entities.Document;
 import entities.Version;
 import exception.DAOException;
+import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import org.hibernate.Criteria;
@@ -33,26 +34,25 @@ public class VersionDAOImplHCriteria implements VersionDAO{
     }
 
     @Override
-    public List<Version> getVersionsOfDocument(long id) throws DAOException, SystemException {
+    public List<Version> getVersionsOfDocument(long id) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Version.class);
-            criteria.add(Restrictions.eq("documentId.id", id));
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.id", id));
             criteria.addOrder(Order.desc("versionName"));
             List<Version> versions = criteria.list();
             tr.commit();
             if (versions.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
         } catch (Exception e) {
-            if (tr != null) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            if (tr != null && tr.isActive()) tr.rollback();
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public void addVersion(Version version) throws DAOException, SystemException {
+    public void addVersion(Version version) throws MyException {
         Transaction tr = null;
         if (version == null) {
             throw new IllegalArgumentException();
@@ -61,14 +61,12 @@ public class VersionDAOImplHCriteria implements VersionDAO{
             tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Version.class);
             criteria.add(Restrictions.eq("released", false));
-            criteria.add(Restrictions.eq("documentId.id", version.getDocumentId().getId()));
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.id", version.getDocumentId().getId()));
             List<Version> versions = criteria.list();
             for (Version v: versions) {
                 v.setReleased(true);
                 session.update(v);
             }
-            long name = getLastVersionNameInfo(version.getDocumentId().getId()) + 1;
-            version.setVersionName(name);
             version.setReleased(false);
             session.save(version);
 
@@ -77,19 +75,19 @@ public class VersionDAOImplHCriteria implements VersionDAO{
 
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
 
     }
 
     @Override
-    public void deleteVersion(long versName, long docCode, String login) throws DAOException, SystemException {
+    public void deleteVersion(long versName, long docCode, String login) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
-            Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("documentId.authorId.login", login));
-            criteria.add(Restrictions.eq("documentId.codeDocumentName", docCode));
+            Criteria criteria = session.createCriteria(Version.class);
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", docCode)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
+//            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", docCode));
             criteria.add(Restrictions.eq("versionName", versName));
             Version version = (Version) criteria.uniqueResult();
             if (version == null) {
@@ -100,18 +98,18 @@ public class VersionDAOImplHCriteria implements VersionDAO{
             }
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public String getVersionType(long versionName, long documentName, String login) throws DAOException, SystemException {
+    public String getVersionType(long versionName, long documentName, String login) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
-            Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("documentId.authorId.login", login));
-            criteria.add(Restrictions.eq("documentId.codeDocumentName", documentName));
+            Criteria criteria = session.createCriteria(Version.class);
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", documentName)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
+//            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", documentName));
             criteria.add(Restrictions.eq("versionName", versionName));
             criteria.setProjection(Projections.property("versionType"));
             String type = (String) criteria.uniqueResult();
@@ -120,19 +118,18 @@ public class VersionDAOImplHCriteria implements VersionDAO{
             return type;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public Version getVersion(long id, long versName) throws DAOException, SystemException {
+    public Version getVersion(long id, long versName) throws MyException {
         Version version = null;
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
-            Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("documentId.id", id));
+            Criteria criteria = session.createCriteria(Version.class);
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.id", id));
             criteria.add(Restrictions.eq("versionName", versName));
             version = (Version) criteria.uniqueResult();
             tr.commit();
@@ -140,26 +137,24 @@ public class VersionDAOImplHCriteria implements VersionDAO{
             return version;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public long getLastVersionNameInfo(long docID) throws DAOException, SystemException {
+    public long getLastVersionNameInfo(long docID) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
-            Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("documentId.id", docID));
+            Criteria criteria = session.createCriteria(Version.class);
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.id", docID));
             criteria.setProjection(Projections.max("versionName"));
             Long versionName = (Long) criteria.uniqueResult();
             tr.commit();
             return versionName;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return 0;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 }

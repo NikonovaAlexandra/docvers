@@ -72,7 +72,7 @@ public class VersionUploadRequestParser extends RequestParser {
         Timestamp date = new Timestamp(Calendar.getInstance().getTimeInMillis());
         VersionBean versionBean = getVersionBean(authorBean, documentBean,
                 descriprion, date, newFilePath + newFileName, type);
-
+        versionBean.setVersionName(lastVersionName + 1);
         return versionBean;
 
     }

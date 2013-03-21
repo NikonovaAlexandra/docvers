@@ -8,18 +8,17 @@ package exception;
  * To change this template use File | Settings | File Templates.
  */
 public class ObjectAlreadyExistsException extends DAOException {
-    private Exception e;
+
 
     public ObjectAlreadyExistsException(Exception e) {
         super(e);
-        this.e = e;
     }
 
     public ObjectAlreadyExistsException() {
-        this.e = null;
+       super(null);
     }
 
     public String toString() {
-        return "Such object already exist in database: " + (e != null ? e.getMessage() : "");
+        return "Such object already exist in database: " + (getException() != null ? getException().getMessage() : "");
     }
 }

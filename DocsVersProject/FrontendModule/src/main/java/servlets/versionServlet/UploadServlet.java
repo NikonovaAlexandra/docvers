@@ -14,7 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +28,7 @@ public class UploadServlet extends ParentServlet {
 
     private boolean isMultipart;
     private static final String messageName = "uploadmessage";
-    private static final String url = "/AddVersion?document=";
+    private static final String url = "/AddVersion";
     private VersionUploadRequestParser requestParser;
     private UploadVersionRequestStruct struct;
     private ServletContext context;
@@ -42,7 +42,6 @@ public class UploadServlet extends ParentServlet {
             throws ServletException, java.io.IOException {
         //todo check if ex while storage => del row from db
         String message;
-        File file = null;
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
         // Check that we have a file upload request
@@ -64,8 +63,7 @@ public class UploadServlet extends ParentServlet {
             } catch (Exception e) {
                 if (e.getClass() == FileUploadBase.SizeLimitExceededException.class) {
                     showMessage(request, response, "message.tooBigFile", messageName, url);
-                }
-                if (e.getClass() == NullFileException.class) {
+                } else if (e.getClass() == NullFileException.class) {
                     showMessage(request, response, "message.noFileToUpload", messageName, url);
                 } else {
                     throw new ServletException(e);

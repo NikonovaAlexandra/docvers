@@ -1,4 +1,5 @@
 <%@ page import="java.util.Date" %>
+<%@ page import="java.sql.Timestamp" %>
 <%--
   Created by IntelliJ IDEA.
   User: alni
@@ -40,20 +41,19 @@
                 <tr>
                     <th scope="col">№</th>
 
-                    <th scope="col"><fmt:message key="versions.date"/></th>
+                    <th scope="col" style="width: 15%"><fmt:message key="versions.date"/></th>
                     <th scope="col"><fmt:message key="versions.author"/></th>
                     <th scope="col"><fmt:message key="versions.description"/></th>
                     <th scope="col"><fmt:message key="versions.type"/></th>
                     <th scope="col"><fmt:message key="versions.isReleased"/></th>
-                    <th scope="col" style="width: 15%">&nbsp</th>
-                    <th scope="col" style="width: 15%">&nbsp</th>
+                    <th scope="col" style="width: 20%">&nbsp</th>
+                    <th scope="col" style="width: 19%">&nbsp</th>
                 </tr>
                 </thead>
                 <c:forEach items="${versionList}" var="item">
-
                     <tr>
                         <td>${item.versionName}</td>
-                        <td><fmt:formatDate value="${item.date}" type="date" var="date"/></td>
+                        <td><fmt:formatDate value="${item.date}" type="both" timeStyle="short"/></td>
                         <td>${item.author.login}</td>
                         <td>${item.description}</td>
                         <td>${item.versionType}</td>

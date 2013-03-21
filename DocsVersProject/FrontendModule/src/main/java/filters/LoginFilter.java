@@ -31,9 +31,6 @@ public class LoginFilter implements Filter {
         if (filterConfig != null) {
             loginPage = filterConfig.getServletContext().getInitParameter("login_page");
         }
-        //todo SessionFactoryUtil.init(path);
-//        String path = filterConfig.getServletContext().getInitParameter("hibernateConfigFilePath");
-//        SessionFactoryUtil.init(path);
     }
 
     @Override

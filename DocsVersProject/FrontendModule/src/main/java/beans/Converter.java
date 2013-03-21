@@ -4,6 +4,8 @@ import entities.Author;
 import entities.Document;
 import entities.Version;
 
+import java.sql.Timestamp;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alni

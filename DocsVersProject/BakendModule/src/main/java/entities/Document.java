@@ -16,7 +16,7 @@ public class Document {
 
     @javax.persistence.Column(name = "ID")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public long getId() {
         return id;
     }

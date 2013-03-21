@@ -3,6 +3,7 @@ package service;
 import beans.AuthorBean;
 import dao.DAOType;
 import exception.BusinessException;
+import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import service.dbOperations.DBOperations;
@@ -29,7 +30,7 @@ public class Authentication {
     }
 
     public static void performLogin(HttpServletRequest request, HttpServletResponse response, String login,
-                                    String password, ServletContext context) throws ServletException, IOException, BusinessException, SystemException {
+                                    String password, ServletContext context) throws ServletException, IOException, MyException {
 
         DBOperations operations = DBOperationsFactory.getDBService((DAOType)context.getAttribute("type"));
         if ((login != null) & (password != null)) {

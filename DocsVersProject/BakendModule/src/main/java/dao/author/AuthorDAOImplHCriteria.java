@@ -3,6 +3,7 @@ package dao.author;
 import dao.ExceptionsThrower;
 import entities.Author;
 import exception.DAOException;
+import exception.MyException;
 import exception.SystemException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -30,7 +31,7 @@ public class AuthorDAOImplHCriteria implements AuthorDAO {
     }
 
     @Override
-    public Author getAuthorByID(long id) throws DAOException, SystemException {
+    public Author getAuthorByID(long id) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -41,13 +42,12 @@ public class AuthorDAOImplHCriteria implements AuthorDAO {
             return author;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public Author getAuthorByLogin(String login) throws DAOException, SystemException {
+    public Author getAuthorByLogin(String login) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -58,12 +58,11 @@ public class AuthorDAOImplHCriteria implements AuthorDAO {
             return author;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
-    public static void main(String[] args) throws SystemException, DAOException {
+    public static void main(String[] args) throws MyException {
         SessionFactory sessionFactory = new AnnotationConfiguration().configure(new File("BakendModule\\src\\main\\java\\hibernate.xml")).buildSessionFactory();
         Session session1 = sessionFactory.openSession();
         AuthorDAOImplHCriteria dao = new AuthorDAOImplHCriteria(session1);

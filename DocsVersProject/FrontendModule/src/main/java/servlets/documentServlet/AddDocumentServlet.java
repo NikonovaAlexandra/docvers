@@ -1,10 +1,8 @@
 package servlets.documentServlet;
 
 import beans.DocumentBean;
-import exception.BusinessException;
+import exception.*;
 import exception.IllegalArgumentException;
-import exception.ObjectAlreadyExistsException;
-import exception.SystemException;
 import servlets.ParentServlet;
 
 import javax.servlet.ServletException;
@@ -26,7 +24,6 @@ public class AddDocumentServlet extends ParentServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
-
         DocumentBean documentBean = null;
         try {
             documentBean = getRequestParser().getDocumentBean(request);
@@ -37,13 +34,12 @@ public class AddDocumentServlet extends ParentServlet {
         } catch (BusinessException e) {
             if (e.getClass() == ObjectAlreadyExistsException.class) {
                 showMessage(request, response, "message.documentAlreadyExists", messageName, url);
-            }
-            if (e.getClass() == IllegalArgumentException.class) {
+            } else if (e.getClass() == IllegalArgumentException.class) {
                 showMessage(request, response, "message.tooLongDocumentName", messageName, url);
             } else {
                 throw new ServletException(e);
             }
-        } catch (SystemException e) {
+        } catch (MyException e) {
             throw new ServletException(e);
         }
 

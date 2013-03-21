@@ -23,19 +23,19 @@ import java.util.List;
 public class DocumentDAOImpl implements DocumentDAO {
     private Connection conn;
 
-    public DocumentDAOImpl(Connection conn) throws DAOException, SystemException {
+    public DocumentDAOImpl(Connection conn) throws MyException {
         if (conn == null)
             throw new NullConnectionException();
         try {
             this.conn = conn;
             this.conn.setAutoCommit(false);
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException {
+    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Document doc = null;
@@ -50,8 +50,7 @@ public class DocumentDAOImpl implements DocumentDAO {
                 throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return doc;
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -62,7 +61,7 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public long getDocumentID(String login, long docName) throws DAOException, SystemException {
+    public long getDocumentID(String login, long docName) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -83,8 +82,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
-            return 0;
+            throw ExceptionsThrower.throwException(e);
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -95,7 +93,7 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public void addDocument(Document document) throws DAOException, SystemException {
+    public void addDocument(Document document) throws MyException {
         PreparedStatement ps = null;
         if (document == null) {
             throw new IllegalArgumentException();
@@ -117,10 +115,9 @@ public class DocumentDAOImpl implements DocumentDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         } finally {
             try {
-
                 if (ps != null)
                     ps.close();
             } catch (SQLException e) {
@@ -131,7 +128,7 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public List<Document> getDocumentsByAuthorID(long id) throws DAOException, SystemException {
+    public List<Document> getDocumentsByAuthorID(long id) throws MyException {
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -142,9 +139,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             conn.commit();
             return createDocumentsListFromResultSet(rs);
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
-            return null;
-
+            throw ExceptionsThrower.throwException(e);
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -156,7 +151,7 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException {
+    public void editDocumentDescription(String login, String docName, String newDescription) throws MyException {
 
         PreparedStatement ps = null;
         try {
@@ -166,7 +161,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps.setString(3, login);
             conn.commit();
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
 
         } finally {
             try {
@@ -178,7 +173,7 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
+    public void deleteDocument(String login, long docNameCode) throws MyException {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
@@ -193,7 +188,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             } catch (SQLException e1) {
                 throw new DAOException(e);
             }
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -203,7 +198,7 @@ public class DocumentDAOImpl implements DocumentDAO {
         }
     }
 
-    private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws DAOException, SystemException {
+    private List<Document> createDocumentsListFromResultSet(ResultSet rs) throws MyException {
         List<Document> documents = new ArrayList<Document>();
         Document document = null;
         boolean flag = true;
@@ -216,12 +211,12 @@ public class DocumentDAOImpl implements DocumentDAO {
         }
         if (documents.isEmpty())
             throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
-        return documents;
+        else return documents;
 
 
     }
 
-    private Document createDocumentFromResultSet(ResultSet rs) throws DAOException, SystemException {
+    private Document createDocumentFromResultSet(ResultSet rs) throws MyException {
         Document document = null;
         try {
             if (rs.next()) {
@@ -234,8 +229,7 @@ public class DocumentDAOImpl implements DocumentDAO {
             }
             return document;
         } catch (SQLException e) {
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
         }
 
     }

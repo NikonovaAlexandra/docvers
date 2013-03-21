@@ -2,16 +2,18 @@ package dao.document;
 
 import dao.ExceptionsThrower;
 import entities.Document;
-import exception.DAOException;
-import exception.NoSuchObjectInDB;
-import exception.SystemException;
+import exception.*;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import java.io.File;
+import java.lang.IllegalArgumentException;
 import java.util.List;
 
 /**
@@ -31,13 +33,13 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
     }
 
     @Override
-    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws DAOException, SystemException {
+    public Document getDocumentByAuthorAndName(String login, long docNameCode) throws MyException {
         Transaction tr = null;
         Document doc = null;
         try {
             tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("authorId.login", login));
+            criteria.createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("codeDocumentName", docNameCode));
             doc = (Document) criteria.uniqueResult();
             tr.commit();
@@ -46,21 +48,20 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
             return doc;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         }
     }
 
     @Override
-    public long getDocumentID(String login, long docName) throws DAOException, SystemException {
+    public long getDocumentID(String login, long docName) throws MyException {
         Transaction tr = null;
 
         try {
             tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
             criteria.setProjection(Projections.id());
-            criteria.add(Restrictions.eq("authorId.login", login));
+            criteria.createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("codeDocumentName", docName));
             Long id = new Long(0);
             id = (Long) criteria.uniqueResult();
@@ -70,13 +71,12 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
             return id;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return 0;
+            throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
-    public void addDocument(Document document) throws DAOException, SystemException {
+    public void addDocument(Document document) throws MyException {
         Transaction tr = null;
         if (document == null) {
             throw new IllegalArgumentException();
@@ -89,19 +89,20 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
             session.save(document);
             tr.commit();
         } catch (Exception e) {
+            session.clear();
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
 
     }
 
     @Override
-    public List<Document> getDocumentsByAuthorID(long id) throws DAOException, SystemException {
+    public List<Document> getDocumentsByAuthorID(long id) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("authorId.id", id));
+            criteria.createAlias("authorId", "author").add(Restrictions.eq("author.id", id));
             criteria.addOrder(Order.desc("id"));
             List<Document> docs = criteria.list();
             tr.commit();
@@ -110,8 +111,7 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
             return docs;
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
-            return null;
+            throw ExceptionsThrower.throwException(e);
 
         }
     }
@@ -143,12 +143,12 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
     }
 
     @Override
-    public void deleteDocument(String login, long docNameCode) throws DAOException, SystemException {
+    public void deleteDocument(String login, long docNameCode) throws MyException {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
-            criteria.add(Restrictions.eq("authorId.login", login));
+            criteria.createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("codeDocumentName", docNameCode));
             Document doc = (Document) criteria.uniqueResult();
             if (doc == null) {
@@ -160,7 +160,7 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
 
         } catch (Exception e) {
             if (tr != null && tr.isActive()) tr.rollback();
-            ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
         }
     }
 }

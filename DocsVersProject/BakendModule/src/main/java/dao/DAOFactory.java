@@ -13,6 +13,7 @@ import dao.version.VersionDAOImpl;
 import dao.version.VersionDAOImplHCriteria;
 import dao.version.VersionDAOImplHHQL;
 import exception.DAOException;
+import exception.MyException;
 import exception.SystemException;
 import org.hibernate.Session;
 
@@ -39,28 +40,28 @@ public class DAOFactory {
         return instance;
     }
 
-    public DocumentDAO getDocumentDAO(Connection conn) throws DAOException, SystemException {
+    public DocumentDAO getDocumentDAO(Connection conn) throws MyException {
         if (documentDAO == null) {
             documentDAO = new DocumentDAOImpl(conn);
         }
         return documentDAO;
     }
 
-    public AuthorDAO getAuthorDAO(Connection conn) throws DAOException, SystemException {
+    public AuthorDAO getAuthorDAO(Connection conn) throws MyException{
         if (authorDAO == null) {
             authorDAO = new AuthorDAOImpl(conn);
         }
         return authorDAO;
     }
 
-    public VersionDAO getVersionDAO(Connection conn) throws DAOException, SystemException {
+    public VersionDAO getVersionDAO(Connection conn) throws MyException{
         if (versionDAO == null) {
             versionDAO = new VersionDAOImpl(conn);
         }
         return versionDAO;
     }
 
-    public DocumentDAO getDocumentDAO(Session session, DAOType type) throws DAOException, SystemException {
+    public DocumentDAO getDocumentDAO(Session session, DAOType type) throws MyException{
         if (documentDAO == null) {
             switch (type) {
                 case CRITERIA: documentDAO = new DocumentDAOImplHCriteria(session); break;
@@ -71,7 +72,7 @@ public class DAOFactory {
         return documentDAO;
     }
 
-    public AuthorDAO getAuthorDAO(Session session, DAOType type) throws DAOException, SystemException {
+    public AuthorDAO getAuthorDAO(Session session, DAOType type) throws MyException {
         if (authorDAO == null) {
             switch (type) {
                 case CRITERIA: authorDAO = new AuthorDAOImplHCriteria(session); break;
@@ -82,7 +83,7 @@ public class DAOFactory {
         return authorDAO;
     }
 
-    public VersionDAO getVersionDAO(Session session, DAOType type) throws DAOException, SystemException {
+    public VersionDAO getVersionDAO(Session session, DAOType type) throws MyException {
         if (versionDAO == null) {
             switch (type) {
                 case CRITERIA: versionDAO = new VersionDAOImplHCriteria(session); break;

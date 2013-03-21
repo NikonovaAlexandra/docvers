@@ -2,6 +2,7 @@ package servlets.versionServlet;
 
 import beans.VersionBean;
 import exception.BusinessException;
+import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import servlets.ParentServlet;
@@ -41,6 +42,8 @@ public class GetVersionsServlet extends ParentServlet {
             } else {
                 throw new ServletException(e);
             }
+        } catch (MyException e) {
+            throw new ServletException(e);
         }
     }
 

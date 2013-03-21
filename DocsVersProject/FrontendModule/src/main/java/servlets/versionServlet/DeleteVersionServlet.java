@@ -1,6 +1,7 @@
 package servlets.versionServlet;
 
 import exception.BusinessException;
+import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
 import servlets.ParentServlet;
@@ -41,6 +42,8 @@ public class DeleteVersionServlet extends ParentServlet {
             } else {
                 throw new ServletException(e);
             }
+        } catch (MyException e) {
+            throw new ServletException(e);
         }
     }
 }

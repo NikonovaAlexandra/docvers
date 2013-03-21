@@ -29,13 +29,12 @@ public class ServletListener implements ServletContextListener {
         logger.trace("Initializing context...");
         DAOType type = DAOType.valueOf(event.getServletContext().getInitParameter("ConnType"));
         sc.setAttribute("type", type);
-
         String filePath = event.getServletContext().getInitParameter("file-upload");
         sc.setAttribute("filePath", filePath);
         String encoding = event.getServletContext().getInitParameter("encoding");
         sc.setAttribute("encoding", encoding);
         String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
-        SessionFactoryUtil.init(path);
+        if (!type.equals(DAOType.JDBC)) SessionFactoryUtil.init(path);
 
     }
 
