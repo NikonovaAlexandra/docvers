@@ -34,6 +34,7 @@
                     <th scope="col" style="width: 30%"><fmt:message key="alldocuments.name"/></th>
                     <th scope="col"><fmt:message key="alldocuments.description"/></th>
                     <th scope="col" style="width: 100px">&nbsp</th>
+                    <th scope="col" style="width: 100px">&nbsp</th>
                 </tr>
                 </thead>
 

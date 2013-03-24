@@ -2002,7 +2002,7 @@ div.auto_complete ul strong.highlight {
     width: 16px;
     height: 16px;
     background-repeat: no-repeat;
-    background-image: url(/images/icons/forwd_16.gif);
+    background-image: url(/images/uk-icon.png);
 }
 
 #blogcalendar span.fwdArrow span {
@@ -2015,7 +2015,7 @@ div.auto_complete ul strong.highlight {
     width: 16px;
     height: 16px;
     background-repeat: no-repeat;
-    background-image: url(/images/icons/back_16.gif);
+    background-image: url(/images/label-footer.png);
 }
 
 #blogcalendar span.backArrow span {

@@ -20,11 +20,10 @@ public class SessionFactoryUtil {
         sessionFactory = new AnnotationConfiguration().configure(new File(path)).buildSessionFactory();
     }
 
-    public static SessionFactoryUtil init(String path) {
+    public static void init(String path) {
         if (instance == null) {
             instance = new SessionFactoryUtil(path);
         }
-        return instance;
     }
 
     public static SessionFactoryUtil getInstance() {

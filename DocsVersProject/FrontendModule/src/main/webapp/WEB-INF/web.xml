@@ -14,12 +14,13 @@
     </context-param>
     <context-param>
         <param-name>ConnType</param-name>
-        <param-value>CRITERIA</param-value>
+        <param-value>JDBC</param-value>
     </context-param>
     <context-param>
         <param-name>hibernateConfigFilePath</param-name>
-        <param-value>C:\Documents and Settings\alni\Desktop\New Folder (4)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml
-        </param-value>
+        <!--<param-value>C:\Documents and Settings\alni\Desktop\New Folder (4)\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml </param-value>-->
+        <param-value>C:\Documents and Settings\Admin\Рабочий стол\docvers.git\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml</param-value>
+
     </context-param>
 
     <context-param>

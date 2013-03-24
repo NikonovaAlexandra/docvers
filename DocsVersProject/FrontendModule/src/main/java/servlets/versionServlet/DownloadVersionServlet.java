@@ -8,13 +8,19 @@ import exception.SystemException;
 import service.FileNameGenerator;
 import servlets.ParentServlet;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,7 +46,10 @@ public class DownloadVersionServlet extends ParentServlet {
                     versionBean.getVersionName(), versionBean.getVersionType());
             ServletOutputStream outStream = response.getOutputStream();
             setRespose(response, newFileName);
+
             getFileFolderService().downloadFile(file.getAbsolutePath(), outStream, BUFSIZE);
+            outStream.flush();
+
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -66,7 +75,7 @@ public class DownloadVersionServlet extends ParentServlet {
         response.setContentLength((int) file.length());
 
         // sets HTTP header
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
     }
 
 }

@@ -5,12 +5,11 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ResourceBundle;
 
 /**
@@ -66,10 +65,6 @@ public class FileFolderService {
         DiskFileItemFactory factory = new DiskFileItemFactory();
         // maximum size that will be stored in memory
         factory.setSizeThreshold(maxMemSize);
-        // Location to save data that is larger than maxMemSize.
-        //todo: abs path
-        factory.setRepository(new File("C:\\temp"));
-
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload(factory);
         // maximum file size to be uploaded.
@@ -99,10 +94,9 @@ public class FileFolderService {
         int length = 0;
         byte[] byteBuffer = new byte[BUFSIZE];
         DataInputStream in = new DataInputStream(new FileInputStream(file));
-
         // reads the file's bytes and writes them to the response stream
         while ((in != null) && ((length = in.read(byteBuffer)) != -1)) {
-            outputStream.write(byteBuffer, 0, length);
+           outputStream.write(byteBuffer, 0, length);
         }
 
         in.close();

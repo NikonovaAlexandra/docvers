@@ -27,7 +27,6 @@ public class LoginServlet extends ParentServlet {
         //todo to filter
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
-        System.out.println(request.getLocale());
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         ServletContext context = request.getSession().getServletContext();

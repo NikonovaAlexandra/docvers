@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,10 +28,7 @@ public class ScriptRunner {
     private final Connection connection;
     private final boolean stopOnError;
     private final boolean autoCommit;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-    // todo: why not use logger with diff levels ?
-    private PrintWriter logWriter = new PrintWriter(System.out);
-    private PrintWriter errorLogWriter = new PrintWriter(System.err);
+    private Logger logger;
     private String delimiter = DEFAULT_DELIMITER;
     private boolean fullLineDelimiter = false;
 
@@ -45,10 +39,11 @@ public class ScriptRunner {
      * @param autoCommit
      * @param stopOnError
      */
-    public ScriptRunner(Connection connection, boolean autoCommit, boolean stopOnError) {
+    public ScriptRunner(Connection connection, Logger logger, boolean autoCommit, boolean stopOnError) {
         this.connection = connection;
         this.autoCommit = autoCommit;
         this.stopOnError = stopOnError;
+        this.logger = logger;
     }
 
     /**
@@ -65,17 +60,8 @@ public class ScriptRunner {
      *
      * @param logWriter - the new value of the logWriter property
      */
-    public void setLogWriter(PrintWriter logWriter) {
-        this.logWriter = logWriter;
-    }
-
-    /**
-     * Setter for errorLogWriter property.
-     *
-     * @param errorLogWriter - the new value of the errorLogWriter property
-     */
-    public void setErrorLogWriter(PrintWriter errorLogWriter) {
-        this.errorLogWriter = errorLogWriter;
+    public void setLogWriter(Logger logWriter) {
+        this.logger = logWriter;
     }
 
     /**
@@ -120,7 +106,7 @@ public class ScriptRunner {
                 }
                 String trimmedLine = line.trim();
                 if (trimmedLine.startsWith("--")) {
-                    //println(trimmedLine);
+                    print(trimmedLine);
                 } else if (trimmedLine.length() < 1 || trimmedLine.startsWith("//")) {
                     // Do nothing
                 } else if (trimmedLine.length() < 1 || trimmedLine.startsWith("--")) {
@@ -144,7 +130,7 @@ public class ScriptRunner {
                     command.append(" ");
                     Statement statement = conn.createStatement();
 
-                    // println(command);
+                    print(command);
 
                     boolean hasResults = false;
                     if (stopOnError) {
@@ -155,7 +141,7 @@ public class ScriptRunner {
                         } catch (SQLException e) {
                             e.fillInStackTrace();
                             printlnError("Error executing: " + command);
-                            printlnError(e);
+                            printlnError(e.getLocalizedMessage());
                         }
                     }
 
@@ -164,22 +150,20 @@ public class ScriptRunner {
                     }
 
                     ResultSet rs = statement.getResultSet();
-//                    if (hasResults && rs != null) {
-//                        ResultSetMetaData md = rs.getMetaData();
-//                        int cols = md.getColumnCount();
-//                        for (int i = 0; i < cols; i++) {
-//                            String name = md.getColumnLabel(i);
-//                            //print(name + "\t");
-//                        }
-//                       // println("");
-//                        while (rs.next()) {
-//                            for (int i = 1; i <= cols; i++) {
-//                                String value = rs.getString(i);
-//                                //print(value + "\t");
-//                            }
-//                           // println("");
-//                        }
-//                    }
+                    if (hasResults && rs != null) {
+                        ResultSetMetaData md = rs.getMetaData();
+                        int cols = md.getColumnCount();
+                        for (int i = 0; i < cols; i++) {
+                            String name = md.getColumnLabel(i);
+                            print(name + "\t");
+                        }
+                        while (rs.next()) {
+                            for (int i = 1; i <= cols; i++) {
+                                String value = rs.getString(i);
+                                print(value + "\t");
+                            }
+                        }
+                    }
 
                     command = null;
                     try {
@@ -187,14 +171,14 @@ public class ScriptRunner {
                             rs.close();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        printlnError(e.getLocalizedMessage());
                     }
                     try {
                         if (statement != null) {
                             statement.close();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        printlnError(e.getLocalizedMessage());
                     }
                 } else {
                     Pattern pattern = Pattern.compile(DELIMITER_LINE_REGEX);
@@ -218,16 +202,15 @@ public class ScriptRunner {
         } catch (SQLException e) {
             e.fillInStackTrace();
             printlnError("Error executing: " + command);
-            printlnError(e);
+            printlnError(e.getLocalizedMessage());
             throw e;
         } catch (IOException e) {
             e.fillInStackTrace();
             printlnError("Error executing: " + command);
-            printlnError(e);
+            printlnError(e.getLocalizedMessage());
             throw e;
         } finally {
             conn.rollback();
-            flush();
         }
     }
 
@@ -236,32 +219,14 @@ public class ScriptRunner {
     }
 
     private void print(Object o) {
-        if (logWriter != null) {
-            logWriter.print(o);
+        if (logger != null) {
+            logger.trace(o.toString());
         }
-        //logger.trace(o.toString());
-    }
-
-    private void println(Object o) {
-        if (logWriter != null) {
-            logWriter.println(o);
-        }
-        //logger.trace(o.toString());
     }
 
     private void printlnError(Object o) {
-        if (errorLogWriter != null) {
-            errorLogWriter.println(o);
-        }
-        //logger.error(o.toString());
-    }
-
-    private void flush() {
-        if (logWriter != null) {
-            logWriter.flush();
-        }
-        if (errorLogWriter != null) {
-            errorLogWriter.flush();
+        if (logger != null) {
+            logger.error(o.toString());
         }
     }
 }

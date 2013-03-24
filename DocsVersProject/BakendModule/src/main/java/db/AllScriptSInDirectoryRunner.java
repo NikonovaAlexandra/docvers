@@ -27,35 +27,46 @@ import java.util.ResourceBundle;
  * To change this template use File | Settings | File Templates.
  */
 public class AllScriptSInDirectoryRunner {
-
+    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("configure");
     private static AllScriptSInDirectoryRunner instance;
     private String directoryPath;
     private List<String> launchedScripts = null;
     private File storage;
-    private static Logger logger = LoggerFactory.getLogger(AllScriptSInDirectoryRunner.class);
+    private static Logger logger;
     private boolean whetherToScanForLaunchedScripts;
     private LaunchedScriptNamesStorage launched;
 
-    private AllScriptSInDirectoryRunner(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
-        this.directoryPath = directoryPath;
-        // TODO : on other system does not work
-        this.storage = new File("C:\\Documents and Settings\\Admin\\Рабочий стол\\docvers\\trunk\\DocsVersProject\\BakendModule\\src\\main\\java\\db\\launched.xml");
-        storage.createNewFile();
-        //storage.setReadOnly();
+    private AllScriptSInDirectoryRunner(boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
+        logger = LoggerFactory.getLogger(this.getClass());
+        //todo smth with this
+        this.directoryPath = resourceBundle.getString("scripts");
+        this.storage = new File(resourceBundle.getString("launchedScriptsNamesStorage"));
+        if (!storage.exists()) storage.createNewFile();
         this.whetherToScanForLaunchedScripts = whetherToScanForLaunchedScripts;
         this.launched = (whetherToScanForLaunchedScripts ? LaunchedScriptNamesStorage.getInstance(storage) : null);
     }
 
-    public static AllScriptSInDirectoryRunner getInstance(String directoryPath, boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
-        instance = new AllScriptSInDirectoryRunner(directoryPath, whetherToScanForLaunchedScripts);
+    public static AllScriptSInDirectoryRunner getInstance(boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
+        instance = new AllScriptSInDirectoryRunner(whetherToScanForLaunchedScripts);
         return instance;
     }
 
-    public static void main(String[] args) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, BusinessException, SystemException, URISyntaxException, TransformerException {
-        AllScriptSInDirectoryRunner instatnce = getInstance("C:\\Documents and Settings\\Admin\\Рабочий стол\\docvers\\trunk\\DocsVersProject\\BakendModule\\src\\main\\resources\\scripts\\", true);
-        Connection conn = instatnce.getConnection();
-        ScriptRunner sr = new ScriptRunner(conn, true, false);
-        instatnce.runScripts(sr);
+    public void run(){
+        Connection conn = null;
+        try {
+        conn = getConnection();
+        ScriptRunner sr = new ScriptRunner(conn, logger, true, false);
+        runScripts(sr);
+        }
+        catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+        } finally {
+            try {
+                if ( !conn.isClosed()) conn.close();
+            } catch (SQLException e) {
+                logger.error(e.getLocalizedMessage());
+            }
+        }
     }
 
     private List getFilesInDirectory() throws URISyntaxException {
@@ -92,20 +103,8 @@ public class AllScriptSInDirectoryRunner {
                     launched.writeLaunchedScriptNamesInXml(script);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (SAXException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TransformerException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
         } finally {
             storage.setWritable(false);
         }

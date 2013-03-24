@@ -17,44 +17,55 @@ import java.util.ResourceBundle;
 public class ConnectionPoolFactory {
     private static ConnectionPoolFactory instance;
     private ConnectionPool connectionPool;
+    private static int initialConnections;
+    private static int maxConnections;
+    private ConnectionPoolFactory() throws SQLException {
+        ResourceBundle resource =
+                ResourceBundle.getBundle("database");
+        String url = resource.getString("url");
+        String driver = resource.getString("driver");
+        String user = resource.getString("user");
+        String pass = resource.getString("password");
+        initialConnections = Integer.parseInt(resource.getString("initialConnections"));
+        if (initialConnections == 0) initialConnections = 1;
+        maxConnections = Integer.parseInt(resource.getString("maxConnections"));
+        if (maxConnections == 0 || maxConnections < initialConnections) maxConnections = initialConnections + 1;
+        connectionPool =
+                new ConnectionPool(driver, url, user, pass,
+                        initialConnections,
+                        maxConnections,
+                        true);
 
+    }
     public static ConnectionPoolFactory getInstance() {
-        if (instance == null) {
-            instance = new ConnectionPoolFactory();
-        }
         return instance;
     }
 
-    public ConnectionPool getConnectionPool() throws SystemException, BusinessException {
-        try {
-            ResourceBundle resource =
-                    ResourceBundle.getBundle("database");
-            String url = resource.getString("url");
-            String driver = resource.getString("driver");
-            String user = resource.getString("user");
-            String pass = resource.getString("password");
-            connectionPool =
-                    new ConnectionPool(driver, url, user, pass,
-                            initialConnections(),
-                            maxConnections(),
-                            true);
-
-            return connectionPool;
-        } catch (SQLException e) {
-            throw new DAOException(e);
+    public static void init() throws SQLException {
+        if (instance == null) {
+            instance = new ConnectionPoolFactory();
         }
     }
-
-    protected int initialConnections() {
-        return (5);
+    public ConnectionPool getConnectionPool() throws SystemException, BusinessException {
+            return connectionPool;
     }
 
-    /**
-     * Override this in subclass to change maximum number of
-     * connections.
-     */
-    protected int maxConnections() {
-        return (50);
+    public static int getMaxConnections() {
+        return maxConnections;
     }
+
+    public static void setMaxConnections(int maxConnections) {
+        ConnectionPoolFactory.maxConnections = maxConnections;
+    }
+
+    public static int getInitialConnections() {
+
+        return initialConnections;
+    }
+
+    public static void setInitialConnections(int initialConnections) {
+        ConnectionPoolFactory.initialConnections = initialConnections;
+    }
+
 
 }

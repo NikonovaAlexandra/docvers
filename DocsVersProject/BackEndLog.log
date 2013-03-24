@@ -1,1 +1,32 @@
-﻿
+﻿21:28:19.937 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: create user USER password 'DocumentVersioningUser' 
+21:28:19.953 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+create user USER password 'DocumentVersioningUser'  [90040-170]
+21:28:19.953 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: grant select, insert, delete, update on document to user 
+21:28:19.953 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+grant select, insert, delete, update on document to user  [90040-170]
+21:28:19.968 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: grant select, insert, delete, update on version to user 
+21:28:19.968 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+grant select, insert, delete, update on version to user  [90040-170]
+21:28:19.968 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: grant select, insert on author to user 
+21:28:19.968 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+grant select, insert on author to user  [90040-170]
+21:30:59.250 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: create user USER password 'DocumentVersioningUser' 
+21:30:59.250 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+create user USER password 'DocumentVersioningUser'  [90040-170]
+21:30:59.250 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: grant select, insert, delete, update on document to user 
+21:30:59.265 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+grant select, insert, delete, update on document to user  [90040-170]
+21:30:59.265 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: grant select, insert, delete, update on version to user 
+21:30:59.265 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+grant select, insert, delete, update on version to user  [90040-170]
+21:30:59.265 [main] ERROR db.AllScriptSInDirectoryRunner - Error executing: grant select, insert on author to user 
+21:30:59.265 [main] ERROR db.AllScriptSInDirectoryRunner - Для выполнения данной операции необходимы права администратора
+Admin rights are required for this operation; SQL statement:
+grant select, insert on author to user  [90040-170]

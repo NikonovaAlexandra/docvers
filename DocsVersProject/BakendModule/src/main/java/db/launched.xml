@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<scripts>
-    <script>
-        <name>dara.sql</name>
-    </script>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><scripts>
     <script>
         <name>databasescript_0_1.sql</name>
     </script>
@@ -12,4 +8,4 @@
     <script>
         <name>databasescript_0_3.sql</name>
     </script>
-</scripts>
+<script><name>databsescript_0_4.sql</name></script></scripts>

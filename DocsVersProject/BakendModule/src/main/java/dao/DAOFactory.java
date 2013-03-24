@@ -12,11 +12,17 @@ import dao.version.VersionDAO;
 import dao.version.VersionDAOImpl;
 import dao.version.VersionDAOImplHCriteria;
 import dao.version.VersionDAOImplHHQL;
+import db.AllScriptSInDirectoryRunner;
 import exception.DAOException;
 import exception.MyException;
 import exception.SystemException;
 import org.hibernate.Session;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
 import java.sql.Connection;
 
 /**

@@ -74,6 +74,7 @@
             <fmt:message key="version.addNewVersion" var="butName"/>
             <input type="submit" name="submit" class="button" value="${butName}"/>
         </form>
+
     </jsp:body>
 </t:TemplatePage>
 </html>

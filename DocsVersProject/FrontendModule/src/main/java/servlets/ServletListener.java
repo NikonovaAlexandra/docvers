@@ -1,6 +1,7 @@
 package servlets;
 
 import dao.DAOType;
+import db.AllScriptSInDirectoryRunner;
 import exception.BusinessException;
 import exception.SystemException;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,9 @@ import service.SessionFactoryUtil;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,9 +38,19 @@ public class ServletListener implements ServletContextListener {
         String encoding = event.getServletContext().getInitParameter("encoding");
         sc.setAttribute("encoding", encoding);
         String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
-        if (!type.equals(DAOType.JDBC)) SessionFactoryUtil.init(path);
+        if (!type.equals(DAOType.JDBC)) {
+            SessionFactoryUtil.init(path);
+        }
+        try {
 
-    }
+//            AllScriptSInDirectoryRunner.getInstance(true).run();
+            ConnectionPoolFactory.init();
+
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+        }
+
+}
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
