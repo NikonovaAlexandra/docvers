@@ -4,7 +4,9 @@ import dao.ExceptionsThrower;
 import entities.Author;
 import exception.DAOException;
 import exception.MyException;
+import exception.NoSuchObjectInDB;
 import exception.SystemException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import service.QueriesHQL;
@@ -33,7 +35,9 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
-            Author author = (Author) session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_ID).setLong("id", id).uniqueResult();
+            Query query = session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_ID);
+            query.setLong("id", id);
+            Author author = (Author) query.uniqueResult();
             tr.commit();
             return author;
         } catch (Exception e) {
@@ -48,7 +52,9 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
-            Author author = (Author) session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_LOGIN).setString("login", login).uniqueResult();
+            Query query = session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_LOGIN);
+            query.setString("login", login);
+            Author author = (Author) query.uniqueResult();
             tr.commit();
             return author;
         } catch (Exception e) {

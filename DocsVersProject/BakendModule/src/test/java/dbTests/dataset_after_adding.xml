@@ -1,10 +1,10 @@
 <dataset>
 
-    <DOCUMENT ID="1" AUTHOR_ID="3" DOCUMENT_NAME="doc0" DESCRIPTION="descr"/>
-    <DOCUMENT ID="2" AUTHOR_ID="2" DOCUMENT_NAME="doc1" DESCRIPTION="descr"/>
-    <DOCUMENT ID="3" AUTHOR_ID="2" DOCUMENT_NAME="doc2" DESCRIPTION="descr"/>
-    <DOCUMENT ID="4" AUTHOR_ID="2" DOCUMENT_NAME="doc3" DESCRIPTION="descr"/>
-    <DOCUMENT ID="5" AUTHOR_ID="1" DOCUMENT_NAME="doc4" DESCRIPTION="descr"/>
-    <DOCUMENT ID="6" AUTHOR_ID="3" DOCUMENT_NAME="doc5" DESCRIPTION="desc"/>
-    <DOCUMENT ID="7" AUTHOR_ID="2" DOCUMENT_NAME="doc25" DESCRIPTION="descr"/>
+    <DOCUMENT ID="1" AUTHOR_ID="3" DOCUMENT_NAME="doc0" DESCRIPTION="descr" code_document_name="1111"/>
+    <DOCUMENT ID="2" AUTHOR_ID="2" DOCUMENT_NAME="doc1" DESCRIPTION="descr" code_document_name="1112"/>
+    <DOCUMENT ID="3" AUTHOR_ID="2" DOCUMENT_NAME="doc2" DESCRIPTION="descr" code_document_name="1113"/>
+    <DOCUMENT ID="4" AUTHOR_ID="2" DOCUMENT_NAME="doc3" DESCRIPTION="descr" code_document_name="1114"/>
+    <DOCUMENT ID="5" AUTHOR_ID="1" DOCUMENT_NAME="doc4" DESCRIPTION="descr" code_document_name="1115"/>
+    <DOCUMENT ID="6" AUTHOR_ID="3" DOCUMENT_NAME="doc5" DESCRIPTION="desc" code_document_name="1116"/>
+    <DOCUMENT ID="7" AUTHOR_ID="2" DOCUMENT_NAME="doc25" DESCRIPTION="descr" code_document_name="1117"/>
 </dataset>

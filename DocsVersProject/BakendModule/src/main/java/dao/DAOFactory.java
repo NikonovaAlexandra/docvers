@@ -12,17 +12,9 @@ import dao.version.VersionDAO;
 import dao.version.VersionDAOImpl;
 import dao.version.VersionDAOImplHCriteria;
 import dao.version.VersionDAOImplHHQL;
-import db.AllScriptSInDirectoryRunner;
-import exception.DAOException;
 import exception.MyException;
-import exception.SystemException;
 import org.hibernate.Session;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.IOException;
 import java.sql.Connection;
 
 /**
@@ -39,6 +31,7 @@ public class DAOFactory {
     private static AuthorDAO authorDAO = null;
     private static VersionDAO versionDAO = null;
     private static DAOFactory instance = null;
+
     public static DAOFactory getInstance() {
         if (instance == null) {
             instance = new DAOFactory();
@@ -47,56 +40,61 @@ public class DAOFactory {
     }
 
     public DocumentDAO getDocumentDAO(Connection conn) throws MyException {
-        if (documentDAO == null) {
-            documentDAO = new DocumentDAOImpl(conn);
-        }
+        documentDAO = new DocumentDAOImpl(conn);
         return documentDAO;
     }
 
-    public AuthorDAO getAuthorDAO(Connection conn) throws MyException{
-        if (authorDAO == null) {
-            authorDAO = new AuthorDAOImpl(conn);
-        }
+    public AuthorDAO getAuthorDAO(Connection conn) throws MyException {
+        authorDAO = new AuthorDAOImpl(conn);
         return authorDAO;
     }
 
-    public VersionDAO getVersionDAO(Connection conn) throws MyException{
-        if (versionDAO == null) {
-            versionDAO = new VersionDAOImpl(conn);
-        }
+    public VersionDAO getVersionDAO(Connection conn) throws MyException {
+        versionDAO = new VersionDAOImpl(conn);
         return versionDAO;
     }
 
-    public DocumentDAO getDocumentDAO(Session session, DAOType type) throws MyException{
-        if (documentDAO == null) {
-            switch (type) {
-                case CRITERIA: documentDAO = new DocumentDAOImplHCriteria(session); break;
-                case HQL: documentDAO = new DocumentDAOImplHHQL(session); break;
-                default: break;
-            }
+    public DocumentDAO getDocumentDAO(Session session, DAOType type) throws MyException {
+        switch (type) {
+            case CRITERIA:
+                documentDAO = new DocumentDAOImplHCriteria(session);
+                break;
+            case HQL:
+                documentDAO = new DocumentDAOImplHHQL(session);
+                break;
+            default:
+                break;
         }
         return documentDAO;
     }
 
     public AuthorDAO getAuthorDAO(Session session, DAOType type) throws MyException {
-        if (authorDAO == null) {
-            switch (type) {
-                case CRITERIA: authorDAO = new AuthorDAOImplHCriteria(session); break;
-                case HQL: authorDAO = new AuthorDAOImplHHQL(session); break;
-                default: break;
-            };
+        switch (type) {
+            case CRITERIA:
+                authorDAO = new AuthorDAOImplHCriteria(session);
+                break;
+            case HQL:
+                authorDAO = new AuthorDAOImplHHQL(session);
+                break;
+            default:
+                break;
         }
+        ;
         return authorDAO;
     }
 
     public VersionDAO getVersionDAO(Session session, DAOType type) throws MyException {
-        if (versionDAO == null) {
-            switch (type) {
-                case CRITERIA: versionDAO = new VersionDAOImplHCriteria(session); break;
-                case HQL: versionDAO = new VersionDAOImplHHQL(session); break;
-                default: break;
-            };
+        switch (type) {
+            case CRITERIA:
+                versionDAO = new VersionDAOImplHCriteria(session);
+                break;
+            case HQL:
+                versionDAO = new VersionDAOImplHHQL(session);
+                break;
+            default:
+                break;
         }
+        ;
         return versionDAO;
     }
 }

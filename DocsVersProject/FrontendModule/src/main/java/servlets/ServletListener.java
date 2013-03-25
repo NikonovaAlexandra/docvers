@@ -43,7 +43,7 @@ public class ServletListener implements ServletContextListener {
         }
         try {
 
-            AllScriptSInDirectoryRunner.getInstance(true).run();
+//            AllScriptSInDirectoryRunner.getInstance(true).run();
             ConnectionPoolFactory.init();
 
         } catch (Exception e) {
