@@ -15,6 +15,7 @@
 <div id="body">
     <jsp:doBody/>
 </div>
+
 <jsp:include page="/jsp/Footer.jsp"/>
 </body>
 </html>

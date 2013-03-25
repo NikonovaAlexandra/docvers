@@ -30,8 +30,16 @@ public class GetVersionsServlet extends ParentServlet {
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
         try {
-            long docName = Long.parseLong(request.getParameter("document"));
-            request.getSession().setAttribute("documentToView", docName);
+            String par = request.getParameter("document");
+            long docName = 0;
+            if (!(par == null)) {
+                docName = Long.parseLong(par);
+            }
+            if (docName == 0) {
+                docName = (Long) request.getSession().getAttribute("documentToView");
+            } else {
+                request.getSession().setAttribute("documentToView", docName);
+            }
             List<VersionBean> vers = getService().getVersionsOfDocument(getRequestParser().getAuthorBean(request).getLogin(), docName);
             showMessage(request, response, vers, "versionList", url);
         } catch (SystemException e) {

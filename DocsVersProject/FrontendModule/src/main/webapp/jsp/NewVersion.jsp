@@ -24,7 +24,6 @@
 
         <form action="Upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 
-
             <table>
                 <tr>
                     <td>
@@ -42,6 +41,11 @@
             <br/>
             <input type="submit" class="button" value="${butName}"/>
 
+        </form>
+        <form action="Versions" method="get">
+
+            <fmt:message key="backBut" var="back"/>
+            <input type="submit" class="button" value="${back}"/>
         </form>
         <hr>
     </jsp:body>

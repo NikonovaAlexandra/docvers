@@ -74,7 +74,11 @@
             <fmt:message key="version.addNewVersion" var="butName"/>
             <input type="submit" name="submit" class="button" value="${butName}"/>
         </form>
+        <form action="GetAllDocuments">
 
+            <fmt:message key="backBut" var="back"/>
+            <input type="submit" class="button" value="${back}"/>
+        </form>
     </jsp:body>
 </t:TemplatePage>
 </html>

@@ -23,6 +23,13 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script>
     <script src="js/animate-bg.js" type="text/javascript"></script>
     <script src="js/scripts.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function refreshpage()
+        {
+//            alert("yoho");
+            window.location.reload(false);
+        }
+    </script>
 </head>
 
 <body>
@@ -46,8 +53,8 @@
         <li class="GetAllDocs"><a href="GetAllDocuments"><fmt:message key="index.getAll"/></a></li>
         <li class="AddDoc"><a href="AddDocument"><fmt:message key="index.add"/></a></li>
         <li class="Logout"><a href="Logout"><fmt:message key="logout"/></a></li>
-        <form>
 
+      <form onsubmit="refreshpage()">
             <c:set var="document" value="${param.document}"/>
             <c:url value="" var="ruURL">
                 <c:if test="${not empty document}">
@@ -57,7 +64,7 @@
                 <c:param name="language" value="ru_RUS"/>
             </c:url>
 
-            <a href="${ruURL}" onclick="submit()"> <img src="images/russia-icon.png"/> </a>
+            <a href="${ruURL}" onclick="refreshpage()"> <img src="images/russia-icon.png"/> </a>
             <c:url value="${url}" var="enURL">
                 <c:if test="${not empty document}">
                     <c:param name="document" value="${document}"/>
@@ -66,8 +73,8 @@
 
             </c:url>
 
-            <a href="${enURL}" onclick="submit()"> <img src="images/uk-icon.png"/> </a>
-        </form>
+            <a href="${enURL}" onclick="refreshpage()"> <img src="images/uk-icon.png"/> </a>
+      </form>
     </ul>
     <hr>
 </div>
