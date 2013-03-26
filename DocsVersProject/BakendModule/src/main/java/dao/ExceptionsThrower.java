@@ -31,6 +31,9 @@ public class ExceptionsThrower {
             }
             if (((JdbcSQLException) e).getErrorCode() == ErrorCode.NO_DISK_SPACE_AVAILABLE) {
                 return new NoDiskSpaceException(e);
+            }
+            if (((JdbcSQLException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1) {
+                return new ReferentialIntegrityViolatedException();
             } else return new DAOException(e);
         } else if (e instanceof JdbcBatchUpdateException) {
 
@@ -39,9 +42,6 @@ public class ExceptionsThrower {
             }
             if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.NULL_NOT_ALLOWED) {
                 return new IntegrityConstraintException(e, "NULL is not allowed");
-            }
-            if (((JdbcBatchUpdateException) e).getErrorCode() == ErrorCode.REFERENTIAL_INTEGRITY_VIOLATED_PARENT_MISSING_1) {
-                return new ReferentialIntegrityViolatedException();
             } else return new DAOException(e);
 
         } else if (e instanceof SessionException) {

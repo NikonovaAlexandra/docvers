@@ -48,6 +48,7 @@
                     <th scope="col"><fmt:message key="versions.isReleased"/></th>
                     <th scope="col" style="width: 20%">&nbsp</th>
                     <th scope="col" style="width: 19%">&nbsp</th>
+                    <th scope="col" style="width: 19%">&nbsp</th>
                 </tr>
                 </thead>
                 <c:forEach items="${versionList}" var="item">
@@ -60,11 +61,14 @@
                         <td>${item.released}</td>
                         <td><a href="<c:url value="Download">
                     <c:param name="version" value="${item.versionName}"/>
+                    <c:param name="author" value="${item.document.author.login}"/>
+                    <c:param name="codeDocument" value="${item.document.codeDocumentName}"/>
                 </c:url>"><fmt:message key="versions.download"/></a></td>
                         <td><a onclick="return deleteA()"
                                href="<c:url value="DeleteVersion">
                     <c:param name="version" value="${item.versionName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
+                        <td>${item.released}</td>
                     </tr>
                 </c:forEach>
             </table>

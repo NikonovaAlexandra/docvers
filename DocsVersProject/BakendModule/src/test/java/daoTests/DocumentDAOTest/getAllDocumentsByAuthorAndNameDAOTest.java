@@ -42,9 +42,9 @@ public class getAllDocumentsByAuthorAndNameDAOTest {
 
     }
 
-    @Test(expected = NoSuchObjectInDB.class)
+    @Test
     public void getAllDocumentsSuccessful() throws Exception {
-        // there is no documents in database
+        when(rs.next()).thenReturn(true);
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         dao.getDocumentByAuthorAndName(anyString(), 0);
@@ -54,6 +54,7 @@ public class getAllDocumentsByAuthorAndNameDAOTest {
         verify(ps).setLong(2, eq(anyLong()));
         verify(ps).executeQuery();
         verify(rs).next();
+        verify(conn).commit();
         verify(ps).close();
         verify(rs).close();
     }

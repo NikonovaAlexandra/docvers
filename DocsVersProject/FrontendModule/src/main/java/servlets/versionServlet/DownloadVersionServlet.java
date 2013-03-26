@@ -57,9 +57,11 @@ public class DownloadVersionServlet extends ParentServlet {
 
     private VersionBean parse(HttpServletRequest request) throws MyException {
         long id = Long.parseLong(request.getParameter("version"));
-        long documentCode = (Long) request.getSession().getAttribute("documentToView");
+        String login = request.getParameter("author");
+        Long documentCode = Long.parseLong(request.getParameter("codeDocument"));
+        //long documentCode = (Long) request.getSession().getAttribute("documentToView");
         AuthorBean authorBean = getRequestParser().getAuthorBean(request);
-        VersionBean versionBean = getService().getVersion(authorBean.getLogin(), documentCode, id);
+        VersionBean versionBean = getService().getVersion(login, documentCode, id);
         return versionBean;
     }
 

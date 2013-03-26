@@ -44,7 +44,6 @@ public class deleteDocumentDAOTest {
     public void deleteDocumentSuccessful() throws Exception {
 
         when(ps.executeUpdate()).thenReturn(1);
-        // there is no documents in database
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();
@@ -62,7 +61,6 @@ public class deleteDocumentDAOTest {
     public void deleteDocumentNothingToDel() throws Exception {
 
         when(ps.executeUpdate()).thenReturn(0);
-        // there is no documents in database
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();

@@ -89,7 +89,7 @@ public class VersionDAOImpl implements VersionDAO {
         }
         try {
            // long name = getLastVersionNameInfo(version.getDocumentID()) + 1;
-            conn.commit();
+            //conn.commit();
             ps = conn.prepareStatement(QueriesSQL.UPDATE_VERSION_SET_IS_RELEASED);
             ps.setBoolean(1, true);
             ps.setLong(2, version.getDocumentID());
