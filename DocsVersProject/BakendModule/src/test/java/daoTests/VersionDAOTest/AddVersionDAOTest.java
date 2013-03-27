@@ -28,7 +28,7 @@ import static org.mockito.Mockito.reset;
  * Time: 9:02
  * To change this template use File | Settings | File Templates.
  */
-public class addVersionDAOTest {
+public class AddVersionDAOTest {
     private Connection conn;
     private PreparedStatement ps;
 

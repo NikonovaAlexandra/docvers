@@ -1,34 +1,32 @@
 package daoTests.VersionDAOTest;
 
 import dao.DAOFactory;
-import dao.document.DocumentDAO;
 import dao.version.VersionDAO;
+import daoTests.EntitiesFactory;
+import entities.Document;
 import entities.Version;
 import exception.NoSuchObjectInDB;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import service.QueriesSQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: alni
- * Date: 26.03.13
- * Time: 9:03
- * To change this template use File | Settings | File Templates.
- */
-public class getVersionDAOTest {
-
+* Created with IntelliJ IDEA.
+* User: alni
+* Date: 08.02.13
+* Time: 10:09
+* To change this template use File | Settings | File Templates.
+*/
+public class GetVersionsOfDocumentDAOTest {
     private Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;
@@ -43,17 +41,16 @@ public class getVersionDAOTest {
         when(ps.executeQuery()).thenReturn(rs);
 
     }
-
     @Test
-    public void getVersionSuccessful() throws Exception {
-        when(rs.next()).thenReturn(true).thenReturn(false);
+    public void getVersionsOfDocumentSuccessful() throws Exception {
+
+        // there is no documents in database
         VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
         // when
-        dao.getVersion(0, 0);
+        dao.getVersionsOfDocument(anyLong());
         // then
-        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
-        verify(ps).setLong(1, 0);
-        verify(ps).setLong(2, 0);
+        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
+        verify(ps).setLong(1, eq(anyLong()));
         verify(ps).executeQuery();
         verify(rs, atLeast(1)).next();
         verify(ps).close();
@@ -62,17 +59,17 @@ public class getVersionDAOTest {
     }
 
     @Test(expected = NoSuchObjectInDB.class)
-    public void getVersionNo() throws Exception {
+    public void getVersionsOfDocumentNo() throws Exception {
         when(rs.next()).thenReturn(false);
+        // there is no documents in database
         VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
         // when
-        dao.getVersion(0, 0);
+        dao.getVersionsOfDocument(anyLong());
         // then
-        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
-        verify(ps).setLong(1, 0);
-        verify(ps).setLong(2, 0);
+        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
+        verify(ps).setLong(1, eq(anyLong()));
         verify(ps).executeQuery();
-        verify(rs, atLeast(1)).next();
+        verify(rs).next();
         verify(ps).close();
         verify(rs).close();
 
@@ -81,5 +78,7 @@ public class getVersionDAOTest {
     @After
     public void destroy() {
         reset(rs);
+        reset(ps);
     }
+
 }

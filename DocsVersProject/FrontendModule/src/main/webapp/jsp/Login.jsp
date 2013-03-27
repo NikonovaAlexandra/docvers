@@ -30,7 +30,7 @@
         <form>
             <c:url value="Login" var="ruURL">
 
-                <c:param name="language" value="ru_RUS"/>
+                <c:param name="language" value="ru"/>
 
             </c:url>
 

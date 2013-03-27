@@ -16,7 +16,6 @@
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="Messages"/>
 
-<html lang="${language}">
 <head>
     <fmt:message key="adddocument.blankName" var="emptyName"/>
     <script>
@@ -58,5 +57,3 @@
         </div>
     </jsp:body>
 </t:TemplatePage>
-
-</html>

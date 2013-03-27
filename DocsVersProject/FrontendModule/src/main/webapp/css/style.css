@@ -1,9 +1,5 @@
 html {
-    background: url("../images/login_bg.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: url("../images/natural_paper.png");
 }
 
 body {
@@ -42,15 +38,10 @@ A:hover {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 14px;
     margin: 45px;
-    width: 550px;
+    width: 700px;
     text-align: center;
     border-collapse: collapse;
     background: url('../images/table_bg.png');
-}
-
-#userDocs thead tr {
-    /*background: url('../images/paper.png');*/
-    height: 50px;
 }
 
 #userDocs th {
@@ -70,7 +61,7 @@ A:hover {
     border-bottom: 1px solid #C0C0C0;
     color: #9c5959;
     border-top: 1px solid transparent;
-    height: 50px;
+    word-wrap:break-word;
 }
 
 #userDocs tbody tr:hover td {
@@ -129,7 +120,7 @@ A:hover {
 }
 
 #body {
-    width: 50%;
+    width: 800px;
     margin-top: 151px;
     margin-left: 20px;
 
@@ -139,6 +130,6 @@ A:hover {
     /*position: fixed;*/
     margin-top: 10px;
     margin-left: 20px;
-    width: 50%;
+    width: 800px;
     height: 20px;
 }

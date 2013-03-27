@@ -2,25 +2,19 @@ package servlets.versionServlet;
 
 import beans.AuthorBean;
 import beans.VersionBean;
-import exception.BusinessException;
 import exception.MyException;
-import exception.SystemException;
 import service.FileNameGenerator;
 import servlets.ParentServlet;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Iterator;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,16 +33,27 @@ public class DownloadVersionServlet extends ParentServlet {
         request.setCharacterEncoding(getEncoding());
 
         try {
+            String param = request.getParameter("param");
             VersionBean versionBean = parse(request);
-            setDocumentName(versionBean.getDocument().getCodeDocumentName());
-            file = new File(versionBean.getPath());
-            String newFileName = FileNameGenerator.generateDownloadVersionName(versionBean.getDocument().getName(),
-                    versionBean.getVersionName(), versionBean.getVersionType());
-            ServletOutputStream outStream = response.getOutputStream();
-            setRespose(response, newFileName);
+            if (param == null) {
+                setDocumentName(versionBean.getDocument().getCodeDocumentName());
+                file = new File(versionBean.getPath());
+                String newFileName = FileNameGenerator.generateDownloadVersionName(versionBean.getDocument().getName(),
+                        versionBean.getVersionName(), versionBean.getVersionType());
+                ServletOutputStream outStream = response.getOutputStream();
+                setRespose(response, newFileName);
 
-            getFileFolderService().downloadFile(file.getAbsolutePath(), outStream, BUFSIZE);
-            outStream.flush();
+                getFileFolderService().downloadFile(file.getAbsolutePath(), outStream, BUFSIZE);
+                outStream.flush();
+            } else {
+                StringSelection stringSelection = new StringSelection(request.getRequestURL() + "?" +
+                        request.getQueryString().replaceFirst("(&)(param)(=.*)",""));
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        stringSelection, null);
+                String url = "/Versions?document=" + versionBean.getDocument().getCodeDocumentName();
+                showMessage(request, response, "message.CopyToClipboard", "versmessage", url);
+
+            }
 
         } catch (Exception e) {
             throw new ServletException(e);
@@ -75,9 +80,12 @@ public class DownloadVersionServlet extends ParentServlet {
         }
         response.setContentType(mimetype);
         response.setContentLength((int) file.length());
-
         // sets HTTP header
-        response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
+        if (mimetype.equals("application/pdf")) {
+            response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
+        } else {
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        }
     }
 
 }

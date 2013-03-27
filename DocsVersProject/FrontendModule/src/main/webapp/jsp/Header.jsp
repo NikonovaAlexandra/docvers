@@ -13,23 +13,15 @@
        scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="Messages"/>
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Animated Label Navigation Menu</title>
-
     <link href="css/menu.css" rel="stylesheet" type="text/css" media="screen"/>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script>
     <script src="js/animate-bg.js" type="text/javascript"></script>
     <script src="js/scripts.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        function refreshpage()
-        {
-//            alert("yoho");
-            window.location.reload(false);
-        }
-    </script>
 </head>
 
 <body>
@@ -61,7 +53,7 @@
                     <c:param name="document" value="${document}"/>
                 </c:if>
 
-                <c:param name="language" value="ru_RUS"/>
+                <c:param name="language" value="ru"/>
             </c:url>
 
             <a href="${ruURL}" onclick="refreshpage()"> <img src="images/russia-icon.png"/> </a>
@@ -81,4 +73,3 @@
 
 
 </body>
-</html>

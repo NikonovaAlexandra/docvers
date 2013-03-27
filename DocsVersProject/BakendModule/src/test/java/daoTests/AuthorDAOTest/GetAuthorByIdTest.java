@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
  * Time: 8:52
  * To change this template use File | Settings | File Templates.
  */
-public class getAuthorByIdTest {
+public class GetAuthorByIdTest {
     private Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;

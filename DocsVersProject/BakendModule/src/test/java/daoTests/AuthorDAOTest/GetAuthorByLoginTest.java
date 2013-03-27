@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
  * Time: 8:39
  * To change this template use File | Settings | File Templates.
  */
-public class getAuthorByLoginTest {
+public class GetAuthorByLoginTest {
     private Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;

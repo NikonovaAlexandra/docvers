@@ -10,8 +10,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="Messages"/>
-<html>
+
 <head>
     <fmt:message key="document.wanttodelete" var="deletion"/>
     <script type="text/javascript">
@@ -32,10 +36,10 @@
             <table id="userDocs">
                 <thead>
                 <tr>
-                    <th scope="col" style="width: 30%"><fmt:message key="alldocuments.name"/></th>
+                    <th scope="col"><fmt:message key="alldocuments.name"/></th>
                     <th scope="col"><fmt:message key="alldocuments.description"/></th>
-                    <th scope="col" style="width: 100px">&nbsp</th>
-                    <th scope="col" style="width: 100px">&nbsp</th>
+                    <th scope="col">&nbsp</th>
+                    <th scope="col">&nbsp</th>
                 </tr>
                 </thead>
 
@@ -61,4 +65,3 @@
     </jsp:body>
 </t:TemplatePage>
 
-</html>

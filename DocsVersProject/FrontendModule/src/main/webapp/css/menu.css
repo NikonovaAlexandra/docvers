@@ -17,7 +17,7 @@ body {
 }
 
 ul#nav {
-    width: 600px;
+    width: 450px;
     margin: 0 auto;
     text-align: center;
     overflow: hidden;
@@ -27,15 +27,16 @@ ul#nav {
 ul#nav li {
     float: left;
     list-style: none;
+    width: 100px;
 }
 
 ul#nav li a {
     display: block;
-    width: 97px;
+    width: 77px;
     height: 77px;
     padding: 72px 0 0 0;
     margin: 0 32px 0 32px;
-    font: bold 16px Helvetica, Arial, Sans-Serif;
+    font: bold 14px Helvetica, Arial, Sans-Serif;
     text-transform: uppercase;
     color: #9c5959;
     text-shadow: 0 1px 3px #c4bda6;

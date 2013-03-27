@@ -3,8 +3,6 @@ package daoTests.VersionDAOTest;
 import dao.DAOFactory;
 import dao.document.DocumentDAO;
 import dao.version.VersionDAO;
-import daoTests.EntitiesFactory;
-import entities.Document;
 import entities.Version;
 import exception.NoSuchObjectInDB;
 import org.junit.After;
@@ -15,21 +13,21 @@ import service.QueriesSQL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.
  * User: alni
  * Date: 26.03.13
- * Time: 9:02
+ * Time: 9:03
  * To change this template use File | Settings | File Templates.
  */
-public class deleteVersionDAOTest {
+public class GetVersionDAOTest {
 
     private Connection conn;
     private PreparedStatement ps;
@@ -47,40 +45,41 @@ public class deleteVersionDAOTest {
     }
 
     @Test
-    public void deleteVersionSuccessful() throws Exception {
-
-        when(ps.executeUpdate()).thenReturn(1);
+    public void getVersionSuccessful() throws Exception {
+        when(rs.next()).thenReturn(true).thenReturn(false);
         VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
         // when
-        dao.deleteVersion(0, 0, "");
-        // than
-        verify(conn).prepareStatement(QueriesSQL.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
+        dao.getVersion(0, 0);
+        // then
+        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
         verify(ps).setLong(1, 0);
         verify(ps).setLong(2, 0);
-        verify(ps).setString(3, "");
-        verify(ps).executeUpdate();
+        verify(ps).executeQuery();
+        verify(rs, atLeast(1)).next();
         verify(ps).close();
+        verify(rs).close();
 
     }
 
     @Test(expected = NoSuchObjectInDB.class)
-    public void deleteVersionNothingToDel() throws Exception {
-
-        when(ps.executeUpdate()).thenReturn(0);
+    public void getVersionNo() throws Exception {
+        when(rs.next()).thenReturn(false);
         VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
         // when
-        dao.deleteVersion(0, 0, "");
-        // than
-        verify(conn).prepareStatement(QueriesSQL.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
-        verify(ps).setLong(1, eq(anyLong()));
-        verify(ps).setLong(2, eq(anyLong()));
-        verify(ps).setString(3, eq(anyString()));
-        verify(ps).executeUpdate();
+        dao.getVersion(0, 0);
+        // then
+        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
+        verify(ps).setLong(1, 0);
+        verify(ps).setLong(2, 0);
+        verify(ps).executeQuery();
+        verify(rs, atLeast(1)).next();
         verify(ps).close();
+        verify(rs).close();
 
     }
+
     @After
     public void destroy() {
-        reset(ps);
+        reset(rs);
     }
 }

@@ -12,9 +12,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%--<fmt:setLocale value="ru_RUS"></fmt:setLocale>--%>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}" scope="session"/>
 <fmt:requestEncoding value="UTF-8"/>
 <fmt:setBundle basename="Messages"/>
-<html>
+
 <head>
     <fmt:message key="version.wanttodelete" var="deletion"/>
     <script type="text/javascript">
@@ -46,9 +50,9 @@
                     <th scope="col"><fmt:message key="versions.description"/></th>
                     <th scope="col"><fmt:message key="versions.type"/></th>
                     <th scope="col"><fmt:message key="versions.isReleased"/></th>
-                    <th scope="col" style="width: 20%">&nbsp</th>
-                    <th scope="col" style="width: 19%">&nbsp</th>
-                    <th scope="col" style="width: 19%">&nbsp</th>
+                    <th scope="col" style="width: 10%">&nbsp</th>
+                    <th scope="col" style="width: 9%">&nbsp</th>
+                    <th scope="col" style="width: 9%">&nbsp</th>
                 </tr>
                 </thead>
                 <c:forEach items="${versionList}" var="item">
@@ -68,7 +72,12 @@
                                href="<c:url value="DeleteVersion">
                     <c:param name="version" value="${item.versionName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
-                        <td>${item.released}</td>
+                        <td><a href="<c:url value="Download">
+                    <c:param name="version" value="${item.versionName}"/>
+                    <c:param name="author" value="${item.document.author.login}"/>
+                    <c:param name="codeDocument" value="${item.document.codeDocumentName}"/>
+                    <c:param name="param" value="getLink"/>
+                </c:url>"><fmt:message key="getLink"/></a></td>
                     </tr>
                 </c:forEach>
             </table>
@@ -85,4 +94,3 @@
         </form>
     </jsp:body>
 </t:TemplatePage>
-</html>

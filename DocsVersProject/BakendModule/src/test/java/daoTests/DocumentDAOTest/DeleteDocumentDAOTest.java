@@ -2,31 +2,29 @@ package daoTests.DocumentDAOTest;
 
 import dao.DAOFactory;
 import dao.document.DocumentDAO;
-import dao.document.DocumentDAOImpl;
+import daoTests.EntitiesFactory;
 import entities.Document;
 import exception.NoSuchObjectInDB;
-import exception.NullConnectionException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import service.QueriesSQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.
  * User: alni
- * Date: 08.02.13
- * Time: 13:12
+ * Date: 11.02.13
+ * Time: 8:27
  * To change this template use File | Settings | File Templates.
  */
-public class getAllDocumentsByAuthorAndNameDAOTest {
+public class DeleteDocumentDAOTest {
     private Connection conn;
     private PreparedStatement ps;
     private ResultSet rs;
@@ -43,31 +41,40 @@ public class getAllDocumentsByAuthorAndNameDAOTest {
     }
 
     @Test
-    public void getAllDocumentsSuccessful() throws Exception {
-        when(rs.next()).thenReturn(true);
+    public void deleteDocumentSuccessful() throws Exception {
+
+        when(ps.executeUpdate()).thenReturn(1);
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
-        dao.getDocumentByAuthorAndName(anyString(), 0);
-        // then
-        verify(conn).prepareStatement(QueriesSQL.SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_CODE_AND_AUTHOR_ID);
+        Document doc = EntitiesFactory.createNewDocument();
+        dao.deleteDocument(anyString(), 0);
+        // than
+        verify(conn).prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
         verify(ps).setString(1, eq(anyString()));
         verify(ps).setLong(2, eq(anyLong()));
-        verify(ps).executeQuery();
-        verify(rs).next();
-        verify(conn).commit();
+        verify(ps).executeUpdate();
         verify(ps).close();
-        verify(rs).close();
+
     }
 
-    @Test(expected = NullConnectionException.class)
-    public void newDocumentDAOTest() throws Exception {
-        DocumentDAO dao = new DocumentDAOImpl(null) {
-        };
-    }
+    @Test(expected = NoSuchObjectInDB.class)
+    public void deleteDocumentNothingToDel() throws Exception {
 
+        when(ps.executeUpdate()).thenReturn(0);
+        DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
+        // when
+        Document doc = EntitiesFactory.createNewDocument();
+        dao.deleteDocument(anyString(), 0);
+        // than
+        verify(conn).prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
+        verify(ps).setString(1, anyString());
+        verify(ps).setLong(2, anyLong());
+        verify(ps).executeUpdate();
+        verify(ps).close();
+
+    }
     @After
     public void destroy() {
-        reset(rs);
+        reset(ps);
     }
-
 }
