@@ -14,7 +14,7 @@
     </context-param>
     <context-param>
         <param-name>ConnType</param-name>
-        <param-value>JDBC</param-value>
+        <param-value>HQL</param-value>
     </context-param>
     <context-param>
         <param-name>hibernateConfigFilePath</param-name>

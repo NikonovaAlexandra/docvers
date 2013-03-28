@@ -25,7 +25,7 @@ public class GetVersionsServlet extends ParentServlet {
     private static final String url = "/AllVersions";
 
     //todo released
-    //todo type
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding(getEncoding());
         request.setCharacterEncoding(getEncoding());
