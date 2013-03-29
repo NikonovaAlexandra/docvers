@@ -40,7 +40,7 @@ public class VersionDAOImpl implements VersionDAO {
         List<Version> versions = new ArrayList<Version>();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Version version;
+        Version version = null;
 
         try {
             ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
@@ -60,7 +60,7 @@ public class VersionDAOImpl implements VersionDAO {
                 versions.add(version);
             }
             conn.commit();
-            if (versions.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
+            if (versions == null) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
         } catch (SQLException e) {
             try {

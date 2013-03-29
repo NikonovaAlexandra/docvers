@@ -42,7 +42,7 @@ public class VersionUploadRequestParser extends RequestParser {
         while (i.hasNext()) {
             FileItem fi = (FileItem) i.next();
             if (fi.isFormField() && fi.getFieldName().equals("versdescription")) {
-                description = fi.getString();
+                description = fi.getString("UTF-8");
             } else {
 
                 fileItem = fi;

@@ -5,6 +5,7 @@ import exception.BusinessException;
 import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
+import service.WikiTextInterpretator;
 import servlets.ParentServlet;
 
 import javax.servlet.ServletException;
@@ -27,11 +28,14 @@ public class GetAllDocumentsServlet extends ParentServlet {
     private final String url = "/AllDocuments";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding(getEncoding());
-        request.setCharacterEncoding(getEncoding());
+
         try {
             List<DocumentBean> docs = getService().getDocumentsByAuthor(
                     getRequestParser().getAuthorBean(request).getLogin());
+            for(DocumentBean doc: docs) {
+                String description = WikiTextInterpretator.convertWikitextStringToString(doc.getDescription());
+                doc.setDescription(description);
+            }
             showMessage(request, response, docs, attrName, url);
         } catch (SystemException e) {
             throw new ServletException(e);

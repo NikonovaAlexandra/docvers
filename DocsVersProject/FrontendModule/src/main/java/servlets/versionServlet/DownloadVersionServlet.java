@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,8 +30,7 @@ public class DownloadVersionServlet extends ParentServlet {
     private File file;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding(getEncoding());
-        request.setCharacterEncoding(getEncoding());
+
 
         try {
             String param = request.getParameter("param");
@@ -70,7 +70,7 @@ public class DownloadVersionServlet extends ParentServlet {
         return versionBean;
     }
 
-    private void setRespose(HttpServletResponse response, String fileName) {
+    private void setRespose(HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
         ServletContext context = getServletConfig().getServletContext();
         String mimetype = context.getMimeType(file.getAbsolutePath());
 
@@ -81,10 +81,13 @@ public class DownloadVersionServlet extends ParentServlet {
         response.setContentType(mimetype);
         response.setContentLength((int) file.length());
         // sets HTTP header
+        //todo russian name
+        byte[] bytes = fileName.getBytes("UTF-8");
+        String name = new String(bytes,"UTF-8");
         if (mimetype.equals("application/pdf")) {
-            response.setHeader("Content-Disposition", "inline; filename=\"" + fileName + "\"");
+            response.setHeader("Content-Disposition", "inline; filename=\"" + name + "\"");
         } else {
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
         }
     }
 

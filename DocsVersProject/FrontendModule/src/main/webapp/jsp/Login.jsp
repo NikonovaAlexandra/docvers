@@ -53,7 +53,7 @@
             <div style="clear:both"></div>
             <div id="loginBox">
                 <%
-                    String urlParams = "http://localhost:8080/LoginServlet?cLogin";
+                    String urlParams = "LoginServlet?cLogin";
                 %>
                 <form id="loginForm" action="<%=urlParams%>" method="POST" name="form">
                     <fieldset id="body">

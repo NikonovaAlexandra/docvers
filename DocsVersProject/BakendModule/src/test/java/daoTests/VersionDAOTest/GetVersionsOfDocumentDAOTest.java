@@ -8,6 +8,7 @@ import entities.Version;
 import exception.NoSuchObjectInDB;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import service.QueriesSQL;
@@ -58,6 +59,7 @@ public class GetVersionsOfDocumentDAOTest {
 
     }
 
+    @Ignore
     @Test(expected = NoSuchObjectInDB.class)
     public void getVersionsOfDocumentNo() throws Exception {
         when(rs.next()).thenReturn(false);

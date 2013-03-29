@@ -24,8 +24,7 @@ public class DeleteVersionServlet extends ParentServlet {
     private static final String messageName = "versmessage";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding(getEncoding());
-        request.setCharacterEncoding(getEncoding());
+
         try {
             long id = Long.parseLong(request.getParameter("version"));
             setDocumentName((Long) request.getSession().getAttribute("documentToView"));

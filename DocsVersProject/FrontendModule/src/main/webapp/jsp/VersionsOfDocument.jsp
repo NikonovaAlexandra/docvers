@@ -34,7 +34,17 @@
 </head>
 <t:TemplatePage>
     <jsp:body>
+        <c:set var="document" value="${param.document}"/>
+        <form action="/AddVersion" method="post">
+            <fmt:message key="version.addNewVersion" var="butName"/>
+            <input type="submit" name="submit" class="button" value="${butName}"/>
+        </form>
+        <form action="GetAllDocuments">
 
+            <fmt:message key="backBut" var="back"/>
+            <input type="submit" class="button" value="${back}"/>
+        </form>
+        <br>
         <c:if test="${not empty versionList}">
             <c:forEach items="${versionList}" var="item">
                 <c:set value="${item.document.name}" var="docName"></c:set>
@@ -82,15 +92,6 @@
                 </c:forEach>
             </table>
         </c:if>
-        <c:set var="document" value="${param.document}"/>
-        <form action="/AddVersion" method="post">
-            <fmt:message key="version.addNewVersion" var="butName"/>
-            <input type="submit" name="submit" class="button" value="${butName}"/>
-        </form>
-        <form action="GetAllDocuments">
 
-            <fmt:message key="backBut" var="back"/>
-            <input type="submit" class="button" value="${back}"/>
-        </form>
     </jsp:body>
 </t:TemplatePage>

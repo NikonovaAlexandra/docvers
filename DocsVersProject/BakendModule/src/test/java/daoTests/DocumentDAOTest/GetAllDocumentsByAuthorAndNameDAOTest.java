@@ -56,7 +56,6 @@ public class GetAllDocumentsByAuthorAndNameDAOTest {
         verify(rs).next();
         verify(conn).commit();
         verify(ps).close();
-        verify(rs).close();
     }
 
     @Test(expected = NullConnectionException.class)

@@ -42,14 +42,14 @@ public class UploadServlet extends ParentServlet {
             throws ServletException, java.io.IOException {
         //todo check if ex while storage => del row from db
         String message;
-        response.setCharacterEncoding(getEncoding());
-        request.setCharacterEncoding(getEncoding());
+
         // Check that we have a file upload request
         isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
             message = "No file uploaded";
             showMessage(request, response, message, messageName, url);
-        } else {
+        } else
+        {
             try {
 
                 VersionBean versionBean = parse(request);

@@ -1,10 +1,12 @@
 package servlets.versionServlet;
 
+import beans.DocumentBean;
 import beans.VersionBean;
 import exception.BusinessException;
 import exception.MyException;
 import exception.NoSuchObjectInDB;
 import exception.SystemException;
+import service.WikiTextInterpretator;
 import servlets.ParentServlet;
 
 import javax.servlet.ServletException;
@@ -27,8 +29,7 @@ public class GetVersionsServlet extends ParentServlet {
     //todo released
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding(getEncoding());
-        request.setCharacterEncoding(getEncoding());
+
         try {
             String par = request.getParameter("document");
             long docName = 0;
@@ -41,6 +42,10 @@ public class GetVersionsServlet extends ParentServlet {
                 request.getSession().setAttribute("documentToView", docName);
             }
             List<VersionBean> vers = getService().getVersionsOfDocument(getRequestParser().getAuthorBean(request).getLogin(), docName);
+            for(VersionBean ver: vers) {
+                String description = WikiTextInterpretator.convertWikitextStringToString(ver.getDescription());
+                ver.setDescription(description);
+            }
             showMessage(request, response, vers, "versionList", url);
         } catch (SystemException e) {
             throw new ServletException(e);

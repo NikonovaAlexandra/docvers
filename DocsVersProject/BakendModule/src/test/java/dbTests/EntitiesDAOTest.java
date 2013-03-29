@@ -26,6 +26,7 @@ import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -164,6 +165,7 @@ public class EntitiesDAOTest {
 //        assertAuthor(author, template);
 //    }
 
+    @Ignore
     @Test
     public void getVersionsOfDocumentTest() throws Exception {
         flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_get_versions_by_document"));

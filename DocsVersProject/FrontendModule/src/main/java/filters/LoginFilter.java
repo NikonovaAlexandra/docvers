@@ -53,6 +53,8 @@ public class LoginFilter implements Filter {
             }
 
             if (authorized) {
+                request.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding("UTF-8");
                 chain.doFilter(request, response);
             } else if (filterConfig != null) {
                 if (loginPage != null && !"".equals(loginPage)) {
