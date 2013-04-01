@@ -93,7 +93,6 @@ public class DownloadVersionServlet extends ParentServlet {
         response.setContentType(mimetype);
         response.setContentLength((int) file.length());
         // sets HTTP header
-        //todo russian name
         byte[] bytes = fileName.getBytes("UTF-8");
         String name = new String(bytes, "UTF-8");
         if (mimetype.equals("application/pdf")) {

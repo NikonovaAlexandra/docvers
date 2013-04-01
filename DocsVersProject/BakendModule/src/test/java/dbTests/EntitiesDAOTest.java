@@ -9,6 +9,7 @@ import db.ScriptRunner;
 import entities.Author;
 import entities.Document;
 import entities.Version;
+import exception.NullFileException;
 import exception.ObjectAlreadyExistsException;
 import exception.ReferentialIntegrityViolatedException;
 import org.dbunit.Assertion;
@@ -28,10 +29,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import service.Config;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,7 +58,11 @@ public class EntitiesDAOTest {
 
     @Before
     public void instantiate() throws Exception {
+        String configPath = System.getenv("docsvers.config.properties");
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(configPath));
 
+        Config.init(properties);
         //Creating databse server instance
         tester = new JdbcDatabaseTester("org.h2.Driver", "jdbc:h2:mem:tes", "user", "DocumentVersioningUser");
 
@@ -65,6 +73,7 @@ public class EntitiesDAOTest {
         IDataSet dataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_before.xml"));
         Connection connection = iConnection.getConnection();
         // Initialize object for ScripRunner
+
         runner = AllScriptSInDirectoryRunner.getInstance(false);
         ScriptRunner sr = new ScriptRunner(connection, null, true, false);
         runner.runScripts(sr);
@@ -178,6 +187,7 @@ public class EntitiesDAOTest {
     @After
     public void cleaning() throws Exception {
         DatabaseOperation.CLOSE_CONNECTION(DatabaseOperation.DELETE_ALL);
+        iConnection.close();
         tester.onTearDown();
     }
 

@@ -35,20 +35,16 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
 
     @Override
     public Document getDocumentByAuthorAndName(String login, long docNameCode) throws MyException {
-        Transaction tr = null;
         Document doc = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
             criteria.createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("codeDocumentName", docNameCode));
             doc = (Document) criteria.uniqueResult();
-            tr.commit();
             if (doc == null)
                 throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return doc;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
 
         }
@@ -56,22 +52,18 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
 
     @Override
     public long getDocumentID(String login, long docName) throws MyException {
-        Transaction tr = null;
 
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
             criteria.setProjection(Projections.id());
             criteria.createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("codeDocumentName", docName));
             Long id = new Long(0);
             id = (Long) criteria.uniqueResult();
-            tr.commit();
             if (id.equals(0))
                 throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return id;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
@@ -116,19 +108,15 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
 
     @Override
     public List<Document> getDocumentsByAuthorID(long id) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
             criteria.createAlias("authorId", "author").add(Restrictions.eq("author.id", id));
             criteria.addOrder(Order.desc("id"));
             List<Document> docs = criteria.list();
-            tr.commit();
             if (docs.isEmpty())
                 throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return docs;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
 
         }

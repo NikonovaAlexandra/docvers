@@ -54,7 +54,6 @@ public class GetAllDocumentsByAuthorAndNameDAOTest {
         verify(ps).setLong(2, eq(anyLong()));
         verify(ps).executeQuery();
         verify(rs).next();
-        verify(conn).commit();
         verify(ps).close();
     }
 

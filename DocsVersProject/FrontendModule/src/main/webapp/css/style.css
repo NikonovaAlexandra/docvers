@@ -34,7 +34,15 @@ A:hover {
     text-decoration: none;
 }
 
-.userDocs {
+.userDocs1 A:hover {
+    font-size: 15px;
+    color: #7C4040;
+    text-shadow: 0 2px 3px #4c2222;
+    text-decoration: none;
+}
+
+
+.userDocs, .userDocs1 {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 14px;
     margin: 45px;
@@ -44,7 +52,7 @@ A:hover {
     background: url('../images/table_bg.png');
 }
 
-.userDocs th {
+.userDocs th, .userDocs1 th{
 
     font-size: 17px;
     font-weight: normal;
@@ -57,7 +65,7 @@ A:hover {
     height: 50px;
 }
 
-.userDocs td {
+.userDocs td, .userDocs1 td {
     padding: 8px;
     border-bottom: 1px solid #C0C0C0;
     color: #9c5959;
@@ -143,21 +151,4 @@ textarea {
     border: 3px solid #ccc;
     resize: none;
     width: 400px;
-}
-
-.description {
-    width:190px;
-    height:70px;
-    overflow: hidden;
-    white-space: nowrap;
-    word-wrap: normal; /* для IE */
-    text-overflow: clip;"
-}
-.descriptionV {
-    width:134px;
-    height:70px;
-    overflow: hidden;
-    white-space: nowrap;
-    word-wrap: normal; /* для IE */
-    text-overflow: clip;"
 }

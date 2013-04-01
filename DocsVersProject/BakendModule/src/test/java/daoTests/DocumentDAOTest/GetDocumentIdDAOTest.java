@@ -46,7 +46,7 @@ public class GetDocumentIdDAOTest {
             when(rs.getLong("id")).thenReturn((long)1);
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
             // when
-            dao.getDocumentID(anyString(), 0);
+            dao.getDocumentID("", 0);
             // then
             verify(conn).prepareStatement(QueriesSQL.SELECT_ID_FROM_DOCUMENT);
             verify(ps).setString(1, eq(anyString()));
@@ -62,7 +62,7 @@ public class GetDocumentIdDAOTest {
         when(rs.next()).thenReturn(false);
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
-        dao.getDocumentID(anyString(), 0);
+        dao.getDocumentID("", 0);
         // then
         verify(conn).prepareStatement(QueriesSQL.SELECT_ID_FROM_DOCUMENT);
         verify(ps).setString(1, anyString());

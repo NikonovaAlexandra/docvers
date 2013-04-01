@@ -25,7 +25,7 @@
                 <input type="submit" class="button" value="${back}"/>
             </form>
         </div>
-
+        <fmt:message key="version.addVersionMessage" var="addVersionMessage"/>
         <script>
             function addVersionConfirm() {
                 var retVal = confirm("${addVersionMessage}");
@@ -39,7 +39,7 @@
         <div style="padding-top: 100px; padding-left: 45px;">
             <h3><fmt:message key="version.upload"/>:</h3>
             <fmt:message key="version.upload.select"/>: <br/>
-            <fmt:message key="version.addVersionMessage" var="addVersionMessage"/>
+
             <form action="Upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8"
                   onsubmit="return addVersionConfirm()">
 

@@ -27,12 +27,7 @@ public class VersionDAOImpl implements VersionDAO {
     public VersionDAOImpl(Connection conn) throws MyException {
         if (conn == null)
             throw new NullConnectionException();
-        try {
-            this.conn = conn;
-            this.conn.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw ExceptionsThrower.throwException(e);
-        }
+        this.conn = conn;
     }
 
     @Override
@@ -59,15 +54,9 @@ public class VersionDAOImpl implements VersionDAO {
                 version.setVersionType(rs.getString("version_type"));
                 versions.add(version);
             }
-            conn.commit();
             if (versions == null) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                throw new DAOException(e);
-            }
             throw ExceptionsThrower.throwException(e);
         } finally {
 
@@ -90,6 +79,7 @@ public class VersionDAOImpl implements VersionDAO {
         try {
            // long name = getLastVersionNameInfo(version.getDocumentID()) + 1;
             //conn.commit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.UPDATE_VERSION_SET_IS_RELEASED);
             ps.setBoolean(1, true);
             ps.setLong(2, version.getDocumentID());
@@ -129,7 +119,10 @@ public class VersionDAOImpl implements VersionDAO {
     @Override
     public void deleteVersion(long versName, long docCode, String login) throws MyException {
         PreparedStatement ps = null;
+        boolean autoCommit = true;
         try {
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
             ps.setLong(1, versName);
             ps.setLong(2, docCode);
@@ -137,6 +130,7 @@ public class VersionDAOImpl implements VersionDAO {
             int i = ps.executeUpdate();
             if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
             conn.commit();
+            conn.setAutoCommit(autoCommit);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -146,7 +140,9 @@ public class VersionDAOImpl implements VersionDAO {
             throw ExceptionsThrower.throwException(e);
 
         } finally {
+
             try {
+                conn.setAutoCommit(autoCommit);
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);
@@ -169,14 +165,8 @@ public class VersionDAOImpl implements VersionDAO {
                 type = rs.getString("version_type");
             }
 
-            conn.commit();
             return type;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                throw new DAOException(e);
-            }
             throw ExceptionsThrower.throwException(e);
 
         } finally {
@@ -211,15 +201,9 @@ public class VersionDAOImpl implements VersionDAO {
                 version.setVersionName(rs.getLong("version_name"));
                 version.setVersionType(rs.getString("version_type"));
             }
-            conn.commit();
             if (version == null) throw new NoSuchObjectInDB("Version of this document with same name = " + versName);
             return version;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                throw new DAOException(e);
-            }
             throw ExceptionsThrower.throwException(e);
         } finally {
 
@@ -236,7 +220,10 @@ public class VersionDAOImpl implements VersionDAO {
     public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
+        boolean autoCommit = true;
         try {
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.UPDATE_VERSION_DESCRIPTION);
             ps.setString(1, description);
             ps.setLong(3, codeDocName);
@@ -246,6 +233,7 @@ public class VersionDAOImpl implements VersionDAO {
             conn.commit();
         } catch (SQLException e) {
             try {
+                conn.setAutoCommit(autoCommit);
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);
@@ -273,15 +261,8 @@ public class VersionDAOImpl implements VersionDAO {
             if (rs.next()) {
                 name = rs.getLong("version_max_name");
             }
-
-            conn.commit();
             return name;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                throw new DAOException(e);
-            }
             throw ExceptionsThrower.throwException(e);
 
         } finally {

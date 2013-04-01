@@ -32,16 +32,12 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
 
     @Override
     public Author getAuthorByID(long id) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_ID);
             query.setLong("id", id);
             Author author = (Author) query.uniqueResult();
-            tr.commit();
             return author;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
 
         }
@@ -49,16 +45,12 @@ public class AuthorDAOImplHHQL implements AuthorDAO {
 
     @Override
     public Author getAuthorByLogin(String login) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_LOGIN);
             query.setString("login", login);
             Author author = (Author) query.uniqueResult();
-            tr.commit();
             return author;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
 
         }

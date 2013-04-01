@@ -3,19 +3,22 @@ package servlets;
 import dao.DAOType;
 import db.AllScriptSInDirectoryRunner;
 import exception.BusinessException;
+import exception.NullFileException;
 import exception.SystemException;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.Config;
 import service.ConnectionPoolFactory;
 import service.SessionFactoryUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.ResourceBundle;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,24 +34,41 @@ public class ServletListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         ServletContext sc = event.getServletContext();
         logger.trace("Initializing context...");
-        DAOType type = DAOType.valueOf(event.getServletContext().getInitParameter("ConnType"));
-        sc.setAttribute("type", type);
-        String filePath = event.getServletContext().getInitParameter("file-upload");
-        sc.setAttribute("filePath", filePath);
-        String encoding = event.getServletContext().getInitParameter("encoding");
-        sc.setAttribute("encoding", encoding);
-        String path = event.getServletContext().getInitParameter("hibernateConfigFilePath");
-        if (!type.equals(DAOType.JDBC)) {
-            SessionFactoryUtil.init(path);
-        }
         try {
+            String configPath = System.getenv("docsvers.config.properties");
+            if (configPath == null)
+                throw new NullFileException("File not found.");
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(configPath));
 
-           //AllScriptSInDirectoryRunner.getInstance(true).run();
-            ConnectionPoolFactory.init();
+            Config.init(properties);
 
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
+            DAOType type = Config.getConnType();
+            sc.setAttribute("type", type);
+            String filePath = Config.getUploadPath();
+            sc.setAttribute("filePath", filePath);
+            String encoding = event.getServletContext().getInitParameter("encoding");
+            sc.setAttribute("encoding", encoding);
+            String path = Config.getHibernateConfPath();
+            if (!type.equals(DAOType.JDBC)) {
+                SessionFactoryUtil.init(path);
+            }
+            try {
+
+                if (Config.isInMemory()) {
+                    AllScriptSInDirectoryRunner.getInstance(false).run();
+                } else {
+                    AllScriptSInDirectoryRunner.getInstance(true).run();
+                }
+                ConnectionPoolFactory.init();
+
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage());
+            }
+        } catch (Exception e1) {
+            logger.error(e1.getLocalizedMessage());
         }
+
 
 }
 

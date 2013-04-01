@@ -69,7 +69,6 @@ public class GetAuthorByIdTest {
         verify(ps).setLong(1, id);
         verify(ps).executeQuery();
         verify(rs).next();
-        verify(conn).commit();
         verify(ps).close();
         verify(rs).close();
     }
@@ -85,7 +84,6 @@ public class GetAuthorByIdTest {
         verify(ps).setLong(1, 0);
         verify(ps).executeQuery();
         verify(rs).next();
-        verify(conn).commit();
         verify(ps).close();
         verify(rs).close();
     }
@@ -97,11 +95,9 @@ public class GetAuthorByIdTest {
         // when
         dao.getAuthorByID(0);
         // then
-        verify(session).beginTransaction();
         verify(session).createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_ID);
         verify(q).setLong(eq("id"), anyLong());
         verify(q).uniqueResult();
-        verify(tr).commit();
     }
 
     @Test
@@ -110,11 +106,9 @@ public class GetAuthorByIdTest {
         // when
         dao.getAuthorByID(0);
         // then
-        verify(session).beginTransaction();
         verify(session).createCriteria(Author.class);
         verify(criteria).add(Restrictions.eq("id", anyLong()));
         verify(criteria).uniqueResult();
-        verify(tr).commit();
     }
 
     @After

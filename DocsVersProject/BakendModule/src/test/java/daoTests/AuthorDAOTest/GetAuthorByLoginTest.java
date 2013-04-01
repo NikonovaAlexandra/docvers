@@ -68,7 +68,6 @@ public class GetAuthorByLoginTest {
         verify(ps).setString(1, login);
         verify(ps).executeQuery();
         verify(rs).next();
-        verify(conn).commit();
         verify(ps).close();
         verify(rs).close();
 
@@ -99,11 +98,9 @@ public class GetAuthorByLoginTest {
         // when
         dao.getAuthorByLogin("");
         // then
-        verify(session).beginTransaction();
         verify(session).createQuery(QueriesHQL.SELECT_FROM_AUTHOR_WHERE_LOGIN);
         verify(q).setString(eq("login"), anyString());
         verify(q).uniqueResult();
-        verify(tr).commit();
     }
 
     @Test
@@ -112,11 +109,9 @@ public class GetAuthorByLoginTest {
         // when
         dao.getAuthorByLogin("");
         // then
-        verify(session).beginTransaction();
         verify(session).createCriteria(Author.class);
         verify(criteria).add(Restrictions.eq("login", anyString()));
         verify(criteria).uniqueResult();
-        verify(tr).commit();
     }
 
 

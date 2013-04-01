@@ -23,7 +23,7 @@
             <input type="submit" class="button" value="${back}"/>
         </form>
         <c:if test="${not empty documentItem}">
-            <table class="userDocs">
+            <table class="userDocs1">
                 <thead>
                 <tr>
                     <th scope="col" style="width: 300px;"><fmt:message key="alldocuments.name"/></th>
@@ -46,7 +46,7 @@
                     </tr>
 
             </table>
-            <table class="userDocs">
+            <table class="userDocs1">
                 <thead>
                 <tr>
                     <th scope="col"><fmt:message key="alldocuments.description"/></th>

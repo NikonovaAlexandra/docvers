@@ -43,7 +43,7 @@ public class DBOperationsH implements DBOperations {
             documentDAO.addDocument(Converter.convertDocumentBeanToDocumentH(documentBean));
         } finally {
             if (session != null) {
-               // session.flush();
+                // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -131,7 +131,7 @@ public class DBOperationsH implements DBOperations {
             return Converter.convertAuthorToAuthorBean(author);
         } finally {
             if (session != null) {
-               // session.flush();
+                // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -154,7 +154,7 @@ public class DBOperationsH implements DBOperations {
             return versionBeans;
         } finally {
             if (session != null) {
-               // session.flush();
+                // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -173,9 +173,9 @@ public class DBOperationsH implements DBOperations {
             return versionBean;
         } finally {
             if (session != null) {
-              //  session.flush();
-               session.clear();
-               //session.close();
+                //  session.flush();
+                session.clear();
+                //session.close();
             }
         }
     }
@@ -188,9 +188,9 @@ public class DBOperationsH implements DBOperations {
             docDAO.deleteDocument(login, docNameCode);
         } finally {
             if (session != null) {
-              //  session.flush();
+                //  session.flush();
                 session.clear();
-               // session.close();
+                // session.close();
             }
         }
     }
@@ -203,9 +203,9 @@ public class DBOperationsH implements DBOperations {
             verDAO.deleteVersion(versName, docCode, login);
         } finally {
             if (session != null) {
-              //  session.flush();
+                //  session.flush();
                 session.clear();
-               //session.close();
+                //session.close();
             }
         }
     }
@@ -219,7 +219,7 @@ public class DBOperationsH implements DBOperations {
             return id;
         } finally {
             if (session != null) {
-               // session.flush();
+                // session.flush();
                 session.clear();
                 //session.close();
             }
@@ -235,9 +235,9 @@ public class DBOperationsH implements DBOperations {
             return t;
         } finally {
             if (session != null) {
-               // session.flush();
+                // session.flush();
                 session.clear();
-               //session.close();
+                //session.close();
             }
         }
     }

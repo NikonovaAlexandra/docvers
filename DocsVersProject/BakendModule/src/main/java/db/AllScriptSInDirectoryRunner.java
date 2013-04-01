@@ -6,6 +6,7 @@ import exception.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import service.Config;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -17,6 +18,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -27,7 +29,6 @@ import java.util.ResourceBundle;
  * To change this template use File | Settings | File Templates.
  */
 public class AllScriptSInDirectoryRunner {
-    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("configure");
     private static AllScriptSInDirectoryRunner instance;
     private String directoryPath;
     private List<String> launchedScripts = null;
@@ -38,9 +39,8 @@ public class AllScriptSInDirectoryRunner {
 
     private AllScriptSInDirectoryRunner(boolean whetherToScanForLaunchedScripts) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, TransformerException {
         logger = LoggerFactory.getLogger(this.getClass());
-        //todo smth with this
-        this.directoryPath = resourceBundle.getString("scripts");
-        this.storage = new File(resourceBundle.getString("launchedScriptsNamesStorage"));
+        this.directoryPath = Config.getScriptsPath()+File.separator;
+        this.storage = new File(Config.getLaunchedXMLPAth());
         if (!storage.exists()) storage.createNewFile();
         this.whetherToScanForLaunchedScripts = whetherToScanForLaunchedScripts;
         this.launched = (whetherToScanForLaunchedScripts ? LaunchedScriptNamesStorage.getInstance(storage) : null);
@@ -120,13 +120,13 @@ public class AllScriptSInDirectoryRunner {
         }
     }
 
-    private Connection getConnection() throws SystemException, BusinessException {
-        ResourceBundle resource =
-                ResourceBundle.getBundle("database");
-        String url = resource.getString("url");
-        String driver = resource.getString("driver");
-        String user = resource.getString("user");
-        String pass = resource.getString("password");
+    private Connection getConnection() throws SystemException, BusinessException, IOException {
+        Properties resource = new Properties();
+        resource.load(new FileInputStream(Config.getDbPropertiesPath()));
+        String url = resource.getProperty("url");
+        String driver = resource.getProperty("driver");
+        String user = resource.getProperty("user");
+        String pass = resource.getProperty("password");
         try {
             Class.forName(driver).newInstance();
             return DriverManager.getConnection(url, user, pass);

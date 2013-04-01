@@ -2,25 +2,8 @@
     <display-name>Archetype Created Web Application</display-name>
 
     <context-param>
-        <description>Location to store uploaded file</description>
-        <param-name>file-upload</param-name>
-        <param-value>
-            C:\Program Files\apache-tomcat-7.0.35-windows-x86\apache-tomcat-7.0.35\webapps\data\
-        </param-value>
-    </context-param>
-    <context-param>
         <param-name>login_page</param-name>
         <param-value>/Login</param-value>
-    </context-param>
-    <context-param>
-        <param-name>ConnType</param-name>
-        <param-value>CRITERIA</param-value>
-    </context-param>
-    <context-param>
-        <param-name>hibernateConfigFilePath</param-name>
-        <!--<param-value>C:\Documents and Settings\alni\Desktop\docvers\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml </param-value>-->
-        <param-value>C:\Documents and Settings\Admin\Рабочий стол\docvers.git\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml
-        </param-value>
     </context-param>
 
     <context-param>
@@ -58,16 +41,6 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
-    <!--=========================================================================-->
-    <servlet>
-        <servlet-name>main</servlet-name>
-        <jsp-file>/jsp/main.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>main</servlet-name>
-        <url-pattern>/Menu</url-pattern>
-    </servlet-mapping>
-
     <!--=========================================================================-->
     <servlet>
         <servlet-name>AddDocumentServlet</servlet-name>

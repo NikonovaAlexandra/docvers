@@ -43,18 +43,18 @@
             <h1 align="center">${docName}</h1>
 
             <form action="EditVersion" method="post">
-                <table class="userDocs">
+                <table class="userDocs1">
                     <thead>
                     <tr>
                         <th scope="col">№</th>
 
-                        <th scope="col" style="width: 15%"><fmt:message key="versions.date"/></th>
+                        <th scope="col"><fmt:message key="versions.date"/></th>
                         <th scope="col"><fmt:message key="versions.author"/></th>
                         <th scope="col"><fmt:message key="versions.type"/></th>
-                        <th scope="col" style="width: 10%">&nbsp</th>
-                        <th scope="col" style="width: 9%">&nbsp</th>
-                        <th scope="col" style="width: 9%">&nbsp</th>
-                        <th scope="col" style="width: 9%">&nbsp</th>
+                        <th scope="col" style="width: 111px;">&nbsp</th>
+                        <th scope="col" style="width: 103px;">&nbsp</th>
+                        <th scope="col" >&nbsp</th>
+                        <th scope="col" style="width: 100px;">&nbsp</th>
                     </tr>
                     </thead>
                     <tr>
@@ -71,7 +71,7 @@
                                href="<c:url value="DeleteVersion">
                     <c:param name="version" value="${version.versionName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
-                        <td><a href="<c:url value="Action">
+                        <td style="width: 109px; height: 90px;"><a href="<c:url value="Action">
                     <c:param name="version" value="${version.versionName}"/>
                     <c:param name="author" value="${version.document.author.login}"/>
                     <c:param name="codeDocument" value="${version.document.codeDocumentName}"/>
@@ -83,7 +83,7 @@
                 </c:url>"><fmt:message key="version.view"/></a></td>
                     </tr>
                 </table>
-                <table class="userDocs">
+                <table class="userDocs1">
                     <thead>
                     <tr>
                         <th scope="col"><fmt:message key="versions.description"/></th>

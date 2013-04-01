@@ -69,7 +69,6 @@ public class AuthorDAOImpl implements AuthorDAO {
             ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_AUTHOR_WHERE_LOGIN);
             ps.setString(1, login);
             rs = ps.executeQuery();
-            conn.commit();
             Author author = null;
             if (rs.next()) {
                 author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));

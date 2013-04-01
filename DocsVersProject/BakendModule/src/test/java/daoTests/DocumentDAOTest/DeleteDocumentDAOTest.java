@@ -47,7 +47,7 @@ public class DeleteDocumentDAOTest {
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();
-        dao.deleteDocument(anyString(), 0);
+        dao.deleteDocument("", 0);
         // than
         verify(conn).prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
         verify(ps).setString(1, eq(anyString()));
@@ -64,7 +64,7 @@ public class DeleteDocumentDAOTest {
         DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
         // when
         Document doc = EntitiesFactory.createNewDocument();
-        dao.deleteDocument(anyString(), 0);
+        dao.deleteDocument("", 0);
         // than
         verify(conn).prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
         verify(ps).setString(1, anyString());

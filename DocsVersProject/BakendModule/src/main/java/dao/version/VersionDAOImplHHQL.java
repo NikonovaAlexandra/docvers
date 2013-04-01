@@ -30,17 +30,13 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
     @Override
     public List<Version> getVersionsOfDocument(long id) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID);
             query.setLong("id", id);
             List<Version> versions = query.list();
-            tr.commit();
             if (versions.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
             return versions;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
@@ -94,19 +90,15 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
     @Override
     public String getVersionType(long versionName, long documentName, String login) throws MyException{
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_VERSION_TYPE_FROM_VERSION);
             query.setString("login", login);
             query.setLong("codeDocumentName", documentName);
             query.setLong("versionName", versionName);
             String type = (String) query.uniqueResult();
-            tr.commit();
             if (type.isEmpty()) throw new NoSuchObjectInDB("Versions of this document");
             return type;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
@@ -114,18 +106,14 @@ public class VersionDAOImplHHQL implements VersionDAO {
     @Override
     public Version getVersion(long id, long versName) throws MyException{
         Version version = null;
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME);
             query.setLong("id", id);
             query.setLong("versionName", versName);
             version = (Version) query.uniqueResult();
-            tr.commit();
             if (version == null) throw new NoSuchObjectInDB("Version of this document with same name = " + versName);
             return version;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
@@ -150,17 +138,13 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
     @Override
     public long getLastVersionNameInfo(long docID) throws MyException{
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.SELECT_VERSION_NAME_FROM_VERSION);
             query.setLong("id", docID);
             Long l = (Long) query.uniqueResult();
             long versionName = (l == null ? 0 : l);
-            tr.commit();
             return versionName;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }

@@ -56,7 +56,6 @@
 
                     <th scope="col" style="width: 96px;"><fmt:message key="versions.date"/></th>
                     <th scope="col" style="width: 85px;"><fmt:message key="versions.author"/></th>
-                    <th scope="col" style="width: 140px;" ><fmt:message key="versions.description"/></th>
                     <th scope="col" style="width: 67px;"><fmt:message key="versions.type"/></th>
                     <th scope="col" style="width: 95px;">&nbsp</th>
                     <th scope="col" style="width: 87px;">&nbsp</th>
@@ -70,7 +69,6 @@
                         <td>${item.versionName}</td>
                         <td><fmt:formatDate value="${item.date}" type="both" timeStyle="short"/></td>
                         <td>${item.author.login}</td>
-                        <td><div class="descriptionV"> ${item.description}</div></td>
                         <td>${item.versionType}</td>
                         <td><a href="<c:url value="Action">
                     <c:param name="version" value="${item.versionName}"/>
@@ -81,7 +79,7 @@
                                href="<c:url value="DeleteVersion">
                     <c:param name="version" value="${item.versionName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
-                        <td><a href="<c:url value="Action">
+                        <td style="width: 109px; height: 90px;"><a href="<c:url value="Action">
                     <c:param name="version" value="${item.versionName}"/>
                     <c:param name="author" value="${item.document.author.login}"/>
                     <c:param name="codeDocument" value="${item.document.codeDocumentName}"/>

@@ -4,7 +4,11 @@ import exception.BusinessException;
 import exception.DAOException;
 import exception.SystemException;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -19,16 +23,16 @@ public class ConnectionPoolFactory {
     private ConnectionPool connectionPool;
     private static int initialConnections;
     private static int maxConnections;
-    private ConnectionPoolFactory() throws SQLException {
-        ResourceBundle resource =
-                ResourceBundle.getBundle("database");
-        String url = resource.getString("url");
-        String driver = resource.getString("driver");
-        String user = resource.getString("user");
-        String pass = resource.getString("password");
-        initialConnections = Integer.parseInt(resource.getString("initialConnections"));
+    private ConnectionPoolFactory() throws SQLException, IOException {
+        Properties resource = new Properties();
+        resource.load(new FileInputStream(Config.getDbPropertiesPath()));
+        String url = resource.getProperty("url");
+        String driver = resource.getProperty("driver");
+        String user = resource.getProperty("user");
+        String pass = resource.getProperty("password");
+        initialConnections = Integer.parseInt(resource.getProperty("initialConnections"));
         if (initialConnections == 0) initialConnections = 1;
-        maxConnections = Integer.parseInt(resource.getString("maxConnections"));
+        maxConnections = Integer.parseInt(resource.getProperty("maxConnections"));
         if (maxConnections == 0 || maxConnections < initialConnections) maxConnections = initialConnections + 1;
         connectionPool =
                 new ConnectionPool(driver, url, user, pass,
@@ -41,7 +45,7 @@ public class ConnectionPoolFactory {
         return instance;
     }
 
-    public static void init() throws SQLException {
+    public static void init() throws SQLException, IOException {
         if (instance == null) {
             instance = new ConnectionPoolFactory();
         }

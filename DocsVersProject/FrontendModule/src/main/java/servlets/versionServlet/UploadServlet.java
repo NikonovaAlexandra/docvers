@@ -41,7 +41,6 @@ public class UploadServlet extends ParentServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {
-        //todo check if ex while storage => del row from db
         String message;
 
         // Check that we have a file upload request

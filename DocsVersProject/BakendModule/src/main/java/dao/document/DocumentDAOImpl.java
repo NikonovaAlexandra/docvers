@@ -44,7 +44,6 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps.setLong(1, docNameCode);
             ps.setString(2, login);
             rs = ps.executeQuery();
-            conn.commit();
             doc = createDocumentFromResultSet(rs);
             if (doc == null)
                 throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
@@ -64,7 +63,10 @@ public class DocumentDAOImpl implements DocumentDAO {
     public long getDocumentID(String login, long docName) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
+        boolean autoCommit = true;
         try {
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.SELECT_ID_FROM_DOCUMENT);
             ps.setString(1, login);
             ps.setLong(2, docName);
@@ -73,11 +75,11 @@ public class DocumentDAOImpl implements DocumentDAO {
             if (rs.next()) {
                 id = rs.getLong("id");
             }
-            conn.commit();
             if (id == 0) throw new NoSuchObjectInDB("There are no documents in database that matches your request.");
             return id;
         } catch (SQLException e) {
             try {
+                conn.setAutoCommit(autoCommit);
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);
@@ -96,15 +98,18 @@ public class DocumentDAOImpl implements DocumentDAO {
     public void updateDocumentDescription(String login, long codeDocName, String description) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
+        boolean autoCommit = true;
         try {
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.UPDATE_DOCUMENT_DESCRIPTION);
             ps.setString(1, description);
             ps.setLong(2, codeDocName);
             ps.setString(3, login);
             ps.executeUpdate();
-            conn.commit();
         } catch (SQLException e) {
             try {
+                conn.setAutoCommit(autoCommit);
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);
@@ -129,16 +134,19 @@ public class DocumentDAOImpl implements DocumentDAO {
         if (document.getDocumentName().length() > 20) {
             throw new exception.IllegalArgumentException("Too long name");
         }
+        boolean autoCommit = true;
         try {
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.INSERT_INTO_DOCUMENT_AUTHOR_NAME_DESCRIPTION_VALUES);
             ps.setLong(1, document.getAuthorID());
             ps.setString(2, document.getDocumentName());
             ps.setString(3, document.getDescription());
             ps.setLong(4, document.getCodeDocumentName());
             ps.executeUpdate();
-            conn.commit();
         } catch (SQLException e) {
             try {
+                conn.setAutoCommit(autoCommit);
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);
@@ -164,7 +172,6 @@ public class DocumentDAOImpl implements DocumentDAO {
             ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_DOCUMENT_WHERE_AUTHOR_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
-            conn.commit();
             return createDocumentsListFromResultSet(rs);
         } catch (SQLException e) {
             throw ExceptionsThrower.throwException(e);
@@ -181,15 +188,18 @@ public class DocumentDAOImpl implements DocumentDAO {
     @Override
     public void deleteDocument(String login, long docNameCode) throws MyException {
         PreparedStatement ps = null;
+        boolean autoCommit = true;
         try {
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(QueriesSQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
             ps.setString(1, login);
             ps.setLong(2, docNameCode);
             int i = ps.executeUpdate();
             if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
-            conn.commit();
         } catch (SQLException e) {
             try {
+                conn.setAutoCommit(autoCommit);
                 conn.rollback();
             } catch (SQLException e1) {
                 throw new DAOException(e);

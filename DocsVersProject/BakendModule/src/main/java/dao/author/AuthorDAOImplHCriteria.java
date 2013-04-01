@@ -32,32 +32,24 @@ public class AuthorDAOImplHCriteria implements AuthorDAO {
 
     @Override
     public Author getAuthorByID(long id) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Author.class);
             criteria.add(Restrictions.idEq(id));
             Author author = (Author) criteria.uniqueResult();
-            tr.commit();
             return author;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
     public Author getAuthorByLogin(String login) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Author.class);
             criteria.add(Restrictions.eq("login", login));
             Author author = (Author) criteria.uniqueResult();
-            tr.commit();
             return author;
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
