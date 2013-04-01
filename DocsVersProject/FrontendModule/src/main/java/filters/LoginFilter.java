@@ -5,7 +5,6 @@ import exception.BusinessException;
 import exception.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import service.SessionFactoryUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

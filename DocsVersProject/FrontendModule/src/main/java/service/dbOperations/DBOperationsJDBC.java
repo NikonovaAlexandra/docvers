@@ -12,12 +12,11 @@ import dao.version.VersionDAO;
 import entities.Author;
 import entities.Document;
 import entities.Version;
-import exception.BusinessException;
 import exception.DAOException;
 import exception.MyException;
 import exception.SystemException;
-import service.ConnectionPool;
-import service.ConnectionPoolFactory;
+import db.ConnectionPool;
+import db.ConnectionPoolFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;

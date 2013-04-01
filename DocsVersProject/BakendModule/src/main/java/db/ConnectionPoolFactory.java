@@ -1,15 +1,13 @@
-package service;
+package db;
 
 import exception.BusinessException;
-import exception.DAOException;
 import exception.SystemException;
+import service.Config;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.

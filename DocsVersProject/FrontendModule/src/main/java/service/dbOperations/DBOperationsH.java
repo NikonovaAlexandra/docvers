@@ -17,7 +17,7 @@ import exception.NoSuchObjectInDB;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
-import service.SessionFactoryUtil;
+import db.SessionFactoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;

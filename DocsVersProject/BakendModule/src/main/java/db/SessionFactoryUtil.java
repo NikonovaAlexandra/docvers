@@ -1,4 +1,4 @@
-package service;
+package db;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
