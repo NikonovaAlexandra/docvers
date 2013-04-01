@@ -3,9 +3,7 @@ package service.dbOperations;
 import beans.AuthorBean;
 import beans.DocumentBean;
 import beans.VersionBean;
-import exception.BusinessException;
 import exception.MyException;
-import exception.SystemException;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public interface DBOperations {
 
     public List<DocumentBean> getDocumentsByAuthor(String login) throws MyException;
 
-    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws MyException;
+    public DocumentBean getDocumentByAuthorAndName(String login, long docNameCode) throws MyException;
 
     public AuthorBean getAuthorByLogin(String login) throws MyException;
 
@@ -40,4 +38,8 @@ public interface DBOperations {
     public long getDocumentIDByCodeNameAndLogin(String login, long docName) throws MyException;
 
     public String getVersionType(long versionName, long documentName, String login) throws MyException;
+
+    public void editVersionDescription(VersionBean versionBean) throws MyException;
+
+    public void editDocumentDescription(DocumentBean documentBean) throws MyException;
 }

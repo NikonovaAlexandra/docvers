@@ -233,6 +233,35 @@ public class VersionDAOImpl implements VersionDAO {
     }
 
     @Override
+    public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(QueriesSQL.UPDATE_VERSION_DESCRIPTION);
+            ps.setString(1, description);
+            ps.setLong(3, codeDocName);
+            ps.setLong(2, versionName);
+            ps.setString(4, login);
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            throw ExceptionsThrower.throwException(e);
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    @Override
     public long getLastVersionNameInfo(long docID) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;

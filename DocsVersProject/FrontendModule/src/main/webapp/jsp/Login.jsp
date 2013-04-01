@@ -25,7 +25,6 @@
     <script src="js/login.js"></script>
 </head>
 <body>
-<div id="bar">
     <div id="container">
         <form>
             <c:url value="Login" var="ruURL">
@@ -43,11 +42,9 @@
 
             <a href="${enURL}" onclick="submit()"> <img src="images\uk-icon.png"/> </a>
         </form>
-        <c:if test="${not empty logmessage}">
-            <h1><fmt:message key="${logmessage}"/></h1>
-        </c:if>
         <!-- Login Starts Here -->
         <div id="loginContainer">
+
             <a href="#" id="loginButton"><span><fmt:message key="login.login"/></span><em></em></a>
 
             <div style="clear:both"></div>
@@ -73,8 +70,10 @@
                 </form>
             </div>
         </div>
+        <c:if test="${not empty logmessage}">
+            <h1><fmt:message key="${logmessage}"/></h1>
+        </c:if>
         <!-- Login Ends Here -->
     </div>
-</div>
 </body>
 </html>

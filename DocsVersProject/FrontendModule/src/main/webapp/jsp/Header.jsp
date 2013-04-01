@@ -38,15 +38,14 @@
     <c:if test="${not empty versmessage}">
         <h1><fmt:message key="${versmessage}"/></h1>
     </c:if>
+    <c:if test="${not empty editmessage}">
+        <h1><fmt:message key="${editmessage}"/></h1>
+    </c:if>
 </div>
 
 <div id="container">
     <ul id="nav">
-        <li class="GetAllDocs"><a href="GetAllDocuments"><fmt:message key="index.getAll"/></a></li>
-        <li class="AddDoc"><a href="AddDocument"><fmt:message key="index.add"/></a></li>
-        <li class="Logout"><a href="Logout"><fmt:message key="logout"/></a></li>
-
-      <form onsubmit="refreshpage()">
+        <form>
             <c:set var="document" value="${param.document}"/>
             <c:url value="" var="ruURL">
                 <c:if test="${not empty document}">
@@ -56,7 +55,7 @@
                 <c:param name="language" value="ru"/>
             </c:url>
 
-            <a href="${ruURL}" onclick="refreshpage()"> <img src="images/russia-icon.png"/> </a>
+            <a href="${ruURL}" onclick="submit()"> <img src="images/russia-icon.png"/> </a>
             <c:url value="${url}" var="enURL">
                 <c:if test="${not empty document}">
                     <c:param name="document" value="${document}"/>
@@ -65,8 +64,13 @@
 
             </c:url>
 
-            <a href="${enURL}" onclick="refreshpage()"> <img src="images/uk-icon.png"/> </a>
-      </form>
+            <a href="${enURL}" onclick="submit()"> <img src="images/uk-icon.png"/> </a>
+        </form>
+        <li class="GetAllDocs"><a href="GetAllDocuments"><fmt:message key="index.getAll"/></a></li>
+        <li class="AddDoc"><a href="AddDocument"><fmt:message key="index.add"/></a></li>
+        <li class="Logout"><a href="Logout"><fmt:message key="logout"/></a></li>
+
+
     </ul>
     <hr>
 </div>

@@ -34,17 +34,17 @@ A:hover {
     text-decoration: none;
 }
 
-#userDocs {
+.userDocs {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 14px;
     margin: 45px;
-    width: 700px;
+    width: 900px;
     text-align: center;
     border-collapse: collapse;
     background: url('../images/table_bg.png');
 }
 
-#userDocs th {
+.userDocs th {
 
     font-size: 17px;
     font-weight: normal;
@@ -57,23 +57,27 @@ A:hover {
     height: 50px;
 }
 
-#userDocs td {
+.userDocs td {
     padding: 8px;
     border-bottom: 1px solid #C0C0C0;
     color: #9c5959;
     border-top: 1px solid transparent;
     word-wrap:break-word;
+    height: 50px;
 }
 
-#userDocs tbody tr:hover td {
+.userDocs tbody tr:hover td {
     color: #eee9d9;
     /*text-shadow: 0 2px 3px #4c2222;*/
     background: #BA6767;
 }
 
-#userDocs tbody tr:hover a:link {
+.userDocs tbody tr:hover a:link {
     color: #eee9d9;
     text-shadow: 0 2px 3px #4c2222;
+}
+#description:hover td {
+
 }
 
 #header {
@@ -90,7 +94,6 @@ A:hover {
     position: fixed;
     color: #eee9d9;
     bottom: 0px;
-    right: 5%;
     height: 50px;
     width: 100%;
     background: url(../images/label-footer.png) no-repeat top right;
@@ -100,7 +103,7 @@ A:hover {
 #foot {
     position: fixed;
     bottom: 2%;
-    right: 13%;
+    right: 8%;
     float: left;
 }
 
@@ -115,13 +118,15 @@ A:hover {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
-    margin: 0 12px 0 0;
+    margin-left: 45px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     cursor: pointer;
     padding: 7px 2px 8px 2px; /* IE7 Fix */
 }
 
 #body {
-    width: 800px;
+    width: 1000px;
     margin-top: 151px;
     margin-left: 20px;
 
@@ -130,7 +135,29 @@ A:hover {
 #message {
     /*position: fixed;*/
     margin-top: 10px;
-    margin-left: 20px;
+    margin-left: 70px;
     width: 800px;
     height: 20px;
+}
+textarea {
+    border: 3px solid #ccc;
+    resize: none;
+    width: 400px;
+}
+
+.description {
+    width:190px;
+    height:70px;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal; /* для IE */
+    text-overflow: clip;"
+}
+.descriptionV {
+    width:134px;
+    height:70px;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal; /* для IE */
+    text-overflow: clip;"
 }

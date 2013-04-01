@@ -75,6 +75,23 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
     }
 
     @Override
+    public void updateDocumentDescription(String login, long codeDocName, String description) throws MyException {
+        Transaction tr = null;
+        try {
+            tr = session.beginTransaction();
+            Query query = session.createQuery(QueriesHQL.UPDATE_DOCUMENT_DESCRIPTION);
+            query.setString("login", login);
+            query.setString("description", description);
+            query.setLong("codeDocumentName", codeDocName);
+            query.executeUpdate();
+            tr.commit();
+        } catch (Exception e) {
+            if (tr != null && tr.isActive()) tr.rollback();
+            throw ExceptionsThrower.throwException(e);
+        }
+    }
+
+    @Override
     public void addDocument(Document document) throws MyException {
         Transaction tr = null;
         if (document == null) {
@@ -112,32 +129,6 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             throw ExceptionsThrower.throwException(e);
 
         }
-    }
-
-    @Override
-    public void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException {
-
-//        PreparedStatement ps = null;
-//        try {
-//            ps = conn.prepareStatement(QueriesSQL.UPDATE_DOCUMENT_SET_DESCRIPTION_WHERE_DOCUMENT_NAME_AND_LOGIN);
-//            ps.setString(1, newDescription);
-//            ps.setString(2, docName);
-//            ps.setString(3, login);
-//            conn.commit();
-//        } catch (SQLException e) {
-//            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-//                throw new NullConnectionException(e);
-//            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-//                throw new NotEnoughRightsException("", e);
-//            } else throw new DAOException(e);
-//
-//        } finally {
-//            try {
-//                if (ps != null) ps.close();
-//            } catch (SQLException e) {
-//                throw new DAOException(e);
-//            }
-//        }
     }
 
     @Override

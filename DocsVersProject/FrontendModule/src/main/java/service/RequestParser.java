@@ -16,7 +16,6 @@ import java.sql.Timestamp;
  * To change this template use File | Settings | File Templates.
  */
 public class RequestParser {
-    private char separator = File.separatorChar;
 
     public AuthorBean getAuthorBean(HttpServletRequest request) {
         // return new AuthorBean(3, "author2", "pass2");

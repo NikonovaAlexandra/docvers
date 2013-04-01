@@ -14,6 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 /**
@@ -52,7 +53,7 @@ public class UploadServlet extends ParentServlet {
         {
             try {
 
-                VersionBean versionBean = parse(request);
+                VersionBean versionBean = parseRequestToUpload(request);
                 setDocumentName(versionBean.getDocument().getCodeDocumentName());
                 FileItem fi = struct.getFileItem();
                 if (versionBean != null) {
@@ -72,8 +73,11 @@ public class UploadServlet extends ParentServlet {
         }
 
     }
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.sendRedirect(url + "?language=" + request.getParameter("language"));
+    }
 
-    private VersionBean parse(HttpServletRequest request) throws Exception {
+    private VersionBean parseRequestToUpload(HttpServletRequest request) throws Exception {
         long documentCode = (Long) request.getSession().getAttribute("documentToView");
         AuthorBean authorBean = requestParser.getAuthorBean(request);
         struct = requestParser.geVersionDescriptionAndFileItem(request);

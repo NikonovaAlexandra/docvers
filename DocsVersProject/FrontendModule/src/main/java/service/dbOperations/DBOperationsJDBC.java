@@ -121,7 +121,7 @@ public class DBOperationsJDBC implements DBOperations {
 
     }
 
-    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws MyException {
+    public DocumentBean getDocumentByAuthorAndName(String login, long docNameCode) throws MyException {
         Connection conn = null;
         ConnectionPool connPool = null;
         try {
@@ -299,6 +299,53 @@ public class DBOperationsJDBC implements DBOperations {
             String type = verDAO.getVersionType(versionName, documentName, login);
             conn.commit();
             return type;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+
+        } finally {
+            if (conn != null) {
+                connPool.free(conn);
+            }
+        }
+    }
+
+    @Override
+    public void editVersionDescription(VersionBean versionBean) throws MyException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(conn);
+            String login = versionBean.getAuthor().getLogin();
+            long codeDocName = versionBean.getDocument().getCodeDocumentName();
+            long versionName = versionBean.getVersionName();
+            String description = versionBean.getDescription();
+            verDAO.updateVersionDescription(login, codeDocName, versionName, description);
+            conn.commit();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+
+        } finally {
+            if (conn != null) {
+                connPool.free(conn);
+            }
+        }
+    }
+
+    @Override
+    public void editDocumentDescription(DocumentBean documentBean) throws MyException, SystemException {
+        Connection conn = null;
+        ConnectionPool connPool = null;
+        try {
+            connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+            conn = connPool.getConnection();
+            DocumentDAO verDAO = DAOFactory.getInstance().getDocumentDAO(conn);
+            String login = documentBean.getAuthor().getLogin();
+            long codeDocName = documentBean.getCodeDocumentName();
+            String description = documentBean.getDescription();
+            verDAO.updateDocumentDescription(login, codeDocName, description);
+            conn.commit();
         } catch (SQLException e) {
             throw new DAOException(e);
 

@@ -82,11 +82,11 @@ public class FileFolderService {
         if (fileName.isEmpty() && sizeInBytes == 0) {
             throw new NullFileException("No file to upload.");
         } else {
-            String[] s = path.replace("\\", "----").split("----");
+            String[] s = path.replace(String.valueOf(separator), "----").split("----");
             String d = s[s.length - 2];
             long doc = Long.parseLong(d);
             String author = s[s.length - 3];
-            String p = path.substring(0, path.length() - d.length() - ((String) author).length() - s[s.length - 1].length() - 2);
+            String p = path.substring(0, path.length() - d.length() - author.length() - s[s.length - 1].length() - 2);
             createUserDocumentFolder(p, author, doc);
             // Write the file
             file = new File(path);

@@ -43,7 +43,7 @@ public class ServletListener implements ServletContextListener {
         }
         try {
 
-           AllScriptSInDirectoryRunner.getInstance(true).run();
+           //AllScriptSInDirectoryRunner.getInstance(true).run();
             ConnectionPoolFactory.init();
 
         } catch (Exception e) {
@@ -55,7 +55,6 @@ public class ServletListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent event) {
 
-        // todo: logger
         try {
             ConnectionPoolFactory.getInstance().getConnectionPool().closeAllConnections();
             SessionFactory sf = SessionFactoryUtil.getInstance().getSessionFactory();

@@ -1,8 +1,3 @@
-body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, input, textarea, blockquote {
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
 
 body {
     background: transparent #f5f0e0 url(../images/noise.png);
@@ -17,7 +12,7 @@ body {
 }
 
 ul#nav {
-    width: 450px;
+    width: 150px;
     margin: 0 auto;
     text-align: center;
     overflow: hidden;
@@ -25,17 +20,16 @@ ul#nav {
 }
 
 ul#nav li {
-    float: left;
     list-style: none;
     width: 100px;
 }
 
 ul#nav li a {
     display: block;
-    width: 77px;
+    width: 150px;
     height: 77px;
     padding: 72px 0 0 0;
-    margin: 0 32px 0 32px;
+    /*margin: 0 32px 0 32px;*/
     font: bold 14px Helvetica, Arial, Sans-Serif;
     text-transform: uppercase;
     color: #9c5959;

@@ -27,4 +27,5 @@ public interface VersionDAO extends DAO {
     String getVersionType(long versionName, long documentName, String login) throws MyException;
 
     Version getVersion(long id, long versName) throws MyException;
+    public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException;
 }

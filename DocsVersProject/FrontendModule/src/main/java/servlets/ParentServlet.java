@@ -1,6 +1,10 @@
 package servlets;
 
+import beans.AuthorBean;
+import beans.DocumentBean;
+import beans.VersionBean;
 import dao.DAOType;
+import exception.MyException;
 import service.FileFolderService;
 import service.RequestParser;
 import service.dbOperations.DBOperations;
@@ -74,7 +78,6 @@ public class ParentServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {
-
         throw new ServletException("POST method used with " +
                 getClass().getName() + ": GET method required.");
     }
@@ -86,6 +89,40 @@ public class ParentServlet extends HttpServlet {
         RequestDispatcher reqDispatcher = getServletConfig().getServletContext().
                 getRequestDispatcher(url);
         reqDispatcher.forward(request, response);
+    }
+
+    protected VersionBean parseVersionBean(HttpServletRequest request) throws MyException {
+        String par = request.getParameter("version");
+        long versionName = 0;
+        if (!(par == null)) {
+            versionName = Long.parseLong(par);
+        }
+        if (versionName == 0) {
+            versionName = (Long) request.getSession().getAttribute("versionToView");
+        } else {
+            request.getSession().setAttribute("versionToView", versionName);
+        }
+        long documentCode = (Long) request.getSession().getAttribute("documentToView");
+        AuthorBean authorBean = getRequestParser().getAuthorBean(request);
+        String login = authorBean.getLogin();
+        VersionBean versionBean = getService().getVersion(login, documentCode, versionName);
+        return versionBean;
+    }
+
+    protected DocumentBean parseDocumentBean (HttpServletRequest request) throws MyException {
+        String par = request.getParameter("document to view");
+        long docName = 0;
+        if (!(par == null)) {
+            docName = Long.parseLong(par);
+        }
+        if (docName == 0) {
+            docName = (Long) request.getSession().getAttribute("documentView");
+        } else {
+            request.getSession().setAttribute("documentView", docName);
+        }
+        String login = getRequestParser().getAuthorBean(request).getLogin();
+        DocumentBean doc = getService().getDocumentByAuthorAndName(login, docName);
+        return doc;
     }
 
 

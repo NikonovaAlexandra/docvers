@@ -19,11 +19,11 @@ public class LogoutServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
-        String locale = (String) session.getAttribute("language");
+        String locale = session.getAttribute("language").toString();
         if (session != null) {
             session.invalidate();
         }
-        session.setAttribute("language", locale);
+        request.setAttribute("language", locale);
         RequestDispatcher rd = request.getRequestDispatcher("Login");
         rd.forward(request, response);
 

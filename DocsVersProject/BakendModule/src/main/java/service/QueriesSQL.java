@@ -14,6 +14,7 @@ public class QueriesSQL {
     public static final String DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE = "delete from document where author_id=(select id from author where login = ?) and code_document_name=?";
     public static final String SELECT_FROM_DOCUMENT_WHERE_DOCUMENT_NAME_CODE_AND_AUTHOR_ID = "select * from document where code_document_name=? and author_id= (select id from author  where login = ?)";
     public static final String SELECT_ID_FROM_DOCUMENT = "select id from document where author_id=(select id from author where login = ?) and code_document_name = ?";
+    public static final String UPDATE_DOCUMENT_DESCRIPTION = "update Document set description =?  where code_document_name =?  and author_id=(select id from author where login =?)";
 
     public static final String SELECT_FROM_AUTHOR_WHERE_LOGIN = "select * from author where login = ?";
     public static final String SELECT_FROM_AUTHOR_WHERE_ID = "select * from author where id=?";
@@ -27,4 +28,6 @@ public class QueriesSQL {
 
     public static final String SELECT_VERSION_TYPE_FROM_VERSION = "select version_type from version where version_name=? and document_id = (select id from document where code_document_name = ? and author_id=(select id from author where login = ?))";
     public static final String SELECT_FROM_VERSION_WHERE_DOCUMENT_ID_AND_VERSION_NAME = "select * from version where document_id = ? and version_name = ?";
+    public static final String UPDATE_VERSION_DESCRIPTION = "update Version set version_description =?  where version_name=? and document_id=(select id from document  where code_document_name =?  and author_id=(select id from author where login =?))";
+
 }

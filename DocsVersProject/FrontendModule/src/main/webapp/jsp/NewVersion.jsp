@@ -18,35 +18,49 @@
 
 <t:TemplatePage>
     <jsp:body>
-        <hr>
-        <h3><fmt:message key="version.upload"/>:</h3>
-        <fmt:message key="version.upload.select"/>: <br/>
+        <div>
+            <form action="Versions">
 
-        <form action="Upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+                <fmt:message key="version.allVersions" var="back"/>
+                <input type="submit" class="button" value="${back}"/>
+            </form>
+        </div>
 
-            <table>
-                <tr>
-                    <td>
-                        <fmt:message key="version.upload.uploadBut" var="butName"/>
-                    </td>
-                    <td>
-                        <input type="file" name="file" value="${butName}" size="100"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="version.upload.versdescription"/></td>
-                    <td><textarea name="versdescription"></textarea></td>
-                </tr>
-            </table>
-            <br/>
-            <input type="submit" class="button" value="${butName}"/>
+        <script>
+            function addVersionConfirm() {
+                var retVal = confirm("${addVersionMessage}");
+                if (retVal == true) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
+        <div style="padding-top: 100px; padding-left: 45px;">
+            <h3><fmt:message key="version.upload"/>:</h3>
+            <fmt:message key="version.upload.select"/>: <br/>
+            <fmt:message key="version.addVersionMessage" var="addVersionMessage"/>
+            <form action="Upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8"
+                  onsubmit="return addVersionConfirm()">
 
-        </form>
-        <form action="Versions" method="get">
+                <table>
+                    <tr>
+                        <td>
+                            <fmt:message key="version.upload.uploadBut" var="butName"/>
+                        </td>
+                        <td>
+                            <input type="file" name="file" value="${butName}" size="100"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="version.upload.versdescription"/></td>
+                        <td><textarea name="versdescription" rows="10"></textarea></td>
+                    </tr>
+                </table>
+                <br/>
+                <input type="submit" style = "margin-left: -15px;" class="button" value="${butName}"/>
 
-            <fmt:message key="backBut" var="back"/>
-            <input type="submit" class="button" value="${back}"/>
-        </form>
-        <hr>
+            </form>
+        </div>
     </jsp:body>
 </t:TemplatePage>

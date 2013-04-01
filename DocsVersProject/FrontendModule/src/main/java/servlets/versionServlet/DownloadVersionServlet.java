@@ -4,6 +4,7 @@ import beans.AuthorBean;
 import beans.VersionBean;
 import exception.MyException;
 import service.FileNameGenerator;
+import service.WikiTextInterpretator;
 import servlets.ParentServlet;
 
 import javax.servlet.ServletContext;
@@ -42,30 +43,41 @@ public class DownloadVersionServlet extends ParentServlet {
                         versionBean.getVersionName(), versionBean.getVersionType());
                 ServletOutputStream outStream = response.getOutputStream();
                 setRespose(response, newFileName);
-
                 getFileFolderService().downloadFile(file.getAbsolutePath(), outStream, BUFSIZE);
                 outStream.flush();
-            } else {
+            } else if (param.equals("getLink")) {
+                String from = request.getParameter("from");
+                String url = null;
+                String parameters = null;
+                if (from.equals("Versions")) {
+                  url = "/Versions";
+                    parameters = "?document=" + versionBean.getDocument().getCodeDocumentName();
+                } else if (from.equals("Edit")) {
+                  url = "/GetEditVersion";
+                  parameters = "?version=" + versionBean.getVersionName();
+                } else if(from.equals("View")) {
+                    url = "/ViewVersion";
+                    parameters = "?version=" + versionBean.getVersionName();
+                }
                 StringSelection stringSelection = new StringSelection(request.getRequestURL() + "?" +
-                        request.getQueryString().replaceFirst("(&)(param)(=.*)",""));
+                        request.getQueryString().replaceFirst("(&)(param)(=.*)", ""));
                 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
                         stringSelection, null);
-                String url = "/Versions?document=" + versionBean.getDocument().getCodeDocumentName();
-                showMessage(request, response, "message.CopyToClipboard", "versmessage", url);
+                url = url + parameters;
+                request.setAttribute("versmessage", "message.CopyToClipboard");
+                response.sendRedirect(url);
+                // showMessage(request, response, "message.CopyToClipboard", "versmessage", url);
 
             }
-
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
 
-    private VersionBean parse(HttpServletRequest request) throws MyException {
+    protected VersionBean parse(HttpServletRequest request) throws MyException {
         long id = Long.parseLong(request.getParameter("version"));
         String login = request.getParameter("author");
         Long documentCode = Long.parseLong(request.getParameter("codeDocument"));
-        //long documentCode = (Long) request.getSession().getAttribute("documentToView");
-        AuthorBean authorBean = getRequestParser().getAuthorBean(request);
         VersionBean versionBean = getService().getVersion(login, documentCode, id);
         return versionBean;
     }
@@ -83,12 +95,11 @@ public class DownloadVersionServlet extends ParentServlet {
         // sets HTTP header
         //todo russian name
         byte[] bytes = fileName.getBytes("UTF-8");
-        String name = new String(bytes,"UTF-8");
+        String name = new String(bytes, "UTF-8");
         if (mimetype.equals("application/pdf")) {
             response.setHeader("Content-Disposition", "inline; filename=\"" + name + "\"");
         } else {
             response.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
         }
     }
-
 }

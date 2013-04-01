@@ -38,7 +38,7 @@ public class LoginFilter implements Filter {
         try {
             boolean authorized = false;
             if (request instanceof HttpServletRequest) {
-                if (isResourceRequest((HttpServletRequest) request) || ((HttpServletRequest) request).getRequestURI().equals("/Download")) {
+                if (isResourceRequest((HttpServletRequest) request) || ((HttpServletRequest) request).getRequestURI().equals("/Action")) {
                     authorized = true;
                 } else {
                     HttpSession session = ((HttpServletRequest) request).getSession(false);

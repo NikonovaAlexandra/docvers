@@ -62,34 +62,34 @@ public class AuthorDAOImplHCriteria implements AuthorDAO {
         }
     }
 
-    public static void main(String[] args) throws MyException {
-        SessionFactory sessionFactory = new AnnotationConfiguration().configure(new File("BakendModule\\src\\main\\java\\hibernate.xml")).buildSessionFactory();
-        Session session1 = sessionFactory.openSession();
-        AuthorDAOImplHCriteria dao = new AuthorDAOImplHCriteria(session1);
-        System.out.println(dao.getAuthorByLogin("author2").getId());
+//    public static void main(String[] args) throws MyException {
+//        SessionFactory sessionFactory = new AnnotationConfiguration().configure(new File("BakendModule\\src\\main\\java\\hibernate.xml")).buildSessionFactory();
+//        Session session1 = sessionFactory.openSession();
+//        AuthorDAOImplHCriteria dao = new AuthorDAOImplHCriteria(session1);
+//        System.out.println(dao.getAuthorByLogin("author2").getId());
 //        Author a = new Author();
 //        a.setId(3);
 //        a.setLogin("author2");
 //        a.setPassword("pass2");
-
+//
 //        Document d = new Document();
 //        d.setAuthorId(a);
 //        d.setDocumentName("nananananan");
 //        d.setCodeDocumentName(1212121212);
 //        d.setId(35);
-
+//
 //        VersionEntity v = new VersionEntity();
 //        v.setAuthorId(a);
 //        v.setDocumentId(d);
 //        dao.addVersion(v);
-        //System.out.println(dao.getVersionType(1,-1990522244,"author2"));
+//        System.out.println(dao.getVersionType(1,-1990522244,"author2"));
 //        System.out.println(dao.getDocumentsByAuthorID(3));
-        //dao.addDocument(d);
+//        dao.addDocument(d);
 //        List<Document> li = dao.getDocumentsByAuthorID(3);
 //        for (int i = 0; i < li.size(); ++i) {
 //            System.out.println(li.get(i).getId());
 //        }
-        session1.close();
-
-    }
+//        session1.close();
+//
+//    }
 }

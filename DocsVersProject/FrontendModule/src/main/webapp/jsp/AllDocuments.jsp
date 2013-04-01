@@ -33,12 +33,13 @@
 <t:TemplatePage>
     <jsp:body>
         <c:if test="${not empty documentList}">
-            <table id="userDocs">
+            <table class="userDocs">
                 <thead>
                 <tr>
-                    <th scope="col"><fmt:message key="alldocuments.name"/></th>
-                    <th scope="col"><fmt:message key="alldocuments.description"/></th>
-                    <th scope="col">&nbsp</th>
+                    <th scope="col" style="width: 200px;"><fmt:message key="alldocuments.name"/></th>
+                    <th scope="col" style="width: 190px;"><fmt:message key="alldocuments.description"/></th>
+                    <th scope="col" style="width: 120px;">&nbsp</th>
+                    <th scope="col" style="width: 170px;">&nbsp</th>
                     <th scope="col">&nbsp</th>
                 </tr>
                 </thead>
@@ -48,11 +49,17 @@
                         <td><a href="<c:url value="Versions">
                 <c:param name="document" value="${item.codeDocumentName}"/>
                 </c:url>">${item.name}</a></td>
-                        <td>${item.description}</td>
+                        <td><div class="description"> ${item.description}</div></td>
                         <td><a onclick="return deleteA()"
                                href="<c:url value="DeleteDocument">
                     <c:param name="document to delete" value="${item.codeDocumentName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
+                        <td><a href="<c:url value="ViewDocumentServlet">
+                    <c:param name="document to view" value="${item.codeDocumentName}"/>
+                </c:url>"><fmt:message key="version.view"/></a></td>
+                        <td><a href="<c:url value="GetEditDocument">
+                    <c:param name="document to view" value="${item.codeDocumentName}"/>
+                </c:url>"><fmt:message key="version.edit"/></a></td>
                     </tr>
                 </c:forEach>
             </table>

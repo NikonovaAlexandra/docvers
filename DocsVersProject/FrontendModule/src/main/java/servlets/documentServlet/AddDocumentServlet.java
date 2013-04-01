@@ -5,6 +5,7 @@ import exception.*;
 import exception.IllegalArgumentException;
 import servlets.ParentServlet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,10 @@ public class AddDocumentServlet extends ParentServlet {
             throw new ServletException(e);
         }
 
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+       response.sendRedirect(url + "?language=" + request.getParameter("language"));
     }
 
 }

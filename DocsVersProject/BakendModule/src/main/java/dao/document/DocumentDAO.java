@@ -20,11 +20,11 @@ public interface DocumentDAO extends DAO {
 
     public List<Document> getDocumentsByAuthorID(long id) throws MyException;
 
-    void editDocumentDescription(String login, String docName, String newDescription) throws MyException;
-
     void deleteDocument(String login, long docNameCode) throws MyException;
 
     Document getDocumentByAuthorAndName(String login, long docNameCode) throws MyException;
 
     long getDocumentID(String login, long docName) throws MyException;
+
+    void updateDocumentDescription(String login, long codeDocName, String description) throws MyException;
 }

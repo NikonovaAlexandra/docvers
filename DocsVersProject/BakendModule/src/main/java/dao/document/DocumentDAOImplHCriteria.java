@@ -2,6 +2,7 @@ package dao.document;
 
 import dao.ExceptionsThrower;
 import entities.Document;
+import entities.Version;
 import exception.*;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -76,6 +77,23 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
     }
 
     @Override
+    public void updateDocumentDescription(String login, long codeDocName, String description) throws MyException {
+        Transaction tr = null;
+        try {
+            tr = session.beginTransaction();
+            Criteria criteria = session.createCriteria(Document.class);
+            criteria.add(Restrictions.eq("codeDocumentName", codeDocName)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
+            Document doc = (Document) criteria.uniqueResult();
+            doc.setDescription(description);
+            session.flush();
+            tr.commit();
+        } catch (Exception e) {
+            if (tr != null && tr.isActive()) tr.rollback();
+            throw ExceptionsThrower.throwException(e);
+        }
+    }
+
+    @Override
     public void addDocument(Document document) throws MyException {
         Transaction tr = null;
         if (document == null) {
@@ -116,31 +134,6 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
         }
     }
 
-    @Override
-    public void editDocumentDescription(String login, String docName, String newDescription) throws DAOException, SystemException {
-
-//        PreparedStatement ps = null;
-//        try {
-//            ps = conn.prepareStatement(QueriesSQL.UPDATE_DOCUMENT_SET_DESCRIPTION_WHERE_DOCUMENT_NAME_AND_LOGIN);
-//            ps.setString(1, newDescription);
-//            ps.setString(2, docName);
-//            ps.setString(3, login);
-//            conn.commit();
-//        } catch (SQLException e) {
-//            if (e.getErrorCode() == ErrorCode.CONNECTION_BROKEN_1)
-//                throw new NullConnectionException(e);
-//            if (e.getErrorCode() == ErrorCode.NOT_ENOUGH_RIGHTS_FOR_1) {
-//                throw new NotEnoughRightsException("", e);
-//            } else throw new DAOException(e);
-//
-//        } finally {
-//            try {
-//                if (ps != null) ps.close();
-//            } catch (SQLException e) {
-//                throw new DAOException(e);
-//            }
-//        }
-    }
 
     @Override
     public void deleteDocument(String login, long docNameCode) throws MyException {

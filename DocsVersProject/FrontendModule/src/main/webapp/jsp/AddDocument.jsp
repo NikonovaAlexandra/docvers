@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <td><fmt:message key="adddocument.docdescription"/></td>
-                        <td><textarea name="docdescription" rows="5"></textarea></td>
+                        <td><textarea name="docdescription" rows="10"></textarea></td>
                     </tr>
                     <tr>
                         <td><fmt:message key="addocument.add" var="buttonValue"/>

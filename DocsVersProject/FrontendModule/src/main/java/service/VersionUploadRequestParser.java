@@ -67,7 +67,7 @@ public class VersionUploadRequestParser extends RequestParser {
         String newVersionName = FileNameGenerator.generateUploadVersionName(lastVersionName + 1);
         String newFileName = newVersionName + "." + type;
 
-        DocumentBean documentBean = operations.getDocumentsByAuthorAndName(login,
+        DocumentBean documentBean = operations.getDocumentByAuthorAndName(login,
                 documentCode);
         Timestamp date = new Timestamp(Calendar.getInstance().getTimeInMillis());
         VersionBean versionBean = getVersionBean(authorBean, documentBean,

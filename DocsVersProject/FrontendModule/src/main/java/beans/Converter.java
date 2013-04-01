@@ -4,8 +4,6 @@ import entities.Author;
 import entities.Document;
 import entities.Version;
 
-import java.sql.Timestamp;
-
 /**
  * Created with IntelliJ IDEA.
  * User: alni
@@ -39,7 +37,9 @@ public class Converter {
     }
 
     public static AuthorBean convertAuthorToAuthorBean(Author author) {
-        return new AuthorBean(author.getId(), author.getLogin(), author.getPassword());
+        if (author != null) {
+            return new AuthorBean(author.getId(), author.getLogin(), author.getPassword());
+        } else return null;
     }
 
     public static Author convertAuthorBeanToAuthor(AuthorBean author) {

@@ -49,5 +49,4 @@ public class GetAllDocumentsServlet extends ParentServlet {
             throw new ServletException(e);
         }
     }
-    //todo: pagination
 }

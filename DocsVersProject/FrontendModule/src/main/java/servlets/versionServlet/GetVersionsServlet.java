@@ -26,8 +26,6 @@ public class GetVersionsServlet extends ParentServlet {
     private static final String messageName = "versmessage";
     private static final String url = "/AllVersions";
 
-    //todo released
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {

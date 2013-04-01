@@ -34,12 +34,12 @@ import java.sql.Connection;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: alni
-* Date: 11.02.13
-* Time: 11:24
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA.
+ * User: alni
+ * Date: 11.02.13
+ * Time: 11:24
+ * To change this template use File | Settings | File Templates.
+ */
 public class EntitiesDAOTest {
 
     private IDatabaseTester tester = null;
@@ -49,7 +49,7 @@ public class EntitiesDAOTest {
     private AuthorDAO authorDAO;
     private VersionDAO versionDAO;
     private ITable template, actual;
-    private String path = "BakendModule/src/test/java/dbTests/";
+    private String path = "BakendModule" + File.separator + "src" + File.separator + "test" + File.separator + "java" + File.separator + "dbTests" + File.separator;
     private AllScriptSInDirectoryRunner runner;
 
     @Before

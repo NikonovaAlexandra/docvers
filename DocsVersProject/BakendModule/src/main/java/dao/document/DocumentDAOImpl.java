@@ -93,6 +93,34 @@ public class DocumentDAOImpl implements DocumentDAO {
     }
 
     @Override
+    public void updateDocumentDescription(String login, long codeDocName, String description) throws MyException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(QueriesSQL.UPDATE_DOCUMENT_DESCRIPTION);
+            ps.setString(1, description);
+            ps.setLong(2, codeDocName);
+            ps.setString(3, login);
+            ps.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
+            throw ExceptionsThrower.throwException(e);
+
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    @Override
     public void addDocument(Document document) throws MyException {
         PreparedStatement ps = null;
         if (document == null) {
@@ -143,28 +171,6 @@ public class DocumentDAOImpl implements DocumentDAO {
         } finally {
             try {
                 if (rs != null) rs.close();
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                throw new DAOException(e);
-            }
-        }
-    }
-
-    @Override
-    public void editDocumentDescription(String login, String docName, String newDescription) throws MyException {
-
-        PreparedStatement ps = null;
-        try {
-            ps = conn.prepareStatement(QueriesSQL.UPDATE_DOCUMENT_SET_DESCRIPTION_WHERE_DOCUMENT_NAME_AND_LOGIN);
-            ps.setString(1, newDescription);
-            ps.setString(2, docName);
-            ps.setString(3, login);
-            conn.commit();
-        } catch (SQLException e) {
-            throw ExceptionsThrower.throwException(e);
-
-        } finally {
-            try {
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 throw new DAOException(e);

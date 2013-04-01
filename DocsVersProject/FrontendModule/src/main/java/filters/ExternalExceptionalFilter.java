@@ -1,7 +1,5 @@
 package filters;
 
-import exception.BusinessException;
-import exception.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +33,15 @@ public class ExternalExceptionalFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
 
         } catch (ServletException e) {
+            if (e.getCause() != null) {
 
                 message = "An error has occured!\n " + e.getCause().getClass() + "\n Please contact your administrator!";
-                logger.error("System Exception in application: " + message +
-                        e.getMessage());
-                logger.error("Servlet Exception in application: " + e.getMessage());
+            } else {
+                message = "An error has occured!\n " + "\n Please contact your administrator!";
+            }
+            logger.error("System Exception in application: " + message +
+                    e.getMessage());
+            logger.error("Servlet Exception in application: " + e.getMessage());
             request.getSession().setAttribute("message", message);
 
             try {

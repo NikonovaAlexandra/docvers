@@ -131,6 +131,24 @@ public class VersionDAOImplHHQL implements VersionDAO {
     }
 
     @Override
+    public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException {
+        Transaction tr = null;
+        try {
+            tr = session.beginTransaction();
+            Query query = session.createQuery(QueriesHQL.UPDATE_VERSION_DESCRIPTION);
+            query.setString("login", login);
+            query.setString("description", description);
+            query.setLong("codeDocumentName", codeDocName);
+            query.setLong("versionName", versionName);
+            query.executeUpdate();
+            tr.commit();
+        } catch (Exception e) {
+            if (tr != null && tr.isActive()) tr.rollback();
+            throw ExceptionsThrower.throwException(e);
+        }
+    }
+
+    @Override
     public long getLastVersionNameInfo(long docID) throws MyException{
         Transaction tr = null;
         try {

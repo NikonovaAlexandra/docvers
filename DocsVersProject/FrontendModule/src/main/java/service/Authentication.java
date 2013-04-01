@@ -38,14 +38,12 @@ public class Authentication {
             if (author != null) {
                 AuthorBean tok = authenticate(author, login, password);
                 if (tok != null) {
+                    request.getSession().removeAttribute("logmessage");
                     request.getSession().setAttribute("user", tok);
                     response.sendRedirect("/GetAllDocuments");
                 } else throw new NoSuchObjectInDB("Incorrect login or password!");
             } else {
-                String url = context.getInitParameter("login_page");
-                if (url != null && !"".equals(url)) {
-                    response.sendRedirect(url);
-                }
+                throw new NoSuchObjectInDB("Incorrect login or password!");
             }
         } else {
             String url = context.getInitParameter("login_page");

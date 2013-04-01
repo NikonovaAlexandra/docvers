@@ -142,6 +142,24 @@ public class VersionDAOImplHCriteria implements VersionDAO{
     }
 
     @Override
+    public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException {
+        Transaction tr = null;
+        try {
+            tr = session.beginTransaction();
+            Criteria criteria = session.createCriteria(Version.class);
+            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", codeDocName)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
+            criteria.add(Restrictions.eq("versionName", versionName));
+            Version vers = (Version) criteria.uniqueResult();
+            vers.setVersionDescription(description);
+            session.flush();
+            tr.commit();
+        } catch (Exception e) {
+            if (tr != null && tr.isActive()) tr.rollback();
+            throw ExceptionsThrower.throwException(e);
+        }
+    }
+
+    @Override
     public long getLastVersionNameInfo(long docID) throws MyException {
         Transaction tr = null;
         try {
@@ -149,7 +167,8 @@ public class VersionDAOImplHCriteria implements VersionDAO{
             Criteria criteria = session.createCriteria(Version.class);
             criteria.createAlias("documentId", "document").add(Restrictions.eq("document.id", docID));
             criteria.setProjection(Projections.max("versionName"));
-            Long versionName = (Long) criteria.uniqueResult();
+            Long l = (Long) criteria.uniqueResult();
+            long versionName = (l == null ? 0 : l);
             tr.commit();
             return versionName;
         } catch (Exception e) {

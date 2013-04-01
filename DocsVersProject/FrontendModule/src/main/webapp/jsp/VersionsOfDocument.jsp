@@ -1,5 +1,3 @@
-<%@ page import="java.util.Date" %>
-<%@ page import="java.sql.Timestamp" %>
 <%--
   Created by IntelliJ IDEA.
   User: alni
@@ -35,14 +33,15 @@
 <t:TemplatePage>
     <jsp:body>
         <c:set var="document" value="${param.document}"/>
-        <form action="/AddVersion" method="post">
-            <fmt:message key="version.addNewVersion" var="butName"/>
-            <input type="submit" name="submit" class="button" value="${butName}"/>
-        </form>
+
         <form action="GetAllDocuments">
 
             <fmt:message key="backBut" var="back"/>
             <input type="submit" class="button" value="${back}"/>
+        </form>
+        <form action="/AddVersion" method="post">
+            <fmt:message key="version.addNewVersion" var="butName"/>
+            <input type="submit" name="submit" class="button" value="${butName}"/>
         </form>
         <br>
         <c:if test="${not empty versionList}">
@@ -50,19 +49,20 @@
                 <c:set value="${item.document.name}" var="docName"></c:set>
             </c:forEach>
             <h1 align="center">${docName}</h1>
-            <table id="userDocs" summary="Meeting Results">
+            <table class="userDocs" summary="Meeting Results">
                 <thead>
                 <tr>
-                    <th scope="col">№</th>
+                    <th scope="col" style="width: 37px;">№</th>
 
-                    <th scope="col" style="width: 15%"><fmt:message key="versions.date"/></th>
-                    <th scope="col"><fmt:message key="versions.author"/></th>
-                    <th scope="col"><fmt:message key="versions.description"/></th>
-                    <th scope="col"><fmt:message key="versions.type"/></th>
-                    <th scope="col"><fmt:message key="versions.isReleased"/></th>
-                    <th scope="col" style="width: 10%">&nbsp</th>
-                    <th scope="col" style="width: 9%">&nbsp</th>
-                    <th scope="col" style="width: 9%">&nbsp</th>
+                    <th scope="col" style="width: 96px;"><fmt:message key="versions.date"/></th>
+                    <th scope="col" style="width: 85px;"><fmt:message key="versions.author"/></th>
+                    <th scope="col" style="width: 140px;" ><fmt:message key="versions.description"/></th>
+                    <th scope="col" style="width: 67px;"><fmt:message key="versions.type"/></th>
+                    <th scope="col" style="width: 95px;">&nbsp</th>
+                    <th scope="col" style="width: 87px;">&nbsp</th>
+                    <th scope="col" style="width: 100px;">&nbsp</th>
+                    <th scope="col" style="width: 109px;">&nbsp</th>
+                    <th scope="col" style="width: 77px;">&nbsp</th>
                 </tr>
                 </thead>
                 <c:forEach items="${versionList}" var="item">
@@ -70,10 +70,9 @@
                         <td>${item.versionName}</td>
                         <td><fmt:formatDate value="${item.date}" type="both" timeStyle="short"/></td>
                         <td>${item.author.login}</td>
-                        <td>${item.description}</td>
+                        <td><div class="descriptionV"> ${item.description}</div></td>
                         <td>${item.versionType}</td>
-                        <td>${item.released}</td>
-                        <td><a href="<c:url value="Download">
+                        <td><a href="<c:url value="Action">
                     <c:param name="version" value="${item.versionName}"/>
                     <c:param name="author" value="${item.document.author.login}"/>
                     <c:param name="codeDocument" value="${item.document.codeDocumentName}"/>
@@ -82,12 +81,21 @@
                                href="<c:url value="DeleteVersion">
                     <c:param name="version" value="${item.versionName}"/>
                 </c:url>"><fmt:message key="delete"/></a></td>
-                        <td><a href="<c:url value="Download">
+                        <td><a href="<c:url value="Action">
                     <c:param name="version" value="${item.versionName}"/>
                     <c:param name="author" value="${item.document.author.login}"/>
                     <c:param name="codeDocument" value="${item.document.codeDocumentName}"/>
                     <c:param name="param" value="getLink"/>
+                    <c:param name="from" value="Versions"/>
                 </c:url>"><fmt:message key="getLink"/></a></td>
+                        <td><a href="<c:url value="ViewVersion">
+                    <c:param name="version" value="${item.versionName}"/>
+                </c:url>"><fmt:message key="version.view"/></a></td>
+                        <c:if test="${not item.released}">
+                            <td><a href="<c:url value="GetEditVersion">
+                    <c:param name="version" value="${item.versionName}"/>
+                </c:url>"><fmt:message key="version.edit"/></a></td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </table>

@@ -14,12 +14,13 @@
     </context-param>
     <context-param>
         <param-name>ConnType</param-name>
-        <param-value>HQL</param-value>
+        <param-value>CRITERIA</param-value>
     </context-param>
     <context-param>
         <param-name>hibernateConfigFilePath</param-name>
-        <param-value>C:\Documents and Settings\alni\Desktop\docvers\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml </param-value>
-        <!--<param-value>C:\Documents and Settings\Admin\Рабочий стол\docvers.git\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml</param-value>-->
+        <!--<param-value>C:\Documents and Settings\alni\Desktop\docvers\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml </param-value>-->
+        <param-value>C:\Documents and Settings\Admin\Рабочий стол\docvers.git\trunk\DocsVersProject\FrontendModule\src\main\java\hibernate.xml
+        </param-value>
     </context-param>
 
     <context-param>
@@ -105,6 +106,50 @@
         <url-pattern>/DeleteDocument</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ViewDocumentServlet</servlet-name>
+        <servlet-class>servlets.documentServlet.ViewDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewDocumentServlet</servlet-name>
+        <url-pattern>/ViewDocumentServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetEditDocument</servlet-name>
+        <servlet-class>servlets.documentServlet.ViewDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetEditDocument</servlet-name>
+        <url-pattern>/GetEditDocument</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ViewDocument</servlet-name>
+        <jsp-file>/jsp/ViewDoc.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewDocument</servlet-name>
+        <url-pattern>/ViewDocument</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditDocumentServlet</servlet-name>
+        <servlet-class>servlets.documentServlet.EditDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditDocumentServlet</servlet-name>
+        <url-pattern>/EditDocumentServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditDocument</servlet-name>
+        <jsp-file>/jsp/EditDoc.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditDocument</servlet-name>
+        <url-pattern>/EditDocument</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>AllDocuments</servlet-name>
@@ -114,6 +159,7 @@
         <servlet-name>AllDocuments</servlet-name>
         <url-pattern>/AllDocuments</url-pattern>
     </servlet-mapping>
+
     <!--=========================================================================-->
     <servlet>
         <servlet-name>Versions</servlet-name>
@@ -171,7 +217,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>DownloadVersionServlet</servlet-name>
-        <url-pattern>/Download</url-pattern>
+        <url-pattern>/Action</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -181,6 +227,51 @@
     <servlet-mapping>
         <servlet-name>DeleteVersion</servlet-name>
         <url-pattern>/DeleteVersion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditVersion</servlet-name>
+        <servlet-class>servlets.versionServlet.EditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditVersion</servlet-name>
+        <url-pattern>/EditVersion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditVers</servlet-name>
+        <jsp-file>/jsp/EditDescription.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditVers</servlet-name>
+        <url-pattern>/Edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ViewVers</servlet-name>
+        <jsp-file>/jsp/ViewVersion.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewVers</servlet-name>
+        <url-pattern>/View</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ViewVersion</servlet-name>
+        <servlet-class>servlets.versionServlet.ViewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewVersion</servlet-name>
+        <url-pattern>/ViewVersion</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetEditVersion</servlet-name>
+        <servlet-class>servlets.versionServlet.ViewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetEditVersion</servlet-name>
+        <url-pattern>/GetEditVersion</url-pattern>
     </servlet-mapping>
     <!--=========================================================================-->
     <servlet>
@@ -231,7 +322,6 @@
         <filter-name>ExternalExceptionalFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
 
 
 </web-app>

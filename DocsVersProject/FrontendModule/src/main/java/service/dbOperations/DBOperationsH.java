@@ -106,7 +106,7 @@ public class DBOperationsH implements DBOperations {
     }
 
     @Override
-    public DocumentBean getDocumentsByAuthorAndName(String login, long docNameCode) throws MyException {
+    public DocumentBean getDocumentByAuthorAndName(String login, long docNameCode) throws MyException {
         Session session = sessionFactory.openSession();
         try {
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(session, type);
@@ -238,6 +238,43 @@ public class DBOperationsH implements DBOperations {
                // session.flush();
                 session.clear();
                //session.close();
+            }
+        }
+    }
+
+    @Override
+    public void editVersionDescription(VersionBean versionBean) throws MyException {
+        Session session = sessionFactory.openSession();
+        try {
+            VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(session, type);
+            String login = versionBean.getAuthor().getLogin();
+            long codeDocName = versionBean.getDocument().getCodeDocumentName();
+            long versionName = versionBean.getVersionName();
+            String description = versionBean.getDescription();
+            verDAO.updateVersionDescription(login, codeDocName, versionName, description);
+        } finally {
+            if (session != null) {
+                // session.flush();
+                session.clear();
+                //session.close();
+            }
+        }
+    }
+
+    @Override
+    public void editDocumentDescription(DocumentBean documentBean) throws MyException {
+        Session session = sessionFactory.openSession();
+        try {
+            DocumentDAO verDAO = DAOFactory.getInstance().getDocumentDAO(session, type);
+            String login = documentBean.getAuthor().getLogin();
+            long codeDocName = documentBean.getCodeDocumentName();
+            String description = documentBean.getDescription();
+            verDAO.updateDocumentDescription(login, codeDocName, description);
+        } finally {
+            if (session != null) {
+                // session.flush();
+                session.clear();
+                //session.close();
             }
         }
     }
