@@ -39,12 +39,23 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO documentDAO = DAOFactory.getInstance().getDocumentDAO(conn);
             documentDAO.addDocument(Converter.convertDocumentBeanToDocument(documentBean));
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -58,14 +69,25 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(conn);
             long id = versionDAO.getLastVersionNameInfo(docID);
             conn.commit();
             return id;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -78,12 +100,23 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             VersionDAO versionDAO = DAOFactory.getInstance().getVersionDAO(conn);
             versionDAO.addVersion(Converter.convertVersionBeanToVersion(versionBean));
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -98,6 +131,7 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
             Author author = authorDAO.getAuthorByLogin(login);
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
@@ -111,8 +145,18 @@ public class DBOperationsJDBC implements DBOperations {
             conn.commit();
             return documentBeans;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -127,6 +171,7 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO dao = DAOFactory.getInstance().getDocumentDAO(conn);
             Document doc = dao.getDocumentByAuthorAndName(login, docNameCode);
             conn.commit();
@@ -135,8 +180,18 @@ public class DBOperationsJDBC implements DBOperations {
             DocumentBean documentBean = Converter.convertDocumentToDocumentBean(doc, author);
             return documentBean;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -152,13 +207,24 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             AuthorDAO authorDAO = DAOFactory.getInstance().getAuthorDAO(conn);
             author = authorDAO.getAuthorByLogin(login);
             conn.commit();
             return Converter.convertAuthorToAuthorBean(author);
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -173,6 +239,7 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(conn);
             Document doc = docDAO.getDocumentByAuthorAndName(login, docNameCode);
             VersionDAO dao = DAOFactory.getInstance().getVersionDAO(conn);
@@ -188,8 +255,18 @@ public class DBOperationsJDBC implements DBOperations {
             conn.commit();
             return versionBeans;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -204,6 +281,7 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(conn);
             Document doc = docDAO.getDocumentByAuthorAndName(login, docNameCode);
 
@@ -219,8 +297,18 @@ public class DBOperationsJDBC implements DBOperations {
             conn.commit();
             return versionBean;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -236,13 +324,24 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(conn);
             docDAO.deleteDocument(login, docNameCode);
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -255,13 +354,24 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(conn);
             verDAO.deleteVersion(versName, docCode, login);
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -275,14 +385,25 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO docDAO = DAOFactory.getInstance().getDocumentDAO(conn);
             long id = docDAO.getDocumentID(login, docName);
             conn.commit();
             return id;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -295,14 +416,25 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(conn);
             String type = verDAO.getVersionType(versionName, documentName, login);
             conn.commit();
             return type;
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -316,6 +448,7 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             VersionDAO verDAO = DAOFactory.getInstance().getVersionDAO(conn);
             String login = versionBean.getAuthor().getLogin();
             long codeDocName = versionBean.getDocument().getCodeDocumentName();
@@ -324,9 +457,19 @@ public class DBOperationsJDBC implements DBOperations {
             verDAO.updateVersionDescription(login, codeDocName, versionName, description);
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }
@@ -340,6 +483,7 @@ public class DBOperationsJDBC implements DBOperations {
         try {
             connPool = ConnectionPoolFactory.getInstance().getConnectionPool();
             conn = connPool.getConnection();
+            conn.setAutoCommit(false);
             DocumentDAO verDAO = DAOFactory.getInstance().getDocumentDAO(conn);
             String login = documentBean.getAuthor().getLogin();
             long codeDocName = documentBean.getCodeDocumentName();
@@ -347,9 +491,19 @@ public class DBOperationsJDBC implements DBOperations {
             verDAO.updateDocumentDescription(login, codeDocName, description);
             conn.commit();
         } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(e);
+            }
             throw new DAOException(e);
 
         } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
             if (conn != null) {
                 connPool.free(conn);
             }

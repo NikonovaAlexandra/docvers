@@ -63,7 +63,6 @@ public class AddVersionDAOTest {
         verify(ps).setBoolean(6, false);
         verify(ps).setString(7, version.getVersionType());
         verify(ps).setLong(8, version.getVersionName());
-        verify(conn).commit();
         verify(ps).close();
 
     }

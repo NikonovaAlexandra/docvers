@@ -70,24 +70,19 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
 
     @Override
     public void updateDocumentDescription(String login, long codeDocName, String description) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
             criteria.add(Restrictions.eq("codeDocumentName", codeDocName)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             Document doc = (Document) criteria.uniqueResult();
             doc.setDescription(description);
             session.flush();
-            tr.commit();
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
     public void addDocument(Document document) throws MyException {
-        Transaction tr = null;
         if (document == null) {
             throw new IllegalArgumentException();
         }
@@ -95,12 +90,9 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
             throw new exception.IllegalArgumentException("Too long name");
         }
         try {
-            tr = session.beginTransaction();
             session.save(document);
-            tr.commit();
         } catch (Exception e) {
             session.clear();
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
 
@@ -125,9 +117,8 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
 
     @Override
     public void deleteDocument(String login, long docNameCode) throws MyException {
-        Transaction tr = null;
+
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Document.class);
             criteria.createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("codeDocumentName", docNameCode));
@@ -136,11 +127,9 @@ public class DocumentDAOImplHCriteria implements DocumentDAO {
                 throw new NoSuchObjectInDB("Nothing to delete");
             } else {
                 session.delete(doc);
-                tr.commit();
             }
 
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }

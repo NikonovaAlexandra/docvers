@@ -50,12 +50,10 @@ public class VersionDAOImplHCriteria implements VersionDAO{
 
     @Override
     public void addVersion(Version version) throws MyException {
-        Transaction tr = null;
         if (version == null) {
             throw new IllegalArgumentException();
         }
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Version.class);
             criteria.add(Restrictions.eq("released", false));
             criteria.createAlias("documentId", "document").add(Restrictions.eq("document.id", version.getDocumentId().getId()));
@@ -67,11 +65,7 @@ public class VersionDAOImplHCriteria implements VersionDAO{
             version.setReleased(false);
             session.save(version);
 
-            tr.commit();
-
-
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
 
@@ -79,9 +73,7 @@ public class VersionDAOImplHCriteria implements VersionDAO{
 
     @Override
     public void deleteVersion(long versName, long docCode, String login) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Version.class);
             criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", docCode)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
 //            criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", docCode));
@@ -91,10 +83,8 @@ public class VersionDAOImplHCriteria implements VersionDAO{
                 throw new NoSuchObjectInDB("Nothing to delete");
             } else {
                 session.delete(version);
-                tr.commit();
             }
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
@@ -132,18 +122,14 @@ public class VersionDAOImplHCriteria implements VersionDAO{
 
     @Override
     public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Criteria criteria = session.createCriteria(Version.class);
             criteria.createAlias("documentId", "document").add(Restrictions.eq("document.codeDocumentName", codeDocName)).createAlias("authorId", "author").add(Restrictions.eq("author.login", login));
             criteria.add(Restrictions.eq("versionName", versionName));
             Version vers = (Version) criteria.uniqueResult();
             vers.setVersionDescription(description);
             session.flush();
-            tr.commit();
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }

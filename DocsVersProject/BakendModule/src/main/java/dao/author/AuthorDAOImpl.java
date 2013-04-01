@@ -2,7 +2,10 @@ package dao.author;
 
 import dao.ExceptionsThrower;
 import entities.Author;
-import exception.*;
+import exception.DAOException;
+import exception.MyException;
+import exception.NoSuchObjectInDB;
+import exception.NullConnectionException;
 import service.QueriesSQL;
 
 import java.sql.Connection;
@@ -24,31 +27,25 @@ public class AuthorDAOImpl implements AuthorDAO {
     public AuthorDAOImpl(Connection conn) throws MyException {
         if (conn == null)
             throw new NullConnectionException();
-        try {
-            this.conn = conn;
-            this.conn.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw ExceptionsThrower.throwException(e);
-        }
+        this.conn = conn;
 
     }
 
     @Override
-    public Author getAuthorByID(long id) throws MyException{
+    public Author getAuthorByID(long id) throws MyException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             ps = conn.prepareStatement(QueriesSQL.SELECT_FROM_AUTHOR_WHERE_ID);
             ps.setLong(1, id);
             rs = ps.executeQuery();
-            conn.commit();
             Author author = null;
             if (rs.next()) {
                 author = new Author(rs.getLong("id"), rs.getString("login"), rs.getString("password"));
             } else throw new NoSuchObjectInDB("Author with id = " + id);
             return author;
         } catch (SQLException e) {
-           throw ExceptionsThrower.throwException(e);
+            throw ExceptionsThrower.throwException(e);
 
         } finally {
 

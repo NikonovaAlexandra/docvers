@@ -67,24 +67,19 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
 
     @Override
     public void updateDocumentDescription(String login, long codeDocName, String description) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.UPDATE_DOCUMENT_DESCRIPTION);
             query.setString("login", login);
             query.setString("description", description);
             query.setLong("codeDocumentName", codeDocName);
             query.executeUpdate();
-            tr.commit();
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
 
     @Override
     public void addDocument(Document document) throws MyException {
-        Transaction tr = null;
         if (document == null) {
             throw new IllegalArgumentException();
         }
@@ -92,12 +87,9 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
             throw new exception.IllegalArgumentException("Too long name");
         }
         try {
-            tr = session.beginTransaction();
             session.save(document);
-            tr.commit();
         } catch (Exception e) {
             session.clear();
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
 
@@ -120,17 +112,13 @@ public class DocumentDAOImplHHQL implements DocumentDAO {
 
     @Override
     public void deleteDocument(String login, long docNameCode) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.DELETE_FROM_DOCUMENT_WHERE_AUTHOR_ID_AND_CODE);
             query.setString("login", login);
             query.setLong("codeDocumentName", docNameCode);
             int i = query.executeUpdate();
             if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
-            tr.commit();
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }

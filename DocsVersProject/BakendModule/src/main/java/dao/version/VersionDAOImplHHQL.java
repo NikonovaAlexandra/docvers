@@ -43,13 +43,11 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
     @Override
     public void addVersion(Version version) throws MyException{
-        Transaction tr = null;
         if (version == null) {
             throw new IllegalArgumentException();
         }
         try {
             //long name = getLastVersionNameInfo(version.getDocumentID());
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.UPDATE_VERSION_SET_IS_RELEASED);
             query.setBoolean("isReleased", true);
             query.setLong("id", version.getDocumentId().getId());
@@ -60,11 +58,8 @@ public class VersionDAOImplHHQL implements VersionDAO {
             version.setReleased(false);
             session.save(version);
 
-            tr.commit();
-
 
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
 
@@ -72,18 +67,14 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
     @Override
     public void deleteVersion(long versName, long docCode, String login) throws MyException{
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.DELETE_FROM_VERSION_WHERE_VERSION_NAME_AND_DOC_AND_LOGIN);
             query.setString("login", login);
             query.setLong("codeDocumentName", docCode);
             query.setLong("versionName", versName);
             int i = query.executeUpdate();
             if (i == 0) throw new NoSuchObjectInDB("Nothing to delete");
-            tr.commit();
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
@@ -120,18 +111,14 @@ public class VersionDAOImplHHQL implements VersionDAO {
 
     @Override
     public void updateVersionDescription(String login, long codeDocName, long versionName, String description) throws MyException {
-        Transaction tr = null;
         try {
-            tr = session.beginTransaction();
             Query query = session.createQuery(QueriesHQL.UPDATE_VERSION_DESCRIPTION);
             query.setString("login", login);
             query.setString("description", description);
             query.setLong("codeDocumentName", codeDocName);
             query.setLong("versionName", versionName);
             query.executeUpdate();
-            tr.commit();
         } catch (Exception e) {
-            if (tr != null && tr.isActive()) tr.rollback();
             throw ExceptionsThrower.throwException(e);
         }
     }
