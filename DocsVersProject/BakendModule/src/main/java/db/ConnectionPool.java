@@ -130,15 +130,11 @@ public class ConnectionPool implements Runnable {
     private Connection makeNewConnection()
             throws SQLException {
         try {
-            // Load database driver if not already loaded
             Class.forName(driver);
-            // Establish network connection to database
             Connection connection =
                     DriverManager.getConnection(url, username, password);
             return (connection);
         } catch (ClassNotFoundException cnfe) {
-            // Simplify try/catch blocks of people using this by
-            // throwing only one exception type.
             throw new SQLException("Can’t find class for driver: " +
                     driver);
         }
@@ -156,15 +152,6 @@ public class ConnectionPool implements Runnable {
                 busyConnections.size());
     }
 
-    /**
-     * Close all the connections. Use with caution:
-     * be sure no connections are in use before
-     * calling. Note that you are not <I>required</I> to
-     * call this when done with a ConnectionPool, since
-     * connections are guaranteed to be closed when
-     * garbage collected. But this method gives more control
-     * regarding when the connections are closed.
-     */
     public synchronized void closeAllConnections() {
         closeConnections(availableConnections);
         availableConnections = new Vector();
