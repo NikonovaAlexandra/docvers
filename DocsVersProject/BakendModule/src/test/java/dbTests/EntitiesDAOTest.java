@@ -53,7 +53,6 @@ public class EntitiesDAOTest {
     private AuthorDAO authorDAO;
     private VersionDAO versionDAO;
     private ITable template, actual;
-    private String path = "BakendModule" + File.separator + "src" + File.separator + "test" + File.separator + "java" + File.separator + "dbTests" + File.separator;
     private AllScriptSInDirectoryRunner runner;
 
     @Before
@@ -70,7 +69,7 @@ public class EntitiesDAOTest {
         //Setting DATA_FACTORY, so DBUnit will know how to work with specific HSQLDB data types
         iConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new H2DataTypeFactory());
         //Getting dataset for database initialization
-        IDataSet dataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_before.xml"));
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_before.xml"));
         Connection connection = iConnection.getConnection();
         // Initialize object for ScripRunner
 
@@ -86,7 +85,7 @@ public class EntitiesDAOTest {
 
     @Test
     public void addDocumentTest() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_after_adding.xml"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_after_adding.xml"));
         documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
         Document doc = new Document(2, "doc25", "descr", "doc25".hashCode());
         documentDAO.addDocument(doc);
@@ -114,7 +113,7 @@ public class EntitiesDAOTest {
 
     @Test
     public void deleteDocumentTest() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_after_deleting_document.xml"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_after_deleting_document.xml"));
         documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
         documentDAO.deleteDocument("author1", 1113);
         template = flatXMLDataSet.getTable("document");
@@ -139,7 +138,7 @@ public class EntitiesDAOTest {
 
     @Test
     public void getDocumentsByAuthorTest() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_select_by_author_id"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_select_by_author_id"));
         documentDAO = DAOFactory.getInstance().getDocumentDAO(iConnection.getConnection());
         List<Document> l = documentDAO.getDocumentsByAuthorID(2);
         template = flatXMLDataSet.getTable("document");
@@ -149,7 +148,7 @@ public class EntitiesDAOTest {
 
     @Test
     public void getAuthorByIDTest() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_get_author_by_id"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_get_author_by_id"));
         authorDAO = DAOFactory.getInstance().getAuthorDAO(iConnection.getConnection());
         Author author = authorDAO.getAuthorByID(2);
         template = flatXMLDataSet.getTable("author");
@@ -158,7 +157,7 @@ public class EntitiesDAOTest {
 
     @Test
     public void getAuthorByLoginTest() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_get_author_by_login"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_get_author_by_login"));
         authorDAO = DAOFactory.getInstance().getAuthorDAO(iConnection.getConnection());
         Author author = authorDAO.getAuthorByLogin("author1");
         template = flatXMLDataSet.getTable("author");
@@ -177,7 +176,7 @@ public class EntitiesDAOTest {
     @Ignore
     @Test
     public void getVersionsOfDocumentTest() throws Exception {
-        flatXMLDataSet = new FlatXmlDataSetBuilder().build(new File(path + "dataset_get_versions_by_document"));
+        flatXMLDataSet = new FlatXmlDataSetBuilder().build(getClass().getClassLoader().getResource("dbTests/dataset_get_versions_by_document"));
         versionDAO = DAOFactory.getInstance().getVersionDAO(iConnection.getConnection());
         List<Version> versions = versionDAO.getVersionsOfDocument(3);
         template = flatXMLDataSet.getTable("version");
